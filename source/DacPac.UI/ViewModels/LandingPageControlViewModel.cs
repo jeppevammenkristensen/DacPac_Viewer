@@ -1,28 +1,27 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using DacPac.UI.Infrastructure;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DacPac.Core;
+using DacPac.UI.ViewModels.Displays;
 using Microsoft.Extensions.Logging;
+using Microsoft.SqlServer.Dac.Model;
+using TruePath;
 
 namespace DacPac.UI.ViewModels;
 
 /// <summary>
 /// An initial landing page.
 /// </summary>
-public partial class LandingPageControlViewModel : ScreenPage
+public partial class LandingPageControlViewModel(
+    ILogger<LandingPageControlViewModel> logger,
+    IFilePickerService filePicker, DacPacLoader loader)
+    : ScreenPage
 {
-    private readonly ILogger<LandingPageControlViewModel> _logger;
-    private readonly IFilePickerService _filePicker;
-
-    public LandingPageControlViewModel(
-        ILogger<LandingPageControlViewModel> logger,
-        IFilePickerService filePicker)
-    {
-        _logger = logger;
-        _filePicker = filePicker;
-    }
-
     public override string Title => "Landing page";
 
     [ObservableProperty] public partial bool PreventClose { get; set; }
@@ -31,13 +30,45 @@ public partial class LandingPageControlViewModel : ScreenPage
     [ObservableProperty] public partial string SearchText { get; set; } = string.Empty;
 
     /// <summary>Options shown in the multi-select filter dropdown. Populated later.</summary>
-    public ObservableCollection<string> FilterOptions { get; } = [];
+    [ObservableProperty]
+    public partial ObservableCollection<string> FilterOptions { get; set; } = [];
 
     /// <summary>The currently selected filter options (bound to the ListBox selection).</summary>
-    public ObservableCollection<string> SelectedFilters { get; } = [];
+    /// <summary>The currently selected filter options (bound to the combobox checkboxes).</summary>
+    [ObservableProperty]
+    public partial ObservableCollection<string> SelectedFilters { get; set; } = [];
+
+    /// <summary>Summary shown in the collapsed filter combobox.</summary>
+    public string FilterSummary => SelectedFilters.Count == 0 ? "Filters" : $"{SelectedFilters.Count} selected";
+
+    partial void OnSelectedFiltersChanged(ObservableCollection<string> value)
+    {
+        OnPropertyChanged(nameof(FilterSummary));
+    }
+
+    /// <summary>Toggles whether a filter option is part of the current selection.</summary>
+    [RelayCommand]
+    private void ToggleFilter(string filter)
+    {
+        if (!SelectedFilters.Remove(filter))
+            SelectedFilters.Add(filter);
+
+        OnPropertyChanged(nameof(SelectedFilters));
+        OnPropertyChanged(nameof(FilterSummary));
+
+        if (SearchCommand.CanExecute(null))
+            SearchCommand.Execute(null);
+        
+    }
 
     /// <summary>Rows shown in the results grid. Populated later.</summary>
-    public ObservableCollection<SearchResultRow> Results { get; } = [];
+    /// <summary>Rows shown in the results grid. Populated later.</summary>
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SearchCommand))]
+    public partial ObservableCollection<SearchResultRow> Results { get; set; } = [];
+    
+    [ObservableProperty] 
+    public partial ObservableCollection<SearchResultRow> FilteredResults { get; set; } = [];
 
     /// <summary>The currently selected result row.</summary>
     [ObservableProperty] public partial SearchResultRow? SelectedResult { get; set; }
@@ -48,6 +79,9 @@ public partial class LandingPageControlViewModel : ScreenPage
     /// <summary>Paths of dacpac files chosen via File ▸ Open dacpac.</summary>
     public ObservableCollection<string> OpenedDacpacFiles { get; } = [];
 
+    [ObservableProperty] public partial bool IsLoading { get; set; }
+    [ObservableProperty] public partial IDisplayViewModel Detail { get; set; }
+
     partial void OnPreventCloseChanged(bool value)
     {
         CanClose = !value;
@@ -55,40 +89,106 @@ public partial class LandingPageControlViewModel : ScreenPage
 
     partial void OnSelectedResultChanged(SearchResultRow? value)
     {
-        // TODO: refresh DetailsText from the selected result.
+        if (value is null) return;
+        if (value.Source.ObjectType == Table.TypeClass)
+        {
+            Detail = new TableDisplayViewModel(value.Source);
+        }
+        else if (value.Source.ObjectType == Procedure.TypeClass)
+           
+        {
+            Detail = new ProcedureDisplayViewModel(value.Source);
+        }
+        else
+        {
+            Detail = new DefaultDisplayViewModel(value.Source);    
+        }
+        
+        
+        //
+        //
+        // // TODO: refresh DetailsText from the selected result
+        // DetailsText = value?.Source.GetScript() ?? "Not available";
+        
     }
 
-    [RelayCommand]
+    private bool SearcFilter(SearchResultRow row)
+    {
+        return row.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+    }
+    
+    private bool CanSearch() => Results.Count > 0;
+
+    [RelayCommand(CanExecute = nameof(CanSearch))]
     private void Search()
     {
         // TODO: populate Results / DetailsText based on SearchText and SelectedFilters.
+        if (SelectedFilters.Any(x => x == "All"))
+        {
+            FilteredResults = [..Results.Where(SearcFilter)];
+        }
+        else
+        {
+            FilteredResults =
+            [
+                ..Results
+                    .Where(x => SelectedFilters.Contains(x.Type))
+                    .Where(SearcFilter)
+            ];
+        }
     }
 
     [RelayCommand]
     private async Task OpenDacpac()
     {
-        var files = await _filePicker.PickDacpacFilesAsync();
+        var files = await filePicker.PickDacpacFilesAsync();
         if (files.Count == 0)
             return;
 
-        OpenedDacpacFiles.Clear();
-        foreach (var file in files)
-            OpenedDacpacFiles.Add(file);
+        IsLoading = true;
+        try
+        {
+            OpenedDacpacFiles.Clear();
+            Results.Clear();
 
-        SetStatusMessage($"Opened {files.Count} dacpac file(s).");
+            List<SearchResultRow> searchResultRows = new();
+            foreach (var file in files.Select(AbsolutePath.Create))
+            {
+                SetStatusMessage($"Processing {file.Value}");
+                OpenedDacpacFiles.Add(file.Value);
+                var rows = await Task.Run(() => loader.Load(file).GetObjects(DacQueryScopes.UserDefined)
+                    .Where(x => x.Name.HasName)
+                    .Select(o => new SearchResultRow(o, file.GetFilenameWithoutExtension()))
+                    .ToList());
+                searchResultRows.AddRange(rows);
+            }
 
-        // TODO: load/parse selected dacpac files and populate search data.
+            // Computing the filter options touches the DacFx model for every row, so keep it
+            // off the UI thread to avoid freezing the window while a dacpac is opened.
+            var filterOptions = await Task.Run(() =>
+                searchResultRows.Select(x => x.Type).Distinct().Order().ToList());
+
+            Results = new ObservableCollection<SearchResultRow>(searchResultRows);
+            FilteredResults = [..Results];
+            FilterOptions = ["All", ..filterOptions];
+            SelectedFilters = [FilterOptions[0]];
+            SetStatusMessage($"Opened {files.Count} dacpac file(s).");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     public override Task OnActivatedAsync()
     {
-        _logger.LogInformation("On Activated");
+        logger.LogInformation("On Activated");
         return Task.CompletedTask;
     }
 
     public override Task CloseAsync()
     {
-        _logger.LogInformation("On Close");
+        logger.LogInformation("On Close");
         return Task.CompletedTask;
     }
 }

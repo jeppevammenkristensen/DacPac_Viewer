@@ -57,7 +57,7 @@ public static class ViewLocatorHelpers
     ///     When a view is associated with a viewmodel it will be added as DataTemplate so you can bind
     ///     like this <![CDATA[<ContentControl Grid.Row="1" Content="{Binding Screen}" ></ContentControl>]]>
     /// </remarks>
-    private static IServiceCollection AddView<TViewModel, TView>(this IServiceCollection collection)
+    public static IServiceCollection AddView<TViewModel, TView>(this IServiceCollection collection)
         where TViewModel : ViewModelBase where TView : Control, new()
     {
         collection.AddSingleton(new ViewLocator.ViewLocatorDescriptor(typeof(TViewModel), () => new TView()));

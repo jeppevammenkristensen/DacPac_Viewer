@@ -3,9 +3,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels"
+             xmlns:converters="clr-namespace:DacPac.UI.Converters"
              x:DataType="viewModel:LandingPageControlViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DacPac.UI.Views.LandingPageControl">
+    <UserControl.Resources>
+        <converters:ContainsConverter x:Key="ContainsConverter" />
+    </UserControl.Resources>
+    <UserControl.Styles>
+        <Style Selector="Arc.spinner">
+            <Setter Property="RenderTransformOrigin" Value="50%,50%" />
+            <Style.Animations>
+                <Animation Duration="0:0:0.9" IterationCount="Infinite" Easing="LinearEasing">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="RotateTransform.Angle" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="RotateTransform.Angle" Value="360" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </UserControl.Styles>
     <Grid RowDefinitions="Auto,*" RowSpacing="12">
 
         <!-- Search bar -->
@@ -13,24 +32,43 @@
             <TextBox Grid.Column="0"
                      PlaceholderText="Search…"
                      VerticalAlignment="Top"
-                     Text="{Binding SearchText}" />
-            <ListBox Grid.Column="1"
-                     MinWidth="160"
-                     MaxHeight="120"
-                     SelectionMode="Multiple"
-                     ItemsSource="{Binding FilterOptions}"
-                     SelectedItems="{Binding SelectedFilters}" />
+                     Text="{Binding SearchText}">
+                <TextBox.KeyBindings>
+                    <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
+                </TextBox.KeyBindings>
+            </TextBox>
+            <ComboBox Grid.Column="1"
+                      MinWidth="160"
+                      VerticalAlignment="Top"
+                      PlaceholderText="{Binding FilterSummary}"
+                      ItemsSource="{Binding FilterOptions}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <CheckBox HorizontalAlignment="Stretch"
+                                  Content="{Binding}"
+                                  Command="{Binding $parent[ComboBox].((viewModel:LandingPageControlViewModel)DataContext).ToggleFilterCommand}"
+                                  CommandParameter="{Binding}">
+                            <CheckBox.IsChecked>
+                                <MultiBinding Converter="{StaticResource ContainsConverter}" Mode="OneWay">
+                                    <Binding />
+                                    <Binding Path="$parent[ComboBox].((viewModel:LandingPageControlViewModel)DataContext).SelectedFilters" />
+                                </MultiBinding>
+                            </CheckBox.IsChecked>
+                        </CheckBox>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <Button Grid.Column="2"
                     Classes="Accent"
                     Content="Search"
                     VerticalAlignment="Top"
                     Command="{Binding SearchCommand}" />
         </Grid>
-
+    
         <!-- Results split -->
         <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*">
             <DataGrid Grid.Column="0"
-                      ItemsSource="{Binding Results}"
+                      ItemsSource="{Binding FilteredResults}"
                       SelectedItem="{Binding SelectedResult}"
                       IsReadOnly="True"
                       AutoGenerateColumns="False"
@@ -44,12 +82,37 @@
 
             <GridSplitter Grid.Column="1" Width="4" ResizeDirection="Columns" />
 
-            <TextBox Grid.Column="2"
-                     IsReadOnly="True"
-                     AcceptsReturn="True"
-                     TextWrapping="Wrap"
-                     VerticalContentAlignment="Top"
-                     Text="{Binding DetailsText}" />
+            <ContentControl  Grid.Column="2" Content="{Binding Detail}" />
+            
+            <!-- <TextBox Grid.Column="2" -->
+            <!--          IsReadOnly="True" -->
+            <!--          AcceptsReturn="True" -->
+            <!--          TextWrapping="Wrap" -->
+            <!--          VerticalContentAlignment="Top" -->
+            <!--          Text="{Binding DetailsText}" /> -->
         </Grid>
+
+        <!-- Loading overlay -->
+        <Border Grid.Row="0"
+                Grid.RowSpan="2"
+                IsVisible="{Binding IsLoading}"
+                Background="#99000000">
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Spacing="16">
+                <Arc Classes="spinner"
+                     Width="48"
+                     Height="48"
+                     HorizontalAlignment="Center"
+                     StartAngle="0"
+                     SweepAngle="280"
+                     Stroke="{DynamicResource SystemAccentColor}"
+                     StrokeThickness="4"
+                     StrokeLineCap="Round" />
+                <TextBlock Text="Loading…"
+                           HorizontalAlignment="Center"
+                           Foreground="White" />
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
