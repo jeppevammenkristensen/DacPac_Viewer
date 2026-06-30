@@ -39,4 +39,8 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DacPac.Core\DacPac.Core.csproj" />
+    </ItemGroup>
 </Project>

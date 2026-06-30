@@ -4,10 +4,13 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Avalonia.Markup.Xaml;
+using DacPac.Core;
 using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.ViewModels;
+using DacPac.UI.ViewModels.Displays;
 using DacPac.UI.Views;
+using DacPac.UI.Views.Displays;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -118,6 +121,7 @@ public class App : Application
         // Register other dependencies here. TimeProvider added as an example
         services.AddSingleton<TimeProvider>(_ => TimeProvider.System);
         services.AddSingleton<IFilePickerService, StorageProviderFilePickerService>();
+        services.AddSingleton<DacPacLoader>();
     }
 
     /// <summary>
@@ -134,6 +138,8 @@ public class App : Application
         collection
             .AddViewModelAndRegisterView<MainWindowViewModel, MainWindow>(ViewModelScope.Singleton)
             .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient);
+        
+        collection.AddView<TableDisplayViewModel, TableDisplay>();
     }
 
 }

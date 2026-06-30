@@ -1,0 +1,48 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels.Displays" x:DataType="viewModel:TableDisplayViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DacPac.UI.Views.Displays.TableDisplay">
+    <Grid RowDefinitions="*,Auto,*">
+
+        <!-- Top half: identity + columns -->
+        <Grid Grid.Row="0" RowDefinitions="Auto,Auto,*" RowSpacing="6">
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                <TextBlock Grid.Column="0" Text="Short name:" FontWeight="SemiBold" />
+                <TextBlock Grid.Column="1" Text="{Binding ShortName}" TextTrimming="CharacterEllipsis" />
+            </Grid>
+            <Grid Grid.Row="1" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                <TextBlock Grid.Column="0" Text="Full name:" FontWeight="SemiBold" />
+                <TextBlock Grid.Column="1" Text="{Binding FullName}" TextTrimming="CharacterEllipsis" />
+            </Grid>
+
+            <DataGrid Grid.Row="2"
+                      ItemsSource="{Binding Columns}"
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      CanUserResizeColumns="True"
+                      CanUserSortColumns="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Column" Binding="{Binding ColumnName}" Width="2*" />
+                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
+                    <DataGridCheckBoxColumn Header="Nullable" Binding="{Binding IsNullable}" Width="Auto" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <GridSplitter Grid.Row="1" Height="4" ResizeDirection="Rows" HorizontalAlignment="Stretch" />
+
+        <!-- Bottom half: SQL script -->
+        <TextBox Grid.Row="2"
+                 IsReadOnly="True"
+                 AcceptsReturn="True"
+                 TextWrapping="NoWrap"
+                 FontFamily="Cascadia Code,Cascadia Mono,Consolas,Menlo,monospace"
+                 VerticalContentAlignment="Top"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Text="{Binding Script}" />
+    </Grid>
+</UserControl>
