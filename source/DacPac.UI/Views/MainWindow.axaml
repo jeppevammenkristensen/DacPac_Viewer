@@ -24,6 +24,9 @@
                     <MenuItem Header="Open dacpac"
                               Command="{Binding ((vm:LandingPageControlViewModel)Screen).OpenDacpacCommand}" />
                 </MenuItem>
+                <MenuItem Header="Restart to update"
+                          IsVisible="{Binding UpdateAvailable}"
+                          Command="{Binding RestartAndUpdateCommand}" />
             </Menu>
         </DockPanel>
 

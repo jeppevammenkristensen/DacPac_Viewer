@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
+using Velopack;
 
 namespace DacPac.UI;
 
@@ -21,6 +22,10 @@ internal sealed class Program
         // Register global exception handlers as early as possible
         AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
         TaskScheduler.UnobservedTaskException += TaskSchedulerOnUnobservedTaskException;
+
+        // Velopack handles install/update/uninstall hooks and may exit the process here.
+        // Must run before any Avalonia initialization.
+        VelopackApp.Build().Run();
 
         try
         {
