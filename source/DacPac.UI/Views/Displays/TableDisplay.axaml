@@ -29,6 +29,7 @@
                     <DataGridTextColumn Header="Column" Binding="{Binding ColumnName}" Width="2*" />
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
                     <DataGridCheckBoxColumn Header="Nullable" Binding="{Binding IsNullable}" Width="Auto" />
+                    <DataGridCheckBoxColumn Header="IsIdentity" Binding="{Binding IsIdentity}" Width="Auto" />
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

@@ -29,9 +29,7 @@ public partial class TableDisplayViewModel : ViewModelBase, IDisplayViewModel
 
         ShortName = model.Name.Parts.Last();
         FullName = model.Name.ToString();
-        
         Columns = [..model.GetReferenced(Table.Columns).Select(x => new TableColumnWrapper(x))];
-        
         Script = model.GetScript();
     }
 }
@@ -40,12 +38,16 @@ public class TableColumnWrapper
 {
     public string ColumnName { get;  }
     public bool IsNullable { get;  }
+    
+    public bool IsIdentity { get; }
+    
     public string? Type { get; set; }
 
     public TableColumnWrapper(TSqlObject sqlObject)
     {
         ColumnName = sqlObject.Name.Parts.Last();
         IsNullable = sqlObject.GetProperty<bool>(Column.Nullable);
+        IsIdentity = sqlObject.GetProperty<bool>(Column.IsIdentity);
         Type = sqlObject.GetReferenced(Column.DataType).FirstOrDefault()?.Name.Parts.Last();
     }
 }
