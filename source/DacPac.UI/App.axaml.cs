@@ -140,6 +140,8 @@ public class App : Application
             .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient);
         
         collection.AddView<TableDisplayViewModel, TableDisplay>();
+        collection.AddView<ProcedureDisplayViewModel, ProcedureDisplay>();
+        collection.AddView<DefaultDisplayViewModel, DefaultDisplay>();
     }
 
 }

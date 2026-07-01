@@ -2,13 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels.Displays" x:DataType="viewModel:TableDisplayViewModel"
+             xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels.Displays" x:DataType="viewModel:ProcedureDisplayViewModel"
              xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="DacPac.UI.Views.Displays.TableDisplay">
+             x:Class="DacPac.UI.Views.Displays.ProcedureDisplay">
     <Grid RowDefinitions="*,Auto,*">
 
-        <!-- Top half: identity + columns -->
+        <!-- Top half: identity + parameters -->
         <Grid Grid.Row="0" RowDefinitions="Auto,Auto,*" RowSpacing="6">
             <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="8">
                 <TextBlock Grid.Column="0" Text="Short name:" FontWeight="SemiBold" />
@@ -20,13 +20,13 @@
             </Grid>
 
             <DataGrid Grid.Row="2"
-                      ItemsSource="{Binding Columns}"
+                      ItemsSource="{Binding Parameters}"
                       IsReadOnly="True"
                       AutoGenerateColumns="False"
                       CanUserResizeColumns="True"
                       CanUserSortColumns="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Column" Binding="{Binding ColumnName}" Width="2*" />
+                    <DataGridTextColumn Header="Parameter" Binding="{Binding ColumnName}" Width="2*" />
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" />
                     <DataGridCheckBoxColumn Header="Nullable" Binding="{Binding IsNullable}" Width="Auto" />
                 </DataGrid.Columns>

@@ -94,6 +94,17 @@ public partial class LandingPageControlViewModel(
         {
             Detail = new TableDisplayViewModel(value.Source);
         }
+        else if (value.Source.ObjectType == Procedure.TypeClass)
+           
+        {
+            Detail = new ProcedureDisplayViewModel(value.Source);
+        }
+        else
+        {
+            Detail = new DefaultDisplayViewModel(value.Source);    
+        }
+        
+        
         //
         //
         // // TODO: refresh DetailsText from the selected result

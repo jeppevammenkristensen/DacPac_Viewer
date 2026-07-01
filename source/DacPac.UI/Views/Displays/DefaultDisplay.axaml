@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels.Displays" x:DataType="viewModel:DefaultDisplayViewModel"
+             xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DacPac.UI.Views.Displays.DefaultDisplay">
+    <Grid RowDefinitions="Auto,Auto,Auto,Auto,*" RowSpacing="6">
+
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+            <TextBlock Grid.Column="0" Text="Type:" FontWeight="SemiBold" />
+            <TextBlock Grid.Column="1" Text="{Binding Type}" TextTrimming="CharacterEllipsis" />
+        </Grid>
+        
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+            <TextBlock Grid.Column="0" Text="Short name:" FontWeight="SemiBold" />
+            <TextBlock Grid.Column="1" Text="{Binding ShortName}" TextTrimming="CharacterEllipsis" />
+        </Grid>
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+            <TextBlock Grid.Column="0" Text="Full name:" FontWeight="SemiBold" />
+            <TextBlock Grid.Column="1" Text="{Binding FullName}" TextTrimming="CharacterEllipsis" />
+        </Grid>
+
+        <GridSplitter Grid.Row="3" Height="4" ResizeDirection="Rows" HorizontalAlignment="Stretch" />
+
+        <!-- SQL script -->
+        <ae:TextEditor Grid.Row="3"
+                       Name="ScriptEditor"
+                       IsReadOnly="True"
+                       ShowLineNumbers="True"
+                       WordWrap="False"
+                       FontFamily="Cascadia Code,Cascadia Mono,Consolas,Menlo,monospace" />
+    </Grid>
+</UserControl>
