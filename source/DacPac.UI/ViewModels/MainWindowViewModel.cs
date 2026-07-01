@@ -14,10 +14,12 @@ namespace DacPac.UI.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDataMessage>, IRecipient<StatusValueDataMessage>
 {
     private readonly IServiceLocator _locator;
+    private readonly IUpdateService _updateService;
 
-    public MainWindowViewModel(IServiceLocator locator, IConfiguration configuration)
+    public MainWindowViewModel(IServiceLocator locator, IConfiguration configuration, IUpdateService updateService)
     {
         _locator = locator;
+        _updateService = updateService;
         Screens = [];
         Status = string.Empty;
         Title = configuration["Title"] ?? "No title defined";
@@ -37,6 +39,11 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
     public partial double CurrentProgress { get; set; }
 
     [ObservableProperty] public partial bool Loaded { get; set; }
+
+    [NotifyCanExecuteChangedFor(nameof(RestartAndUpdateCommand))]
+    [ObservableProperty]
+    public partial bool UpdateAvailable { get; set; }
+
     [ObservableProperty] public partial string Title { get; set; }
     [NotifyPropertyChangedFor(nameof(DisplayInfo))] [NotifyPropertyChangedFor(nameof(DisplayInfoError))] [ObservableProperty] public partial StatusType StatusType { get; set; }
 
@@ -65,6 +72,25 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         await longRunningTask.ExecuteTask(token);
         Loaded = true;
         await LaunchPrimaryCommand.ExecuteAsync(null);
+
+        // Fire-and-forget; must never block or fail startup
+        _ = CheckForUpdatesAsync();
+    }
+
+    private async Task CheckForUpdatesAsync()
+    {
+        var version = await _updateService.CheckAndDownloadUpdateAsync();
+        if (version is null) return;
+
+        UpdateAvailable = true;
+        Status = $"Version {version} has been downloaded. Restart to apply it.";
+        StatusType = StatusType.Info;
+    }
+
+    [RelayCommand(CanExecute = nameof(UpdateAvailable))]
+    private void RestartAndUpdate()
+    {
+        _updateService.RestartAndApplyUpdate();
     }
 
 
