@@ -18,11 +18,15 @@
     .\build-installer.ps1 -Version 1.0.1
 
 .EXAMPLE
+    .\build-installer.ps1 -Version 1.0.1 -Title "DacPac Viewer"
+
+.EXAMPLE
     .\build-installer.ps1 -Version 1.0.1 -UploadToGitHub -GitHubToken $env:GITHUB_TOKEN
 #>
 param(
     [string]$Version = "1.0.0",
     [string]$Runtime = "win-x64",
+    [string]$Title = "DacPac Viewer",
     [switch]$UploadToGitHub,
     [string]$GitHubToken = $env:GITHUB_TOKEN
 )
@@ -62,9 +66,10 @@ Write-Host "Packing with Velopack (version $Version)..." -ForegroundColor Cyan
 vpk pack `
     --packId DacPac.UI `
     --packVersion $Version `
+    --packTitle $Title `
     --packDir $publishDir `
     --mainExe DacPac.UI.exe `
-    --icon (Join-Path $root "source\DacPac.UI\Assets\avalonia-logo.ico") `
+    --icon (Join-Path $root "source\DacPac.UI\Assets\app-icon.ico") `
     --outputDir $releaseDir
 if ($LASTEXITCODE -ne 0) { Write-Error "vpk pack failed." }
 

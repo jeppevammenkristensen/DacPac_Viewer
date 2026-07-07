@@ -1,0 +1,43 @@
+name: Build and Release Installer
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Install Velopack CLI
+        run: |
+          dotnet tool install -g vpk
+          "$env:USERPROFILE\.dotnet\tools" >> $env:GITHUB_PATH
+
+      - name: Read version from csproj
+        id: version
+        run: |
+          [xml]$csproj = Get-Content "source/DacPac.UI/DacPac.UI.csproj"
+          $version = $csproj.Project.PropertyGroup.VersionPrefix | Where-Object { $_ } | Select-Object -First 1
+          if (-not $version) {
+            Write-Error "Could not find <VersionPrefix> in DacPac.UI.csproj"
+          }
+          Write-Host "Building version $version"
+          "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Build and upload installer
+        run: |
+          .\build-installer.ps1 -Version "${{ steps.version.outputs.version }}" -UploadToGitHub -GitHubToken "${{ secrets.GITHUB_TOKEN }}"
