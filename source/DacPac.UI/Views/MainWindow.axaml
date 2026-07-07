@@ -7,7 +7,7 @@
         x:Class="DacPac.UI.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         x:Name="Main"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/app-icon.ico"
         Title="{Binding Title}" IsEnabled="{Binding Loaded}">
 
     <Interaction.Behaviors>
