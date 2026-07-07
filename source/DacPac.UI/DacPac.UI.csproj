@@ -8,6 +8,7 @@
         <ApplicationIcon>Assets\app-icon.ico</ApplicationIcon>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <VersionPrefix>0.0.1</VersionPrefix>
+        <VersionSuffix>beta</VersionSuffix>
     </PropertyGroup>
 
     <ItemGroup>
