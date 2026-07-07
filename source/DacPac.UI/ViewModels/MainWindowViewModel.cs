@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
+using Avalonia.Styling;
 using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -22,7 +24,21 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         _updateService = updateService;
         Screens = [];
         Status = string.Empty;
-        Title = configuration["Title"] ?? "No title defined";
+        Title = "DacPac viewer";
+    }
+
+    private bool CanExecuteOpenDacPac()
+    {
+        return Screen is LandingPageControlViewModel;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteOpenDacPac))]
+    private async Task OpenDacPac()
+    {
+        if (Screen is LandingPageControlViewModel landingPage)
+        {
+            await landingPage.OpenDacpacCommand.ExecuteAsync(null);
+        }
     }
 
 
@@ -47,8 +63,17 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
     [ObservableProperty] public partial string Title { get; set; }
     [NotifyPropertyChangedFor(nameof(DisplayInfo))] [NotifyPropertyChangedFor(nameof(DisplayInfoError))] [ObservableProperty] public partial StatusType StatusType { get; set; }
 
+    [NotifyPropertyChangedFor(nameof(ThemeToggleGlyph))]
+    [ObservableProperty]
+    public partial bool IsDarkTheme { get; set; } = Application.Current?.ActualThemeVariant != ThemeVariant.Light;
+
     public bool DisplayInfo => StatusType == StatusType.Info;
     public bool DisplayInfoError => StatusType == StatusType.Error;
+
+    /// <summary>
+    ///     Glyph shown on the theme toggle button, representing the theme that will be switched to.
+    /// </summary>
+    public string ThemeToggleGlyph => IsDarkTheme ? "☀" : "🌙";
 
     public void Receive(ProgressDataMessage message)
     {
@@ -91,6 +116,18 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
     private void RestartAndUpdate()
     {
         _updateService.RestartAndApplyUpdate();
+    }
+
+    [RelayCommand]
+    private void ToggleTheme()
+    {
+        IsDarkTheme = !IsDarkTheme;
+    }
+
+    partial void OnIsDarkThemeChanged(bool value)
+    {
+        if (Application.Current is not null)
+            Application.Current.RequestedThemeVariant = value ? ThemeVariant.Dark : ThemeVariant.Light;
     }
 
 
