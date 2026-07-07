@@ -18,11 +18,16 @@
 
     <Grid RowDefinitions="Auto,*,Auto,Auto">
         <DockPanel Grid.Row="0">
+            <Button DockPanel.Dock="Right"
+                    Classes="ThemeToggle"
+                    Margin="0,0,8,0"
+                    Command="{Binding ToggleThemeCommand}"
+                    Content="{Binding ThemeToggleGlyph}"
+                    ToolTip.Tip="Toggle light/dark theme" />
             <Menu>
                 <MenuItem Header="_File">
-                    <MenuItem Header="Open Primary" Command="{Binding LaunchPrimaryCommand}" />
-                    <MenuItem Header="Open dacpac"
-                              Command="{Binding ((vm:LandingPageControlViewModel)Screen).OpenDacpacCommand}" />
+                    <MenuItem Header="Open Dacpac"
+                              Command="{Binding OpenDacPacCommand}" />
                 </MenuItem>
                 <MenuItem Header="Restart to update"
                           IsVisible="{Binding UpdateAvailable}"

@@ -1,64 +1,127 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ===== Palette ===== -->
-    <Color x:Key="WindowBackgroundColor">#0F1115</Color>
-    <Color x:Key="SurfaceColor">#171A21</Color>
-    <Color x:Key="SurfaceElevatedColor">#1E222B</Color>
-    <Color x:Key="BorderColor">#2A2F3A</Color>
-    <Color x:Key="BorderSubtleColor">#222631</Color>
+    <ResourceDictionary.ThemeDictionaries>
 
-    <Color x:Key="TextPrimaryColor">#F2F4F8</Color>
-    <Color x:Key="TextSecondaryColor">#A8B0BD</Color>
-    <Color x:Key="TextMutedColor">#6B7280</Color>
+        <!-- ===== Dark theme ===== -->
+        <ResourceDictionary x:Key="Dark">
+            <Color x:Key="WindowBackgroundColor">#0F1115</Color>
+            <Color x:Key="SurfaceColor">#171A21</Color>
+            <Color x:Key="SurfaceElevatedColor">#1E222B</Color>
+            <Color x:Key="BorderColor">#2A2F3A</Color>
+            <Color x:Key="BorderSubtleColor">#222631</Color>
 
-    <Color x:Key="AccentColor">#7C5CFF</Color>
-    <Color x:Key="AccentHoverColor">#9A82FF</Color>
-    <Color x:Key="AccentMutedColor">#3B2F73</Color>
+            <Color x:Key="TextPrimaryColor">#F2F4F8</Color>
+            <Color x:Key="TextSecondaryColor">#A8B0BD</Color>
+            <Color x:Key="TextMutedColor">#6B7280</Color>
 
-    <Color x:Key="SuccessColor">#22C55E</Color>
-    <Color x:Key="WarningColor">#F59E0B</Color>
-    <Color x:Key="ErrorColor">#EF4444</Color>
+            <Color x:Key="AccentColor">#7C5CFF</Color>
+            <Color x:Key="AccentHoverColor">#9A82FF</Color>
+            <Color x:Key="AccentMutedColor">#3B2F73</Color>
 
-    <!-- ===== Brushes ===== -->
-    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
-    <SolidColorBrush x:Key="SurfaceElevatedBrush" Color="{StaticResource SurfaceElevatedColor}" />
-    <SolidColorBrush x:Key="BorderBrushSoft" Color="{StaticResource BorderColor}" />
-    <SolidColorBrush x:Key="BorderBrushSubtle" Color="{StaticResource BorderSubtleColor}" />
+            <Color x:Key="SuccessColor">#22C55E</Color>
+            <Color x:Key="WarningColor">#F59E0B</Color>
+            <Color x:Key="ErrorColor">#EF4444</Color>
 
-    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
-    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
-    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}" />
+            <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
+            <SolidColorBrush x:Key="SurfaceElevatedBrush" Color="{StaticResource SurfaceElevatedColor}" />
+            <SolidColorBrush x:Key="BorderBrushSoft" Color="{StaticResource BorderColor}" />
+            <SolidColorBrush x:Key="BorderBrushSubtle" Color="{StaticResource BorderSubtleColor}" />
 
-    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
-    <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource AccentHoverColor}" />
-    <SolidColorBrush x:Key="AccentMutedBrush" Color="{StaticResource AccentMutedColor}" />
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
+            <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}" />
 
-    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
-    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
-    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}" />
+            <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+            <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource AccentHoverColor}" />
+            <SolidColorBrush x:Key="AccentMutedBrush" Color="{StaticResource AccentMutedColor}" />
 
-    <!-- Window background gradient -->
-    <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0%,0%" EndPoint="100%,100%">
-        <GradientStop Color="#0F1115" Offset="0.0" />
-        <GradientStop Color="#161A22" Offset="0.6" />
-        <GradientStop Color="#1A1530" Offset="1.0" />
-    </LinearGradientBrush>
+            <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
+            <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
+            <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}" />
 
-    <!-- Accent gradient -->
-    <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0%,0%" EndPoint="100%,0%">
-        <GradientStop Color="#7C5CFF" Offset="0.0" />
-        <GradientStop Color="#22D3EE" Offset="1.0" />
-    </LinearGradientBrush>
+            <!-- Window background gradient -->
+            <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Color="#0F1115" Offset="0.0" />
+                <GradientStop Color="#161A22" Offset="0.6" />
+                <GradientStop Color="#1A1530" Offset="1.0" />
+            </LinearGradientBrush>
 
-    <!-- Status bar -->
-    <LinearGradientBrush x:Key="StatusBarBrush" StartPoint="0%,0%" EndPoint="100%,0%">
-        <GradientStop Color="#1A1F2A" Offset="0.0" />
-        <GradientStop Color="#222838" Offset="1.0" />
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="StatusBarErrorBrush" Color="#7F1D1D" />
+            <!-- Accent gradient -->
+            <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0%,0%" EndPoint="100%,0%">
+                <GradientStop Color="#7C5CFF" Offset="0.0" />
+                <GradientStop Color="#22D3EE" Offset="1.0" />
+            </LinearGradientBrush>
 
-    <!-- ===== Radii ===== -->
+            <!-- Status bar -->
+            <LinearGradientBrush x:Key="StatusBarBrush" StartPoint="0%,0%" EndPoint="100%,0%">
+                <GradientStop Color="#1A1F2A" Offset="0.0" />
+                <GradientStop Color="#222838" Offset="1.0" />
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="StatusBarErrorBrush" Color="#7F1D1D" />
+        </ResourceDictionary>
+
+        <!-- ===== Light theme ===== -->
+        <ResourceDictionary x:Key="Light">
+            <Color x:Key="WindowBackgroundColor">#F5F6FA</Color>
+            <Color x:Key="SurfaceColor">#FFFFFF</Color>
+            <Color x:Key="SurfaceElevatedColor">#EEF0F5</Color>
+            <Color x:Key="BorderColor">#DCE0E8</Color>
+            <Color x:Key="BorderSubtleColor">#E6E9EF</Color>
+
+            <Color x:Key="TextPrimaryColor">#1A1D23</Color>
+            <Color x:Key="TextSecondaryColor">#544B4B</Color>
+            <Color x:Key="TextMutedColor">#8A919E</Color>
+
+            <Color x:Key="AccentColor">#6C4CE0</Color>
+            <Color x:Key="AccentHoverColor">#5A3BD1</Color>
+            <Color x:Key="AccentMutedColor">#E6E0FF</Color>
+
+            <Color x:Key="SuccessColor">#16A34A</Color>
+            <Color x:Key="WarningColor">#D97706</Color>
+            <Color x:Key="ErrorColor">#DC2626</Color>
+
+            <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
+            <SolidColorBrush x:Key="SurfaceElevatedBrush" Color="{StaticResource SurfaceElevatedColor}" />
+            <SolidColorBrush x:Key="BorderBrushSoft" Color="{StaticResource BorderColor}" />
+            <SolidColorBrush x:Key="BorderBrushSubtle" Color="{StaticResource BorderSubtleColor}" />
+
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
+            <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}" />
+
+            <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
+            <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource AccentHoverColor}" />
+            <SolidColorBrush x:Key="AccentMutedBrush" Color="{StaticResource AccentMutedColor}" />
+
+            <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
+            <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
+            <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}" />
+
+            <!-- Window background gradient -->
+            <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Color="#F5F6FA" Offset="0.0" />
+                <GradientStop Color="#EEF0F7" Offset="0.6" />
+                <GradientStop Color="#EBE6F7" Offset="1.0" />
+            </LinearGradientBrush>
+
+            <!-- Accent gradient -->
+            <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0%,0%" EndPoint="100%,0%">
+                <GradientStop Color="#6C4CE0" Offset="0.0" />
+                <GradientStop Color="#0EA5C4" Offset="1.0" />
+            </LinearGradientBrush>
+
+            <!-- Status bar -->
+            <LinearGradientBrush x:Key="StatusBarBrush" StartPoint="0%,0%" EndPoint="100%,0%">
+                <GradientStop Color="#EDEFF4" Offset="0.0" />
+                <GradientStop Color="#E4E7EF" Offset="1.0" />
+            </LinearGradientBrush>
+            <SolidColorBrush x:Key="StatusBarErrorBrush" Color="#DC2626" />
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+
+    <!-- ===== Radii (theme-independent) ===== -->
     <CornerRadius x:Key="RadiusSm">4</CornerRadius>
     <CornerRadius x:Key="RadiusMd">8</CornerRadius>
     <CornerRadius x:Key="RadiusLg">12</CornerRadius>

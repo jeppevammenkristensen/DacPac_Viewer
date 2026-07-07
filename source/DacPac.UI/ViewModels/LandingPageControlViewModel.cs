@@ -22,7 +22,11 @@ public partial class LandingPageControlViewModel(
     IFilePickerService filePicker, DacPacLoader loader)
     : ScreenPage
 {
-    public override string Title => "Landing page";
+
+    [NotifyPropertyChangedFor(nameof(Title))] [ObservableProperty]
+    private partial string CurrentTitle { get; set; } = "(empty)";
+
+    public override string Title => CurrentTitle;
 
     [ObservableProperty] public partial bool PreventClose { get; set; }
 
@@ -162,6 +166,8 @@ public partial class LandingPageControlViewModel(
                     .ToList());
                 searchResultRows.AddRange(rows);
             }
+
+            CurrentTitle = string.Join(",", OpenedDacpacFiles.Select(AbsolutePath.Create).Select(x => x.FileName));
 
             // Computing the filter options touches the DacFx model for every row, so keep it
             // off the UI thread to avoid freezing the window while a dacpac is opened.
