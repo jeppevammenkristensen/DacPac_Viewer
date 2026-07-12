@@ -121,8 +121,13 @@ public class App : Application
         // Register other dependencies here. TimeProvider added as an example
         services.AddSingleton<TimeProvider>(_ => TimeProvider.System);
         services.AddSingleton<IFilePickerService, StorageProviderFilePickerService>();
+        services.AddSingleton<IClipboardService, TopLevelClipboardService>();
         services.AddSingleton<IUpdateService, VelopackUpdateService>();
         services.AddSingleton<DacPacLoader>();
+
+        services.AddSingleton<CsharpGenerator,TableToCsharpClassGenerator>();
+        
+        services.AddSingleton<Builder>();
     }
 
     /// <summary>

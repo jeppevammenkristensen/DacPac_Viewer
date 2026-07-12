@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,7 +20,9 @@ namespace DacPac.UI.ViewModels;
 /// </summary>
 public partial class LandingPageControlViewModel(
     ILogger<LandingPageControlViewModel> logger,
-    IFilePickerService filePicker, DacPacLoader loader)
+    IFilePickerService filePicker, DacPacLoader loader,
+    Builder builder,
+    IClipboardService clipboard)
     : ScreenPage
 {
 
@@ -75,7 +78,9 @@ public partial class LandingPageControlViewModel(
     public partial ObservableCollection<SearchResultRow> FilteredResults { get; set; } = [];
 
     /// <summary>The currently selected result row.</summary>
-    [ObservableProperty] public partial SearchResultRow? SelectedResult { get; set; }
+    [NotifyCanExecuteChangedFor(nameof(GenerateCodeCommand))]
+    [ObservableProperty]
+    public partial SearchResultRow? SelectedResult { get; set; }
 
     /// <summary>Detail text shown in the read-only panel for the selected result.</summary>
     [ObservableProperty] public partial string DetailsText { get; set; } = string.Empty;
@@ -140,6 +145,22 @@ public partial class LandingPageControlViewModel(
                     .Where(SearcFilter)
             ];
         }
+    }
+
+    private bool CanGenerateCode(IList? items) => items is { Count: > 0 };
+
+    /// <summary>Copies the generated code for the selected results to the clipboard.</summary>
+    [RelayCommand(CanExecute = nameof(CanGenerateCode))]
+    private async Task GenerateCode(IList? items)
+    {
+        var rows = items?.OfType<SearchResultRow>().ToArray() ?? [];
+        if (rows.Length == 0) return;
+
+        var script = builder.Build(rows.Select(x => x.Source).ToArray());
+        await clipboard.SetTextAsync(script);
+        SetStatusMessage(rows.Length == 1
+            ? $"Copied generated code for {rows[0].Name} to the clipboard."
+            : $"Copied generated code for {rows.Length} objects to the clipboard.");
     }
 
     [RelayCommand]
