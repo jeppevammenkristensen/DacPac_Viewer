@@ -11,7 +11,29 @@ defaults:
     shell: pwsh
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read version from csproj
+        id: version
+        run: |
+          [xml]$csproj = Get-Content "source/DacPac.UI/DacPac.UI.csproj"
+          $versionPrefix = $csproj.Project.PropertyGroup.VersionPrefix | Where-Object { $_ } | Select-Object -First 1
+          $versionSuffix = $csproj.Project.PropertyGroup.VersionSuffix | Where-Object { $_ } | Select-Object -First 1
+          if (-not $versionPrefix) {
+            Write-Error "Could not find <VersionPrefix> in DacPac.UI.csproj"
+          }
+          $version = if ($versionSuffix) { "$versionPrefix-$versionSuffix" } else { $versionPrefix }
+          Write-Host "Building version $version"
+          "version=$version" >> $env:GITHUB_OUTPUT
+
   build:
+    needs: version
     strategy:
       fail-fast: false
       matrix:
@@ -35,19 +57,50 @@ jobs:
           dotnet tool install -g vpk
           "$HOME/.dotnet/tools" >> $env:GITHUB_PATH
 
-      - name: Read version from csproj
-        id: version
+      # Note: intentionally not uploading here. Both matrix legs would race to
+      # create/write the same GitHub Release (same tag) in parallel, and
+      # whichever leg loses the race fails with "vpk upload failed". Instead,
+      # each leg publishes its installer as a build artifact, and a single
+      # downstream job uploads both platforms' files together.
+      - name: Build installer
         run: |
-          [xml]$csproj = Get-Content "source/DacPac.UI/DacPac.UI.csproj"
-          $versionPrefix = $csproj.Project.PropertyGroup.VersionPrefix | Where-Object { $_ } | Select-Object -First 1
-          $versionSuffix = $csproj.Project.PropertyGroup.VersionSuffix | Where-Object { $_ } | Select-Object -First 1
-          if (-not $versionPrefix) {
-            Write-Error "Could not find <VersionPrefix> in DacPac.UI.csproj"
-          }
-          $version = if ($versionSuffix) { "$versionPrefix-$versionSuffix" } else { $versionPrefix }
-          Write-Host "Building version $version"
-          "version=$version" >> $env:GITHUB_OUTPUT
+          ./build-installer.ps1 -Version "${{ needs.version.outputs.version }}" -Runtime "${{ matrix.runtime }}"
 
-      - name: Build and upload installer
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-${{ matrix.runtime }}
+          path: releases
+
+  release:
+    needs: [version, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Install Velopack CLI
         run: |
-          ./build-installer.ps1 -Version "${{ steps.version.outputs.version }}" -Runtime "${{ matrix.runtime }}" -UploadToGitHub -GitHubToken "${{ secrets.GITHUB_TOKEN }}"
+          dotnet tool install -g vpk
+          "$HOME/.dotnet/tools" >> $env:GITHUB_PATH
+
+      - name: Download installer artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: installer-*
+          path: releases
+          merge-multiple: true
+
+      - name: Upload release to GitHub
+        run: |
+          vpk upload github `
+            --repoUrl "https://github.com/jeppevammenkristensen/DacPac_Viewer" `
+            --token "${{ secrets.GITHUB_TOKEN }}" `
+            --releaseName "DacPac Viewer ${{ needs.version.outputs.version }}" `
+            --tag "v${{ needs.version.outputs.version }}" `
+            --outputDir releases
