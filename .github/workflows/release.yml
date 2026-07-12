@@ -18,17 +18,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
-      - name: Read version from csproj
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Install MinVer CLI
+        run: dotnet tool install -g minver-cli
+
+      - name: Compute version
         id: version
         run: |
-          [xml]$csproj = Get-Content "source/DacPac.UI/DacPac.UI.csproj"
-          $versionPrefix = $csproj.Project.PropertyGroup.VersionPrefix | Where-Object { $_ } | Select-Object -First 1
-          $versionSuffix = $csproj.Project.PropertyGroup.VersionSuffix | Where-Object { $_ } | Select-Object -First 1
-          if (-not $versionPrefix) {
-            Write-Error "Could not find <VersionPrefix> in DacPac.UI.csproj"
-          }
-          $version = if ($versionSuffix) { "$versionPrefix-$versionSuffix" } else { $versionPrefix }
+          $version = minver -t v
           Write-Host "Building version $version"
           "version=$version" >> $env:GITHUB_OUTPUT
 
@@ -46,6 +50,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v5

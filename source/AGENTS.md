@@ -36,3 +36,12 @@ To add a menu item in `MainWindow.axaml` that launches a ViewModel as a new tab:
    ```
 4. Consider whether the launch method needs to be async (it typically is, since `Launch` calls `OnActivatedAsync`).
 
+## Versioning
+
+The app version is computed by [MinVer](https://github.com/adamralph/minver) from git tags — it is **not** set manually in a csproj.
+
+- Configured in `source/Directory.Build.props` (applies to all projects under `source/`). `MinVerTagPrefix` is `v`, so a release is tagged e.g. `v1.2.3`.
+- Do not add `<VersionPrefix>`/`<VersionSuffix>`/`<Version>` to `DacPac.UI.csproj` or `DacPac.Core.csproj` — MinVer derives these from the nearest reachable tag plus commit height.
+- With no tags reachable from HEAD, MinVer falls back to `0.0.0-alpha.0.<height>+<sha>`.
+- `.github/workflows/release.yml` computes the release version via the `minver-cli` global tool (`minver -t v`) in the `version` job, then passes it through to `build-installer.ps1 -Version`. Both the `version` and `build` jobs check out with `fetch-depth: 0` — MinVer needs full tag history, a shallow clone breaks it.
+- To cut a release with a specific version, push an annotated tag matching the prefix, e.g. `git tag v1.2.3 && git push --tags`, then run the "Build and Release Installer" workflow.
