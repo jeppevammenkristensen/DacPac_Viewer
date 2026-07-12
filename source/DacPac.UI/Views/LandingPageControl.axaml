@@ -74,11 +74,20 @@
         <!-- Results split -->
         <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*">
             <DataGrid Grid.Column="0"
+                      Name="ResultsGrid"
                       ItemsSource="{Binding FilteredResults}"
                       SelectedItem="{Binding SelectedResult}"
+                      SelectionMode="Extended"
                       IsReadOnly="True"
                       AutoGenerateColumns="False"
                       CanUserResizeColumns="True">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Generate Code"
+                                  Command="{Binding GenerateCodeCommand}"
+                                  CommandParameter="{Binding #ResultsGrid.SelectedItems}" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Database" Binding="{Binding Database}" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
