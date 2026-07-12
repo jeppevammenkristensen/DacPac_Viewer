@@ -96,11 +96,21 @@ jobs:
           path: releases
           merge-multiple: true
 
+      # vpk upload only handles one channel per invocation (it defaults to the
+      # channel of the OS it runs on, which is why only linux assets were
+      # uploaded before). Upload each platform's channel explicitly, with
+      # --merge so they land in the same GitHub release.
       - name: Upload release to GitHub
         run: |
-          vpk upload github `
-            --repoUrl "https://github.com/jeppevammenkristensen/DacPac_Viewer" `
-            --token "${{ secrets.GITHUB_TOKEN }}" `
-            --releaseName "DacPac Viewer ${{ needs.version.outputs.version }}" `
-            --tag "v${{ needs.version.outputs.version }}" `
-            --outputDir releases
+          foreach ($channel in @("win", "linux")) {
+            Write-Host "Uploading channel $channel..." -ForegroundColor Cyan
+            vpk upload github `
+              --repoUrl "https://github.com/jeppevammenkristensen/DacPac_Viewer" `
+              --token "${{ secrets.GITHUB_TOKEN }}" `
+              --releaseName "DacPac Viewer ${{ needs.version.outputs.version }}" `
+              --tag "v${{ needs.version.outputs.version }}" `
+              --channel $channel `
+              --merge `
+              --outputDir releases
+            if ($LASTEXITCODE -ne 0) { Write-Error "vpk upload failed for channel $channel." }
+          }
