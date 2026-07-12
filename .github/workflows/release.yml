@@ -12,7 +12,15 @@ defaults:
 
 jobs:
   build:
-    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            runtime: win-x64
+          - os: ubuntu-latest
+            runtime: linux-x64
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,7 +33,7 @@ jobs:
       - name: Install Velopack CLI
         run: |
           dotnet tool install -g vpk
-          "$env:USERPROFILE\.dotnet\tools" >> $env:GITHUB_PATH
+          "$HOME/.dotnet/tools" >> $env:GITHUB_PATH
 
       - name: Read version from csproj
         id: version
@@ -42,4 +50,4 @@ jobs:
 
       - name: Build and upload installer
         run: |
-          .\build-installer.ps1 -Version "${{ steps.version.outputs.version }}" -UploadToGitHub -GitHubToken "${{ secrets.GITHUB_TOKEN }}"
+          ./build-installer.ps1 -Version "${{ steps.version.outputs.version }}" -Runtime "${{ matrix.runtime }}" -UploadToGitHub -GitHubToken "${{ secrets.GITHUB_TOKEN }}"
