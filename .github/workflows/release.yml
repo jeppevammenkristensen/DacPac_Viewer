@@ -109,17 +109,29 @@ jobs:
       # channel of the OS it runs on, which is why only linux assets were
       # uploaded before). Upload each platform's channel explicitly, with
       # --merge so they land in the same GitHub release.
+      #
+      # A prerelease version (e.g. "1.2.3-beta.1", from a "vX.Y.Z-beta-N" tag)
+      # is published straight away as a GitHub prerelease so beta opt-in users
+      # pick it up immediately. Stable versions still land as a draft release
+      # for manual review/publish.
       - name: Upload release to GitHub
         run: |
+          $isBeta = "${{ needs.version.outputs.version }}" -match '-'
           foreach ($channel in @("win", "linux")) {
             Write-Host "Uploading channel $channel..." -ForegroundColor Cyan
-            vpk upload github `
-              --repoUrl "https://github.com/jeppevammenkristensen/DacPac_Viewer" `
-              --token "${{ secrets.GITHUB_TOKEN }}" `
-              --releaseName "DacPac Viewer ${{ needs.version.outputs.version }}" `
-              --tag "v${{ needs.version.outputs.version }}" `
-              --channel $channel `
-              --merge `
-              --outputDir releases
+            $vpkArgs = @(
+              "upload", "github",
+              "--repoUrl", "https://github.com/jeppevammenkristensen/DacPac_Viewer",
+              "--token", "${{ secrets.GITHUB_TOKEN }}",
+              "--releaseName", "DacPac Viewer ${{ needs.version.outputs.version }}",
+              "--tag", "v${{ needs.version.outputs.version }}",
+              "--channel", $channel,
+              "--merge",
+              "--outputDir", "releases"
+            )
+            if ($isBeta) {
+              $vpkArgs += @("--publish", "--pre")
+            }
+            vpk @vpkArgs
             if ($LASTEXITCODE -ne 0) { Write-Error "vpk upload failed for channel $channel." }
           }
