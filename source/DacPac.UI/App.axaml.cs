@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Avalonia.Markup.Xaml;
+using CommunityToolkit.Mvvm.Messaging;
 using DacPac.Core;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure;
@@ -132,6 +133,8 @@ public class App : Application
         services.AddSingleton<ISettingsService, JsonFileSettingsService>();
         services.AddSingleton<IUpdateService, VelopackUpdateService>();
         services.AddSingleton<DacPacLoader>();
+        
+        services.AddSingleton<IMessenger>(x => new WeakReferenceMessenger());
 
         services.AddSingleton<CsharpGenerator,TableToCsharpClassGenerator>();
         services.AddSingleton<CsharpGenerator,ProcedureToClassGenerator>();

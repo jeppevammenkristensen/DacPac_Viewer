@@ -3,6 +3,7 @@
   <component name="UserContentModel">
     <attachedFolders>
       <Path>../../beta-update-channel</Path>
+      <Path>../../code-generation</Path>
       <Path>../../installer</Path>
     </attachedFolders>
     <explicitIncludes />
