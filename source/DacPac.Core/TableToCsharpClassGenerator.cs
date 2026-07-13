@@ -14,12 +14,71 @@ public class ProcedureToClassGenerator : CsharpGenerator
                        """);
         sb.AppendLine($"public class {sqlObject.Name.Parts.Last().ToPascalCase()}Procedure");
         sb.AppendLine("{");
-        
-        //BuildProperties(sqlObject, sb);
 
+        var parameters = new StringBuilder(); 
+        var (_, hasParameters) = BuildParametersObject(sqlObject, parameters);
+        
+        sb.Append("public async Task ExecuteAsync(");
+        if (hasParameters)
+        {
+            sb.Append($"Parameters parameters");
+        }
+        sb.AppendLine(")");
+        sb.AppendLine("{");
+
+        sb.AppendLine($"var procedureName = \"{sqlObject.Name.ToString()}\";");
+        sb.AppendLine("}");
+        
+        sb.AppendLine(parameters.ToString());
+        
         sb.AppendLine("}");
     }
 
+    private (StringBuilder, bool) BuildParametersObject(TSqlObject sqlObject, StringBuilder sb)
+    {
+        var parameters = sqlObject.GetReferenced(Procedure.Parameters).ToList();
+        if (parameters.Any())
+        {
+            sb.AppendLine($"""
+                           /// <summary>
+                           /// Represents the parameters for the {sqlObject.Name.Parts.Last()} procedure.
+                           /// </summary>
+                           """);
+            sb.AppendLine($"public class Parameters");
+            sb.AppendLine("{");
+
+            foreach (var parameter in parameters)
+            {
+                var parameterName = parameter.Name.Parts.Last();
+                var dataType = parameter.GetReferenced(Parameter.DataType).FirstOrDefault();
+                var isNullable = parameter.GetProperty<bool>(Parameter.IsNullable);
+
+                sb.AppendLine($"""
+                               /// <summary>
+                               /// Gets or sets the {parameterName} ({dataType?.Name.ToString()}){(isNullable ? " (nullable)" : "")}.
+                               /// </summary>
+                               """);
+
+                var dotnetType = dataType == null ? null : ExtensionMethods.GetDotNetDataType(dataType, isNullable);
+                if (dotnetType == null)
+                {
+                    sb.AppendLine($"// Warning: Unrecognized SQL data type '{dataType}' for parameter '{parameterName}'.");
+                    sb.AppendLine($"public object {parameterName.TrimStart('@').ToPascalCase()} {{ get; set; }}");
+                }
+                else
+                {
+                    sb.AppendLine($"public {dotnetType} {parameterName.TrimStart('@').ToPascalCase()} {{ get; set; }}");
+                }
+            }
+
+            sb.AppendLine("}");
+            return (sb, true);
+        }
+
+        return (sb, false);
+    }
+    
+    
     public override bool IsValid(TSqlObject tSqlObject)
     {
         return tSqlObject.ObjectType == Procedure.TypeClass && tSqlObject.Name.HasName;
