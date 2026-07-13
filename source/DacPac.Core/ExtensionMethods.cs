@@ -37,8 +37,7 @@ public static class ExtensionMethods
         {
             return result;
         }
-
-        int i = 0;
+        
         return null;
     }
     
