@@ -1,7 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
 using DacPac.UI.ApplicationLayer.Infrastructure;
+using DacPac.UI.Infrastructure.LongRunning;
 using Microsoft.Extensions.Logging;
 using Velopack;
 using Velopack.Sources;
@@ -14,13 +16,15 @@ public class VelopackUpdateService : IUpdateService
 
     private readonly ILogger<VelopackUpdateService> _logger;
     private readonly ISettingsService _settingsService;
+    private readonly IMessenger _messenger;
     private UpdateManager? _lastUsedManager;
     private UpdateInfo? _pendingUpdate;
 
-    public VelopackUpdateService(ILogger<VelopackUpdateService> logger, ISettingsService settingsService)
+    public VelopackUpdateService(ILogger<VelopackUpdateService> logger, ISettingsService settingsService, IMessenger messenger)
     {
         _logger = logger;
         _settingsService = settingsService;
+        _messenger = messenger;
     }
 
     // Built fresh on every check so a change to EnableBetaUpdates takes effect
@@ -44,9 +48,11 @@ public class VelopackUpdateService : IUpdateService
 
         try
         {
+            _messenger.Send(new StatusValueDataMessage(new StatusMessage("Checking for updates...", StatusType.Info)));
             var update = await updateManager.CheckForUpdatesAsync();
             if (update is null)
             {
+                _messenger.Send(new StatusValueDataMessage(new StatusMessage("Application is up to date", StatusType.Info)));
                 _logger.LogInformation("Application is up to date");
                 return null;
             }
@@ -59,6 +65,7 @@ public class VelopackUpdateService : IUpdateService
         catch (Exception ex)
         {
             // Update failures must never disturb normal application use
+            _messenger.Send(new StatusValueDataMessage(new StatusMessage("Failed to check or download updates", StatusType.Error)));
             _logger.LogWarning(ex, "Checking or downloading updates failed");
             return null;
         }
