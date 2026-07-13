@@ -134,6 +134,7 @@ public class App : Application
         services.AddSingleton<DacPacLoader>();
 
         services.AddSingleton<CsharpGenerator,TableToCsharpClassGenerator>();
+        services.AddSingleton<CsharpGenerator,ProcedureToClassGenerator>();
         
         services.AddSingleton<Builder>();
     }
