@@ -20,7 +20,8 @@ namespace DacPac.UI.ViewModels;
 /// </summary>
 public partial class LandingPageControlViewModel(
     ILogger<LandingPageControlViewModel> logger,
-    IFilePickerService filePicker, DacPacLoader loader,
+    IFilePickerService filePicker, 
+    DacPacLoader loader,
     Builder builder,
     IClipboardService clipboard)
     : ScreenPage

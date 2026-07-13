@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels.Settings"
+             x:DataType="viewModel:SettingsPageViewModel"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="300"
+             x:Class="DacPac.UI.Views.Settings.SettingsPage">
+    <StackPanel Margin="12" Spacing="6">
+        <TextBlock Classes="Header" Text="Updates" />
+        <CheckBox Content="Enable beta updates"
+                  IsChecked="{Binding EnableBetaUpdates}" />
+        <TextBlock Classes="Subtitle" TextWrapping="Wrap"
+                   Text="When enabled, the app will also offer beta releases when checking for updates. Beta releases may be less stable than regular releases." />
+    </StackPanel>
+</UserControl>

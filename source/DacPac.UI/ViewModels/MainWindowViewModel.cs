@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Styling;
 using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
+using DacPac.UI.ViewModels.Settings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -140,6 +141,13 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
     private async Task LaunchPrimary()
     {
         var screen = _locator.GetRequiredService<LandingPageControlViewModel>();
+        await Launch(screen);
+    }
+
+    [RelayCommand]
+    private async Task LaunchSettings()
+    {
+        var screen = _locator.GetRequiredService<SettingsPageViewModel>();
         await Launch(screen);
     }
 

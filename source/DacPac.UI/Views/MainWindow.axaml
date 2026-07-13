@@ -28,6 +28,8 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="Open Dacpac"
                               Command="{Binding OpenDacPacCommand}" />
+                    <MenuItem Header="Settings"
+                              Command="{Binding LaunchSettingsCommand}" />
                 </MenuItem>
                 <MenuItem Header="Restart to update"
                           IsVisible="{Binding UpdateAvailable}"

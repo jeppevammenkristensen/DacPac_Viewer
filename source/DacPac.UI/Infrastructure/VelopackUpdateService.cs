@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DacPac.UI.ApplicationLayer.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Velopack;
 using Velopack.Sources;
@@ -12,20 +13,30 @@ public class VelopackUpdateService : IUpdateService
     private const string RepositoryUrl = "https://github.com/jeppevammenkristensen/DacPac_Viewer";
 
     private readonly ILogger<VelopackUpdateService> _logger;
-    private readonly UpdateManager _updateManager;
+    private readonly ISettingsService _settingsService;
+    private UpdateManager? _lastUsedManager;
     private UpdateInfo? _pendingUpdate;
 
-    public VelopackUpdateService(ILogger<VelopackUpdateService> logger)
+    public VelopackUpdateService(ILogger<VelopackUpdateService> logger, ISettingsService settingsService)
     {
         _logger = logger;
-        _updateManager = new UpdateManager(new GithubSource(RepositoryUrl, accessToken: null, prerelease: false));
+        _settingsService = settingsService;
+    }
+
+    // Built fresh on every check so a change to EnableBetaUpdates takes effect
+    // on the next check without requiring an app restart.
+    private UpdateManager CreateUpdateManager()
+    {
+        return new UpdateManager(new GithubSource(RepositoryUrl, accessToken: null, prerelease: _settingsService.EnableBetaUpdates));
     }
 
     public async Task<string?> CheckAndDownloadUpdateAsync(CancellationToken cancellationToken = default)
     {
+        var updateManager = CreateUpdateManager();
+
         // IsInstalled is false when not running from a Velopack install
         // (e.g. IDE or plain build output); update APIs would throw in that case.
-        if (!_updateManager.IsInstalled)
+        if (!updateManager.IsInstalled)
         {
             _logger.LogInformation("Not a Velopack install; skipping update check");
             return null;
@@ -33,14 +44,15 @@ public class VelopackUpdateService : IUpdateService
 
         try
         {
-            var update = await _updateManager.CheckForUpdatesAsync();
+            var update = await updateManager.CheckForUpdatesAsync();
             if (update is null)
             {
                 _logger.LogInformation("Application is up to date");
                 return null;
             }
 
-            await _updateManager.DownloadUpdatesAsync(update, cancelToken: cancellationToken);
+            await updateManager.DownloadUpdatesAsync(update, cancelToken: cancellationToken);
+            _lastUsedManager = updateManager;
             _pendingUpdate = update;
             return update.TargetFullRelease.Version.ToString();
         }
@@ -54,7 +66,7 @@ public class VelopackUpdateService : IUpdateService
 
     public void RestartAndApplyUpdate()
     {
-        if (_pendingUpdate is null) return;
-        _updateManager.ApplyUpdatesAndRestart(_pendingUpdate);
+        if (_pendingUpdate is null || _lastUsedManager is null) return;
+        _lastUsedManager.ApplyUpdatesAndRestart(_pendingUpdate);
     }
 }
