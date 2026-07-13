@@ -496,3 +496,6 @@ FodyWeavers.xsd
 
 
 /obj/*
+
+
+.idea/*

@@ -1,16 +1,20 @@
 using System;
 using System.Diagnostics;
+using System.IO.Abstractions;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Threading;
 using Avalonia.Markup.Xaml;
 using DacPac.Core;
+using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.ViewModels;
 using DacPac.UI.ViewModels.Displays;
+using DacPac.UI.ViewModels.Settings;
 using DacPac.UI.Views;
 using DacPac.UI.Views.Displays;
+using DacPac.UI.Views.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -122,6 +126,10 @@ public class App : Application
         services.AddSingleton<TimeProvider>(_ => TimeProvider.System);
         services.AddSingleton<IFilePickerService, StorageProviderFilePickerService>();
         services.AddSingleton<IClipboardService, TopLevelClipboardService>();
+
+        services.AddSingleton<IFileSystem>(ctx => new FileSystem());
+        
+        services.AddSingleton<ISettingsService, JsonFileSettingsService>();
         services.AddSingleton<IUpdateService, VelopackUpdateService>();
         services.AddSingleton<DacPacLoader>();
 
@@ -143,8 +151,9 @@ public class App : Application
         
         collection
             .AddViewModelAndRegisterView<MainWindowViewModel, MainWindow>(ViewModelScope.Singleton)
-            .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient);
-        
+            .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient)
+            .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton);
+
         collection.AddView<TableDisplayViewModel, TableDisplay>();
         collection.AddView<ProcedureDisplayViewModel, ProcedureDisplay>();
         collection.AddView<DefaultDisplayViewModel, DefaultDisplay>();
