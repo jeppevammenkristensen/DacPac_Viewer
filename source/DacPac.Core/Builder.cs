@@ -20,16 +20,20 @@ public class Builder
         
         foreach (var sqlObject in sqlObjects)
         {
+            bool generatorFound = false;
+            
             foreach (var generator in _generators)
             {
                 if (generator.IsValid(sqlObject))
                 {
                     generator.Build(sqlObject, sb);
+                    generatorFound = true;
                 }
-                else
-                {
-                    sb.AppendLine($"// No generator found for {sqlObject.Name} of type {sqlObject.ObjectType}");
-                }
+            }
+
+            if (!generatorFound)
+            {
+                sb.AppendLine($"// No generator found for {sqlObject.Name} of type {sqlObject.ObjectType}");
             }
         }
 
