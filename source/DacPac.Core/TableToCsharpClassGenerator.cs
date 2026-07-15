@@ -15,23 +15,128 @@ public class ProcedureToClassGenerator : CsharpGenerator
         sb.AppendLine($"public class {sqlObject.Name.Parts.Last().ToPascalCase()}Procedure");
         sb.AppendLine("{");
 
-        var parameters = new StringBuilder(); 
+        var parameters = new StringBuilder();
         var (_, hasParameters) = BuildParametersObject(sqlObject, parameters);
-        
-        sb.Append("public async Task ExecuteAsync(");
+
+        var procedureName = EscapeCSharpStringLiteral(sqlObject.Name.ToString());
+        var parameterDeclaration = hasParameters ? ", Parameters parameters" : string.Empty;
+
+        sb.AppendLine("// Requires the Dapper NuGet package.");
+        sb.AppendLine($"private const string ProcedureName = \"{procedureName}\";");
+        sb.AppendLine();
+        sb.AppendLine($"public async Task<int> ExecuteAsync(System.Data.IDbConnection connection{parameterDeclaration})");
+        sb.AppendLine("{");
         if (hasParameters)
         {
-            sb.Append($"Parameters parameters");
+            sb.AppendLine("var dynamicParameters = parameters.GenerateParameters();");
         }
-        sb.AppendLine(")");
-        sb.AppendLine("{");
 
-        sb.AppendLine($"var procedureName = \"{sqlObject.Name.ToString()}\";");
+        sb.AppendLine("var affectedRows = await Dapper.SqlMapper.ExecuteAsync(");
+        sb.AppendLine("connection,");
+        sb.AppendLine("ProcedureName,");
+        sb.AppendLine($"{(hasParameters ? "dynamicParameters" : "null")},");
+        sb.AppendLine("commandType: System.Data.CommandType.StoredProcedure);");
+
+        foreach (var parameter in sqlObject.GetReferenced(Procedure.Parameters).Where(x => x.GetProperty<bool>(Parameter.IsOutput)))
+        {
+            var parameterName = parameter.Name.Parts.Last();
+            var propertyName = parameterName.TrimStart('@').ToPascalCase();
+            var dataType = parameter.GetReferenced(Parameter.DataType).FirstOrDefault();
+            var dotnetType = dataType == null ? null : ExtensionMethods.GetDotNetDataType(dataType, parameter.GetProperty<bool>(Parameter.IsNullable));
+
+            sb.AppendLine($"parameters.{propertyName} = dynamicParameters.Get<{dotnetType?.ToString() ?? "object"}>(\"{EscapeCSharpStringLiteral(parameterName)}\");");
+        }
+
+        sb.AppendLine("return affectedRows;");
         sb.AppendLine("}");
-        
+
+        BuildDapperAlternatives(sb, hasParameters);
+
         sb.AppendLine(parameters.ToString());
-        
+
         sb.AppendLine("}");
+    }
+
+    private static string? GetDbType(TSqlObject? dataType)
+    {
+        if (dataType == null)
+        {
+            return null;
+        }
+
+        if (dataType.GetReferenced(DataType.Type).FirstOrDefault() is { } underlying)
+        {
+            return GetDbType(underlying);
+        }
+
+        return dataType.GetProperty<SqlDataType>(DataType.SqlDataType) switch
+        {
+            SqlDataType.BigInt => "Int64",
+            SqlDataType.Binary or SqlDataType.Image or SqlDataType.Timestamp or SqlDataType.Rowversion or SqlDataType.VarBinary => "Binary",
+            SqlDataType.Bit => "Boolean",
+            SqlDataType.Char => "AnsiStringFixedLength",
+            SqlDataType.Date => "Date",
+            SqlDataType.DateTime or SqlDataType.SmallDateTime => "DateTime",
+            SqlDataType.DateTime2 => "DateTime2",
+            SqlDataType.DateTimeOffset => "DateTimeOffset",
+            SqlDataType.Decimal or SqlDataType.Money or SqlDataType.Numeric or SqlDataType.SmallMoney => "Decimal",
+            SqlDataType.Float => "Double",
+            SqlDataType.Int => "Int32",
+            SqlDataType.NChar => "StringFixedLength",
+            SqlDataType.NText or SqlDataType.NVarChar or SqlDataType.Xml or SqlDataType.Json => "String",
+            SqlDataType.Real => "Single",
+            SqlDataType.SmallInt => "Int16",
+            SqlDataType.Text or SqlDataType.VarChar => "AnsiString",
+            SqlDataType.Time => "Time",
+            SqlDataType.TinyInt => "Byte",
+            SqlDataType.UniqueIdentifier => "Guid",
+            _ => null
+        };
+    }
+
+    private static void BuildDapperAlternatives(StringBuilder sb, bool hasParameters)
+    {
+        var parameterDeclaration = hasParameters ? ", Parameters parameters" : string.Empty;
+        var parameterArgument = hasParameters ? "parameters.GenerateParameters()" : "null";
+
+        sb.AppendLine();
+        sb.AppendLine("// Alternative: query multiple rows from the procedure.");
+        sb.AppendLine($"// public async Task<System.Collections.Generic.IEnumerable<TResult>> QueryAsync<TResult>(System.Data.IDbConnection connection{parameterDeclaration})");
+        sb.AppendLine("// {");
+        sb.AppendLine("//     return await Dapper.SqlMapper.QueryAsync<TResult>(");
+        sb.AppendLine("//         connection,");
+        sb.AppendLine("//         ProcedureName,");
+        sb.AppendLine($"//         {parameterArgument},");
+        sb.AppendLine("//         commandType: System.Data.CommandType.StoredProcedure);");
+        sb.AppendLine("// }");
+        sb.AppendLine();
+        sb.AppendLine("// Alternative: query one row, or null when no row is returned.");
+        sb.AppendLine($"// public async Task<TResult?> QuerySingleOrDefaultAsync<TResult>(System.Data.IDbConnection connection{parameterDeclaration})");
+        sb.AppendLine("// {");
+        sb.AppendLine("//     return await Dapper.SqlMapper.QuerySingleOrDefaultAsync<TResult>(");
+        sb.AppendLine("//         connection,");
+        sb.AppendLine("//         ProcedureName,");
+        sb.AppendLine($"//         {parameterArgument},");
+        sb.AppendLine("//         commandType: System.Data.CommandType.StoredProcedure);");
+        sb.AppendLine("// }");
+        sb.AppendLine();
+        sb.AppendLine("// Alternative: consume multiple result sets.");
+        sb.AppendLine($"// public async Task<Dapper.SqlMapper.GridReader> QueryMultipleAsync(System.Data.IDbConnection connection{parameterDeclaration})");
+        sb.AppendLine("// {");
+        sb.AppendLine("//     return await Dapper.SqlMapper.QueryMultipleAsync(");
+        sb.AppendLine("//         connection,");
+        sb.AppendLine("//         ProcedureName,");
+        sb.AppendLine($"//         {parameterArgument},");
+        sb.AppendLine("//         commandType: System.Data.CommandType.StoredProcedure);");
+        sb.AppendLine("// }");
+        sb.AppendLine();
+        sb.AppendLine("// Output parameters are configured in Parameters.GenerateParameters and copied back by ExecuteAsync.");
+    }
+
+    private static string EscapeCSharpStringLiteral(string value)
+    {
+        return value.Replace("\\", "\\\\", StringComparison.Ordinal)
+            .Replace("\"", "\\\"", StringComparison.Ordinal);
     }
 
     private (StringBuilder, bool) BuildParametersObject(TSqlObject sqlObject, StringBuilder sb)
@@ -71,14 +176,34 @@ public class ProcedureToClassGenerator : CsharpGenerator
                 }
             }
 
+            sb.AppendLine();
+            sb.AppendLine("public Dapper.DynamicParameters GenerateParameters()");
+            sb.AppendLine("{");
+            sb.AppendLine("var dynamicParameters = new Dapper.DynamicParameters();");
+
+            foreach (var parameter in parameters)
+            {
+                var parameterName = parameter.Name.Parts.Last();
+                var propertyName = parameterName.TrimStart('@').ToPascalCase();
+                var dataType = parameter.GetReferenced(Parameter.DataType).FirstOrDefault();
+                var dbType = parameter.GetProperty<bool>(Parameter.IsOutput) ? GetDbType(dataType) : null;
+                var outputArguments = parameter.GetProperty<bool>(Parameter.IsOutput)
+                    ? $", {(dbType == null ? string.Empty : $"dbType: System.Data.DbType.{dbType}, ")}direction: System.Data.ParameterDirection.InputOutput"
+                    : string.Empty;
+
+                sb.AppendLine($"dynamicParameters.Add(\"{EscapeCSharpStringLiteral(parameterName)}\", {propertyName}{outputArguments});");
+            }
+
+            sb.AppendLine("return dynamicParameters;");
+            sb.AppendLine("}");
             sb.AppendLine("}");
             return (sb, true);
         }
 
         return (sb, false);
     }
-    
-    
+
+
     public override bool IsValid(TSqlObject tSqlObject)
     {
         return tSqlObject.ObjectType == Procedure.TypeClass && tSqlObject.Name.HasName;
