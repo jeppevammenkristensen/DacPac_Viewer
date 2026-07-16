@@ -10,7 +10,7 @@ using Velopack.Sources;
 
 namespace DacPac.UI.Infrastructure;
 
-public class VelopackUpdateService : IUpdateService
+public partial class VelopackUpdateService : IUpdateService
 {
     private const string RepositoryUrl = "https://github.com/jeppevammenkristensen/DacPac_Viewer";
 
@@ -42,7 +42,8 @@ public class VelopackUpdateService : IUpdateService
         // (e.g. IDE or plain build output); update APIs would throw in that case.
         if (!updateManager.IsInstalled)
         {
-            _logger.LogInformation("Not a Velopack install; skipping update check");
+            LogNotAVelopackInstallSkippingUpdateCheck();
+            _messenger.Send(new StatusValueDataMessage(new StatusMessage("Not a Velopack install; skipping update check", StatusType.Info)));
             return null;
         }
 
@@ -53,7 +54,7 @@ public class VelopackUpdateService : IUpdateService
             if (update is null)
             {
                 _messenger.Send(new StatusValueDataMessage(new StatusMessage("Application is up to date", StatusType.Info)));
-                _logger.LogInformation("Application is up to date");
+                LogApplicationIsUpToDate();
                 return null;
             }
 
@@ -66,7 +67,7 @@ public class VelopackUpdateService : IUpdateService
         {
             // Update failures must never disturb normal application use
             _messenger.Send(new StatusValueDataMessage(new StatusMessage("Failed to check or download updates", StatusType.Error)));
-            _logger.LogWarning(ex, "Checking or downloading updates failed");
+            LogCheckingOrDownloadingUpdatesFailed(ex);
             return null;
         }
     }
@@ -76,4 +77,13 @@ public class VelopackUpdateService : IUpdateService
         if (_pendingUpdate is null || _lastUsedManager is null) return;
         _lastUsedManager.ApplyUpdatesAndRestart(_pendingUpdate);
     }
+
+    [LoggerMessage(LogLevel.Information, "Not a Velopack install; skipping update check")]
+    partial void LogNotAVelopackInstallSkippingUpdateCheck();
+
+    [LoggerMessage(LogLevel.Information, "Application is up to date")]
+    partial void LogApplicationIsUpToDate();
+
+    [LoggerMessage(LogLevel.Warning, "Checking or downloading updates failed")]
+    partial void LogCheckingOrDownloadingUpdatesFailed(Exception exception);
 }
