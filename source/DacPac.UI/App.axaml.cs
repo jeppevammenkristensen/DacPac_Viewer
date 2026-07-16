@@ -134,7 +134,7 @@ public class App : Application
         services.AddSingleton<IUpdateService, VelopackUpdateService>();
         services.AddSingleton<DacPacLoader>();
         
-        services.AddSingleton<IMessenger>(x => new WeakReferenceMessenger());
+        services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
         services.AddSingleton<CsharpGenerator,TableToCsharpClassGenerator>();
         services.AddSingleton<CsharpGenerator,ProcedureToClassGenerator>();
