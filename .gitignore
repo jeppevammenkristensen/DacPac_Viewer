@@ -499,3 +499,6 @@ FodyWeavers.xsd
 
 
 .idea/*
+
+# Local Serena memory files
+/.serena/memories/
