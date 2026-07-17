@@ -1,3 +1,4 @@
+using Humanizer;
 using Microsoft.SqlServer.Dac.Model;
 using Microsoft.SqlServer.TransactSql.ScriptDom;
 
@@ -31,13 +32,21 @@ public sealed class ProcedureResultSetAnalyzer
             throw new ArgumentException("The supplied object is not a procedure.", nameof(procedure));
         }
 
+        // Parameters provide reliable types for SELECT expressions such as @CustomerId.
         var parameters = procedure.GetReferenced(Procedure.Parameters)
             .ToDictionary(x => x.Name.Parts.Last(), StringComparer.OrdinalIgnoreCase);
-        var columns = procedure.GetReferenced(Procedure.BodyDependencies)
-            .Where(x => x.ObjectType == Table.TypeClass)
-            .SelectMany(x => x.GetReferenced(Table.Columns))
+
+        // Restrict source lookup to DacPac dependencies so unrelated database objects cannot influence inference.
+        var sources = procedure.GetReferenced(Procedure.BodyDependencies)
+            .Where(x => x.IsAnyOfType(Table.TypeClass, View.TypeClass))
+            .ToArray();
+
+        // Column names can be resolved only when the referenced dependency exposes one unambiguous column.
+        var columns = sources
+            .SelectMany(GetColumns)
             .GroupBy(x => x.Name.Parts.Last(), StringComparer.OrdinalIgnoreCase)
             .ToDictionary(x => x.Key, x => x.ToArray(), StringComparer.OrdinalIgnoreCase);
+        // DacFx object ASTs do not consistently retain procedure bodies, so parse the persisted procedure script.
         var parser = new TSql160Parser(initialQuotedIdentifiers: true);
         var script = parser.Parse(new StringReader(procedure.GetScript()), out var errors);
         if (errors.Count > 0)
@@ -45,12 +54,14 @@ public sealed class ProcedureResultSetAnalyzer
             return [];
         }
 
+        // ScriptDom exposes output SELECT statements separately from INSERT ... SELECT query sources.
         var statements = new SelectStatementVisitor();
         script.Accept(statements);
 
+        // Keep script order: it determines result-set order for generated QueryMultipleAsync consumers.
         return statements.Statements
             .Where(IsResultProducing)
-            .Select((statement, index) => Analyze(statement, index + 1, parameters, columns))
+            .Select((statement, index) => Analyze(statement, index + 1, parameters, columns, sources))
             .ToArray();
     }
 
@@ -71,7 +82,8 @@ public sealed class ProcedureResultSetAnalyzer
         SelectStatement statement,
         int ordinal,
         IReadOnlyDictionary<string, TSqlObject> parameters,
-        IReadOnlyDictionary<string, TSqlObject[]> columns)
+        IReadOnlyDictionary<string, TSqlObject[]> columns,
+        IReadOnlyList<TSqlObject> sources)
     {
         var specification = (QuerySpecification)statement.QueryExpression;
         var warnings = new List<string>();
@@ -91,7 +103,38 @@ public sealed class ProcedureResultSetAnalyzer
             results = results.Select((column, index) => column with { PropertyName = $"{column.PropertyName}{index + 1}" }).ToArray();
         }
 
-        return new ProcedureResultSet(ordinal, results, warnings);
+        return new ProcedureResultSet(ordinal, GetPrimarySourceName(specification, sources), results, warnings);
+    }
+
+    /// <summary>
+    /// Gets the columns exposed by a table or view dependency.
+    /// </summary>
+    private static IEnumerable<TSqlObject> GetColumns(TSqlObject source)
+    {
+        return source.ObjectType == Table.TypeClass
+            ? source.GetReferenced(Table.Columns)
+            : source.GetReferenced(View.Columns);
+    }
+
+    /// <summary>
+    /// Resolves the first table or view named by the SELECT's FROM clause and returns its singular C# type name.
+    /// </summary>
+    private static string? GetPrimarySourceName(QuerySpecification specification, IReadOnlyList<TSqlObject> sources)
+    {
+        if (specification.FromClause is null)
+        {
+            return null;
+        }
+
+        var visitor = new PrimarySourceVisitor();
+        specification.FromClause.Accept(visitor);
+        var sourceName = visitor.SourceName;
+        if (sourceName is null || !sources.Any(x => x.Name.Parts.Last().Equals(sourceName, StringComparison.OrdinalIgnoreCase)))
+        {
+            return null;
+        }
+
+        return sourceName.Singularize().ToPascalCase();
     }
 
     /// <summary>
@@ -221,16 +264,38 @@ public sealed class ProcedureResultSetAnalyzer
             base.ExplicitVisit(node);
         }
     }
+
+    /// <summary>
+    /// Captures the first named table or view reference in a SELECT FROM clause.
+    /// </summary>
+    private sealed class PrimarySourceVisitor : TSqlFragmentVisitor
+    {
+        /// <summary>
+        /// Gets the unqualified name of the first source encountered during traversal.
+        /// </summary>
+        public string? SourceName { get; private set; }
+
+        /// <summary>
+        /// Captures the source name before traversing joined or nested table references.
+        /// </summary>
+        public override void ExplicitVisit(NamedTableReference node)
+        {
+            SourceName ??= node.SchemaObject.BaseIdentifier?.Value;
+            base.ExplicitVisit(node);
+        }
+    }
 }
 
 /// <summary>
 /// Describes one result set returned by a stored procedure SELECT statement.
 /// </summary>
 /// <param name="Ordinal">The one-based result-set position in script order.</param>
+/// <param name="SourceName">The singular C# type name inferred from the primary table or view, when available.</param>
 /// <param name="Columns">The mapped output columns for the result set.</param>
 /// <param name="Warnings">Details that could not be statically determined during analysis.</param>
 public sealed record ProcedureResultSet(
     int Ordinal,
+    string? SourceName,
     IReadOnlyList<ProcedureResultColumn> Columns,
     IReadOnlyList<string> Warnings);
 
