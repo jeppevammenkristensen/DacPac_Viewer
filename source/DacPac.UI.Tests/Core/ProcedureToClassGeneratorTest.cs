@@ -74,6 +74,110 @@ public class ProcedureToClassGeneratorTest
         Assert.Contains("parameters.OutputValue = dynamicParameters.Get<int?>(\"@OutputValue\");", output);
     }
 
+    [Fact]
+    public void Build_GeneratesTypedResultForAnAliasedCast()
+    {
+        using var model = CreateModel("""
+                                   CREATE PROCEDURE [dbo].[GetCustomer]
+                                   AS
+                                   BEGIN
+                                       SELECT CAST(1 AS bigint) AS CustomerId, N'Alice' AS Name;
+                                   END
+                                   """);
+
+        var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
+
+        Assert.Contains("public sealed class Result", output);
+        Assert.Contains("public long CustomerId { get; set; }", output);
+        Assert.Contains("public string Name { get; set; }", output);
+        Assert.Contains("public async Task<System.Collections.Generic.IEnumerable<Result>> QueryAsync", output);
+        Assert.Contains("Dapper.SqlMapper.QueryAsync<Result>", output);
+    }
+
+    [Fact]
+    public void Build_GeneratesClassesForMultipleResultSets()
+    {
+        using var model = CreateModel("""
+                                   CREATE PROCEDURE [dbo].[GetCustomer]
+                                   AS
+                                   BEGIN
+                                       SELECT 1 AS CustomerId;
+                                       SELECT N'Alice' AS Name;
+                                   END
+                                   """);
+
+        var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
+
+        Assert.Contains("public sealed class Result1", output);
+        Assert.Contains("public sealed class Result2", output);
+        Assert.Contains("multiple or branch-dependent result sets", output);
+        Assert.Contains("gridReader.Read<Result1>()", output);
+        Assert.DoesNotContain("IEnumerable<Result1>> QueryAsync", output);
+    }
+
+    [Fact]
+    public void Build_UsesObjectAndWarningForAnUnknownExpression()
+    {
+        using var model = CreateModel("""
+                                   CREATE PROCEDURE [dbo].[GetCustomer]
+                                   AS
+                                   BEGIN
+                                       SELECT GETDATE() AS CreatedAt;
+                                   END
+                                   """);
+
+        var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
+
+        Assert.Contains("The SQL expression 'FunctionCall' could not be statically typed", output);
+        Assert.Contains("public object? CreatedAt { get; set; }", output);
+    }
+
+    [Fact]
+    public void Build_MapsAReferencedTableColumnFromTheDacPacModel()
+    {
+        using var model = CreateModel("""
+                                   CREATE TABLE [dbo].[Customer]
+                                   (
+                                       [CustomerId] bigint NOT NULL,
+                                       [Name] nvarchar(100) NULL
+                                   );
+                                   GO
+                                   CREATE PROCEDURE [dbo].[GetCustomer]
+                                   AS
+                                   BEGIN
+                                       SELECT CustomerId, Name FROM dbo.Customer;
+                                   END
+                                   """);
+
+        var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
+
+        Assert.Contains("public long CustomerId { get; set; }", output);
+        Assert.Contains("public string Name { get; set; }", output);
+        Assert.DoesNotContain("could not be resolved unambiguously", output);
+    }
+
+    [Fact]
+    public void Build_WarnsWhenConditionalBranchesReturnDifferentShapes()
+    {
+        using var model = CreateModel("""
+                                   CREATE PROCEDURE [dbo].[GetCustomer]
+                                       @IncludeName bit
+                                   AS
+                                   BEGIN
+                                       IF @IncludeName = 1
+                                           SELECT 1 AS CustomerId, N'Alice' AS Name;
+                                       ELSE
+                                           SELECT 1 AS CustomerId;
+                                   END
+                                   """);
+
+        var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
+
+        Assert.Contains("public sealed class Result1", output);
+        Assert.Contains("public sealed class Result2", output);
+        Assert.Contains("multiple or branch-dependent result sets", output);
+    }
+
     private static TSqlModel CreateModel(string procedureScript)
     {
         var model = new TSqlModel(SqlServerVersion.Sql160, new TSqlModelOptions());
