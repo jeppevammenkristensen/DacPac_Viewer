@@ -90,7 +90,7 @@ public class ProcedureToClassGeneratorTest
         Assert.Contains("public sealed class Result", output);
         Assert.Contains("public long CustomerId { get; set; }", output);
         Assert.Contains("public string Name { get; set; }", output);
-        Assert.Contains("public async Task<System.Collections.Generic.IEnumerable<Result>> QueryAsync", output);
+        Assert.Contains("public async Task<System.Collections.Generic.List<Result>> QueryAsync", output);
         Assert.Contains("Dapper.SqlMapper.QueryAsync<Result>", output);
     }
 
@@ -110,9 +110,12 @@ public class ProcedureToClassGeneratorTest
 
         Assert.Contains("public sealed class Result1", output);
         Assert.Contains("public sealed class Result2", output);
+        Assert.Contains("public sealed class Results", output);
         Assert.Contains("multiple or branch-dependent result sets", output);
-        Assert.Contains("gridReader.Read<Result1>()", output);
-        Assert.DoesNotContain("IEnumerable<Result1>> QueryAsync", output);
+        Assert.Contains("public async Task<System.Collections.Generic.List<Result2>> QueryAsync", output);
+        Assert.Contains("await gridReader.ReadAsync<Result1>();", output);
+        Assert.Contains("public async Task<Results> QueryAllAsync", output);
+        Assert.Contains("Result1 = new System.Collections.Generic.List<Result1>(await gridReader.ReadAsync<Result1>())", output);
     }
 
     [Fact]
@@ -176,6 +179,29 @@ public class ProcedureToClassGeneratorTest
         Assert.Contains("public sealed class Result1", output);
         Assert.Contains("public sealed class Result2", output);
         Assert.Contains("multiple or branch-dependent result sets", output);
+    }
+
+    [Fact]
+    public void Build_DoesNotTreatInsertSelectAsAResultSet()
+    {
+        using var model = CreateModel("""
+                                   CREATE TABLE [dbo].[Customer]
+                                   (
+                                       [CustomerId] int NOT NULL
+                                   );
+                                   GO
+                                   CREATE PROCEDURE [dbo].[AddCustomer]
+                                   AS
+                                   BEGIN
+                                       INSERT INTO dbo.Customer (CustomerId)
+                                       SELECT 1;
+                                   END
+                                   """);
+
+        var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
+
+        Assert.DoesNotContain("public sealed class Result", output);
+        Assert.DoesNotContain("QueryAsync(System.Data.IDbConnection", output);
     }
 
     private static TSqlModel CreateModel(string procedureScript)

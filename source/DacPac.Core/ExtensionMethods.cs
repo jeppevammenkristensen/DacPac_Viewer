@@ -2,6 +2,9 @@
 
 namespace DacPac.Core;
 
+/// <summary>
+/// Provides DacFx type-mapping and C# identifier-formatting helpers used by source generators.
+/// </summary>
 public static class ExtensionMethods
 {
 
@@ -108,6 +111,12 @@ public static class ExtensionMethods
         }
     }
     
+    /// <summary>
+    /// Returns the equivalent .NET type for a DacFx data-type object, including user-defined type aliases.
+    /// </summary>
+    /// <param name="sqlDataTypeName">The DacFx data-type object to map.</param>
+    /// <param name="nullable">Whether the generated type should be nullable.</param>
+    /// <returns>The mapped .NET type, or <see langword="null"/> when the object is not a supported data type.</returns>
     public static DotnetType? GetDotNetDataType(this TSqlObject sqlDataTypeName, bool nullable = false)
     {
         if (sqlDataTypeName.ObjectType != DataType.TypeClass)
