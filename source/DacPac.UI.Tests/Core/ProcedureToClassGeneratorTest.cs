@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using DacPac.Core;
 using Microsoft.SqlServer.Dac.Model;
@@ -160,6 +161,55 @@ public class ProcedureToClassGeneratorTest
     }
 
     [Fact]
+    public void Build_UsesSingularPrimaryTableNameForTheResultClass()
+    {
+        using var model = CreateModel("""
+                                   CREATE TABLE [dbo].[Bars]
+                                   (
+                                       [Foo] int NOT NULL
+                                   );
+                                   GO
+                                   CREATE PROCEDURE [dbo].[GetBars]
+                                   AS
+                                   BEGIN
+                                       SELECT Foo FROM dbo.Bars;
+                                   END
+                                   """);
+
+        var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
+
+        Assert.Contains("public sealed class Bar", output);
+        Assert.Contains("System.Collections.Generic.List<Bar>> QueryAsync", output);
+        Assert.DoesNotContain("public sealed class Result", output);
+    }
+
+    [Fact]
+    public void Build_UsesSingularPrimaryViewNameForTheResultClass()
+    {
+        using var model = CreateModel("""
+                                   CREATE TABLE [dbo].[SourceBars]
+                                   (
+                                       [Foo] int NOT NULL
+                                   );
+                                   GO
+                                   CREATE VIEW [dbo].[ActiveBars]
+                                   AS
+                                   SELECT Foo FROM dbo.SourceBars;
+                                   GO
+                                   CREATE PROCEDURE [dbo].[GetActiveBars]
+                                   AS
+                                   BEGIN
+                                       SELECT Foo FROM dbo.ActiveBars;
+                                   END
+                                   """);
+
+        var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
+
+        Assert.Contains("public sealed class ActiveBar", output);
+        Assert.Contains("System.Collections.Generic.List<ActiveBar>> QueryAsync", output);
+    }
+
+    [Fact]
     public void Build_WarnsWhenConditionalBranchesReturnDifferentShapes()
     {
         using var model = CreateModel("""
@@ -202,6 +252,25 @@ public class ProcedureToClassGeneratorTest
 
         Assert.DoesNotContain("public sealed class Result", output);
         Assert.DoesNotContain("QueryAsync(System.Data.IDbConnection", output);
+    }
+
+    [Fact]
+    public void IsAnyOfType_MatchesAnySuppliedModelType()
+    {
+        using var model = CreateModel("""
+                                   CREATE PROCEDURE [dbo].[Ping]
+                                   AS
+                                   BEGIN
+                                       SELECT 1 AS Result;
+                                   END
+                                   """);
+
+        var procedure = GetProcedure(model);
+
+        Assert.True(procedure.IsAnyOfType(Table.TypeClass, Procedure.TypeClass));
+        Assert.False(procedure.IsAnyOfType(Table.TypeClass));
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            procedure.IsAnyOfType(Enumerable.Repeat(Procedure.TypeClass, 11).ToArray()));
     }
 
     private static TSqlModel CreateModel(string procedureScript)

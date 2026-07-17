@@ -118,7 +118,7 @@ public class ProcedureToClassGenerator : CsharpGenerator
     {
         foreach (var resultSet in resultSets)
         {
-            var className = GetResultClassName(resultSet, resultSets.Count);
+            var className = GetResultClassName(resultSet, resultSets);
             sb.AppendLine("/// <summary>");
             sb.AppendLine($"/// Represents result set {resultSet.Ordinal} returned by the procedure.");
             sb.AppendLine("/// </summary>");
@@ -152,7 +152,7 @@ public class ProcedureToClassGenerator : CsharpGenerator
         sb.AppendLine("{");
         foreach (var resultSet in resultSets)
         {
-            var resultType = GetResultClassName(resultSet, resultSets.Count);
+            var resultType = GetResultClassName(resultSet, resultSets);
             sb.AppendLine($"/// <summary>Gets the rows from result set {resultSet.Ordinal}.</summary>");
             sb.AppendLine($"public System.Collections.Generic.List<{resultType}> {resultType} {{ get; init; }} = [];");
         }
@@ -171,7 +171,7 @@ public class ProcedureToClassGenerator : CsharpGenerator
 
         if (resultSets.Count == 1)
         {
-            var resultType = GetResultClassName(resultSets[0], resultSets.Count);
+            var resultType = GetResultClassName(resultSets[0], resultSets);
             sb.AppendLine();
             sb.AppendLine("/// <summary>");
             sb.AppendLine("/// Executes the procedure and returns its rows.");
@@ -189,14 +189,14 @@ public class ProcedureToClassGenerator : CsharpGenerator
             sb.AppendLine("/// <summary>");
             sb.AppendLine("/// Executes the procedure and returns the rows from its final result set.");
             sb.AppendLine("/// </summary>");
-            sb.AppendLine($"public async Task<System.Collections.Generic.List<{GetResultClassName(resultSets[^1], resultSets.Count)}>> QueryAsync(System.Data.IDbConnection connection{parameterDeclaration})");
+            sb.AppendLine($"public async Task<System.Collections.Generic.List<{GetResultClassName(resultSets[^1], resultSets)}>> QueryAsync(System.Data.IDbConnection connection{parameterDeclaration})");
             sb.AppendLine("{");
             sb.AppendLine($"using var gridReader = await Dapper.SqlMapper.QueryMultipleAsync(connection, ProcedureName, {parameterArgument}, commandType: System.Data.CommandType.StoredProcedure);");
             foreach (var resultSet in resultSets.Take(resultSets.Count - 1))
             {
-                sb.AppendLine($"await gridReader.ReadAsync<{GetResultClassName(resultSet, resultSets.Count)}>();");
+                sb.AppendLine($"await gridReader.ReadAsync<{GetResultClassName(resultSet, resultSets)}>();");
             }
-            sb.AppendLine($"return new System.Collections.Generic.List<{GetResultClassName(resultSets[^1], resultSets.Count)}>(await gridReader.ReadAsync<{GetResultClassName(resultSets[^1], resultSets.Count)}>());");
+            sb.AppendLine($"return new System.Collections.Generic.List<{GetResultClassName(resultSets[^1], resultSets)}>(await gridReader.ReadAsync<{GetResultClassName(resultSets[^1], resultSets)}>());");
             sb.AppendLine("}");
             sb.AppendLine();
             sb.AppendLine("/// <summary>");
@@ -209,7 +209,7 @@ public class ProcedureToClassGenerator : CsharpGenerator
             sb.AppendLine("{");
             foreach (var resultSet in resultSets)
             {
-                var resultType = GetResultClassName(resultSet, resultSets.Count);
+                var resultType = GetResultClassName(resultSet, resultSets);
                 sb.AppendLine($"{resultType} = new System.Collections.Generic.List<{resultType}>(await gridReader.ReadAsync<{resultType}>()),");
             }
             sb.AppendLine("};");
@@ -253,9 +253,19 @@ public class ProcedureToClassGenerator : CsharpGenerator
     /// <summary>
     /// Selects the generated result class name for a procedure with one or multiple result sets.
     /// </summary>
-    private static string GetResultClassName(ProcedureResultSet resultSet, int count)
+    private static string GetResultClassName(ProcedureResultSet resultSet, IReadOnlyList<ProcedureResultSet> resultSets)
     {
-        return count == 1 ? "Result" : $"Result{resultSet.Ordinal}";
+        if (resultSet.SourceName is null)
+        {
+            return resultSets.Count == 1 ? "Result" : $"Result{resultSet.Ordinal}";
+        }
+
+        var matchingSources = resultSets
+            .Where(x => string.Equals(x.SourceName, resultSet.SourceName, StringComparison.Ordinal))
+            .ToArray();
+        return matchingSources.Length == 1
+            ? resultSet.SourceName
+            : $"{resultSet.SourceName}{Array.IndexOf(matchingSources, resultSet) + 1}";
     }
 
     /// <summary>
