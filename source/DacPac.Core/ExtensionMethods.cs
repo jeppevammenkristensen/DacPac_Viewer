@@ -9,6 +9,29 @@ public static class ExtensionMethods
 {
 
     /// <summary>
+    /// Determines whether a DacFx object has any of the supplied model types.
+    /// </summary>
+    /// <remarks>
+    /// Accepts at most ten types to keep call sites focused and avoid masking overly broad object classification.
+    /// </remarks>
+    /// <param name="sqlObject">The DacFx object to classify.</param>
+    /// <param name="objectTypes">The model types to compare with the object's type.</param>
+    /// <returns><see langword="true"/> when the object's type matches at least one supplied type; otherwise <see langword="false"/>.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when more than ten model types are supplied.</exception>
+    public static bool IsAnyOfType(this TSqlObject sqlObject, params ModelTypeClass[] objectTypes)
+    {
+        ArgumentNullException.ThrowIfNull(sqlObject);
+        ArgumentNullException.ThrowIfNull(objectTypes);
+
+        if (objectTypes.Length == 0)
+        {
+            throw new InvalidOperationException("Don't call this with only an empty array of object types.");
+        }
+
+        return objectTypes.Contains(sqlObject.ObjectType);
+    }
+
+    /// <summary>
     /// Returns the equivalent .NET data type for a given SQL data type name. If the SQL data type is not recognized, it returns null.
     /// </summary>
     /// <param name="sqlDataTypeName"></param>
