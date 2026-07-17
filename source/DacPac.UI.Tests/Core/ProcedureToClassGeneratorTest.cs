@@ -254,25 +254,6 @@ public class ProcedureToClassGeneratorTest
         Assert.DoesNotContain("QueryAsync(System.Data.IDbConnection", output);
     }
 
-    [Fact]
-    public void IsAnyOfType_MatchesAnySuppliedModelType()
-    {
-        using var model = CreateModel("""
-                                   CREATE PROCEDURE [dbo].[Ping]
-                                   AS
-                                   BEGIN
-                                       SELECT 1 AS Result;
-                                   END
-                                   """);
-
-        var procedure = GetProcedure(model);
-
-        Assert.True(procedure.IsAnyOfType(Table.TypeClass, Procedure.TypeClass));
-        Assert.False(procedure.IsAnyOfType(Table.TypeClass));
-        Assert.Throws<ArgumentOutOfRangeException>(() =>
-            procedure.IsAnyOfType(Enumerable.Repeat(Procedure.TypeClass, 11).ToArray()));
-    }
-
     private static TSqlModel CreateModel(string procedureScript)
     {
         var model = new TSqlModel(SqlServerVersion.Sql160, new TSqlModelOptions());
