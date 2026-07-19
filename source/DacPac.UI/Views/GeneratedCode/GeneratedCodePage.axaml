@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:avaloniaedit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels.GeneratedCode"
+             x:Class="DacPac.UI.Views.GeneratedCode.GeneratedCodePage"
+             x:DataType="viewModel:GeneratedCodePageViewModel">
+    <Grid RowDefinitions="Auto,*" RowSpacing="12">
+        <Grid ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="12">
+            <TextBlock VerticalAlignment="Center"
+                       FontWeight="SemiBold"
+                       Text="{Binding ClassCount, StringFormat='{}{0} classes generated'}" />
+            <TextBlock Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource SuccessBrush}"
+                       Text="{Binding ClipboardMessage}" />
+            <Button Grid.Column="3"
+                    Classes="Accent"
+                    Command="{Binding CopyCodeCommand}"
+                    Content="Copy code" />
+        </Grid>
+
+        <Border Grid.Row="1"
+                Background="{DynamicResource SurfaceElevatedBrush}"
+                BorderBrush="{DynamicResource BorderBrushSoft}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource RadiusMd}">
+            <avaloniaedit:TextEditor x:Name="Editor"
+                                      Margin="1"
+                                      FontFamily="Cascadia Code, Consolas, monospace"
+                                      FontSize="13"
+                                      ShowLineNumbers="True"
+                                      SyntaxHighlighting="C#" />
+        </Border>
+    </Grid>
+</UserControl>
