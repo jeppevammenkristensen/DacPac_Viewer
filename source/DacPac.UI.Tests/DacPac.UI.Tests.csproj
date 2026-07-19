@@ -21,6 +21,7 @@
 
   <ItemGroup>    
     <ProjectReference Include="..\DacPac.Core\DacPac.Core.csproj" />
+    <ProjectReference Include="..\DacPac.UI\DacPac.UI.csproj" />
     <ProjectReference Include="..\DacPac.UI.ApplicationLayer\DacPac.UI.ApplicationLayer.csproj" />
   </ItemGroup>
   

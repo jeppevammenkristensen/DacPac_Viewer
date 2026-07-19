@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DacPac.Core;
 using DacPac.UI.ViewModels.Displays;
+using DacPac.UI.ViewModels.GeneratedCode;
 using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Dac.Model;
 using TruePath;
@@ -23,7 +24,9 @@ public partial class LandingPageControlViewModel(
     IFilePickerService filePicker, 
     DacPacLoader loader,
     Builder builder,
-    IClipboardService clipboard)
+    IClipboardService clipboard,
+    IServiceLocator locator,
+    MainWindowViewModel mainWindow)
     : ScreenPage
 {
 
@@ -159,6 +162,9 @@ public partial class LandingPageControlViewModel(
 
         var script = builder.Build(rows.Select(x => x.Source).ToArray());
         await clipboard.SetTextAsync(script);
+        var generatedCodePage = locator.GetRequiredService<GeneratedCodePageViewModel>();
+        generatedCodePage.Load(script);
+        await mainWindow.LaunchScreenAsync(generatedCodePage);
         SetStatusMessage(rows.Length == 1
             ? $"Copied generated code for {rows[0].Name} to the clipboard."
             : $"Copied generated code for {rows.Length} objects to the clipboard.");

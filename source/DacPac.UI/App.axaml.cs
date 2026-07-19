@@ -12,9 +12,11 @@ using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.ViewModels;
 using DacPac.UI.ViewModels.Displays;
+using DacPac.UI.ViewModels.GeneratedCode;
 using DacPac.UI.ViewModels.Settings;
 using DacPac.UI.Views;
 using DacPac.UI.Views.Displays;
+using DacPac.UI.Views.GeneratedCode;
 using DacPac.UI.Views.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -156,6 +158,7 @@ public class App : Application
         collection
             .AddViewModelAndRegisterView<MainWindowViewModel, MainWindow>(ViewModelScope.Singleton)
             .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient)
+            .AddViewModelAndRegisterView<GeneratedCodePageViewModel, GeneratedCodePage>(ViewModelScope.Transient)
             .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton);
 
         collection.AddView<TableDisplayViewModel, TableDisplay>();
