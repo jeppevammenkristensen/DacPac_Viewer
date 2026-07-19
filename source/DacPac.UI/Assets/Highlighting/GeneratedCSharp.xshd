@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<SyntaxDefinition name="Generated C#" extensions=".cs" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <Color name="Comment" foreground="#86EFAC" exampleText="// comment" />
+  <Color name="Keyword" foreground="#93C5FD" fontWeight="bold" exampleText="public class" />
+  <Color name="Type" foreground="#FCA5A5" fontWeight="bold" exampleText="int string class" />
+  <Color name="Accessor" foreground="#FDBA74" exampleText="get set" />
+  <Color name="String" foreground="#C4B5FD" exampleText="&quot;text&quot;" />
+
+  <RuleSet>
+    <Span color="Comment">
+      <Begin>//</Begin>
+    </Span>
+    <Span color="Comment" multiline="true">
+      <Begin>/\*</Begin>
+      <End>\*/</End>
+    </Span>
+    <Span color="String">
+      <Begin>&quot;</Begin>
+      <End>&quot;</End>
+    </Span>
+    <Keywords color="Keyword">
+      <Word>public</Word>
+      <Word>private</Word>
+      <Word>protected</Word>
+      <Word>internal</Word>
+      <Word>static</Word>
+      <Word>partial</Word>
+      <Word>readonly</Word>
+      <Word>new</Word>
+      <Word>return</Word>
+      <Word>namespace</Word>
+      <Word>using</Word>
+    </Keywords>
+    <Keywords color="Type">
+      <Word>class</Word>
+      <Word>record</Word>
+      <Word>interface</Word>
+      <Word>bool</Word>
+      <Word>byte</Word>
+      <Word>decimal</Word>
+      <Word>double</Word>
+      <Word>float</Word>
+      <Word>int</Word>
+      <Word>long</Word>
+      <Word>object</Word>
+      <Word>string</Word>
+      <Word>void</Word>
+    </Keywords>
+    <Keywords color="Accessor">
+      <Word>get</Word>
+      <Word>set</Word>
+      <Word>init</Word>
+    </Keywords>
+  </RuleSet>
+</SyntaxDefinition>
