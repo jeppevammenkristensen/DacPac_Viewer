@@ -26,10 +26,9 @@
                 CornerRadius="{StaticResource RadiusMd}">
             <avaloniaedit:TextEditor x:Name="Editor"
                                       Margin="1"
-                                      FontFamily="Cascadia Code, Consolas, monospace"
-                                      FontSize="13"
-                                      ShowLineNumbers="True"
-                                      SyntaxHighlighting="C#" />
+                                       FontFamily="Cascadia Code, Consolas, monospace"
+                                       FontSize="13"
+                                       ShowLineNumbers="True" />
         </Border>
     </Grid>
 </UserControl>

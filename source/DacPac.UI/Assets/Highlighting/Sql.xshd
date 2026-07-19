@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<SyntaxDefinition name="SQL" extensions=".sql" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <Color name="Comment" foreground="#86EFAC" exampleText="-- comment" />
+  <Color name="Keyword" foreground="#93C5FD" fontWeight="bold" exampleText="CREATE TABLE" />
+  <Color name="Type" foreground="#FDBA74" fontWeight="bold" exampleText="INT VARCHAR" />
+  <Color name="String" foreground="#C4B5FD" exampleText="'text'" />
+  <Color name="Number" foreground="#FDE68A" exampleText="123" />
+
+  <RuleSet>
+    <Span color="Comment">
+      <Begin>--</Begin>
+    </Span>
+    <Span color="Comment" multiline="true">
+      <Begin>/\*</Begin>
+      <End>\*/</End>
+    </Span>
+    <Span color="String">
+      <Begin>'</Begin>
+      <End>'</End>
+    </Span>
+    <Keywords color="Keyword">
+      <Word>ADD</Word>
+      <Word>ALTER</Word>
+      <Word>AND</Word>
+      <Word>AS</Word>
+      <Word>BEGIN</Word>
+      <Word>BY</Word>
+      <Word>CASE</Word>
+      <Word>CHECK</Word>
+      <Word>COLLATE</Word>
+      <Word>CONSTRAINT</Word>
+      <Word>CREATE</Word>
+      <Word>DEFAULT</Word>
+      <Word>DELETE</Word>
+      <Word>DESC</Word>
+      <Word>DROP</Word>
+      <Word>ELSE</Word>
+      <Word>END</Word>
+      <Word>EXEC</Word>
+      <Word>EXISTS</Word>
+      <Word>FOREIGN</Word>
+      <Word>FROM</Word>
+      <Word>FULL</Word>
+      <Word>GROUP</Word>
+      <Word>HAVING</Word>
+      <Word>IF</Word>
+      <Word>IN</Word>
+      <Word>INDEX</Word>
+      <Word>INNER</Word>
+      <Word>INSERT</Word>
+      <Word>INTO</Word>
+      <Word>IS</Word>
+      <Word>JOIN</Word>
+      <Word>KEY</Word>
+      <Word>LEFT</Word>
+      <Word>LIKE</Word>
+      <Word>NOT</Word>
+      <Word>NULL</Word>
+      <Word>ON</Word>
+      <Word>OR</Word>
+      <Word>ORDER</Word>
+      <Word>OUTER</Word>
+      <Word>PRIMARY</Word>
+      <Word>PROCEDURE</Word>
+      <Word>REFERENCES</Word>
+      <Word>RIGHT</Word>
+      <Word>SELECT</Word>
+      <Word>SET</Word>
+      <Word>TABLE</Word>
+      <Word>THEN</Word>
+      <Word>UNION</Word>
+      <Word>UNIQUE</Word>
+      <Word>UPDATE</Word>
+      <Word>VALUES</Word>
+      <Word>VIEW</Word>
+      <Word>WHEN</Word>
+      <Word>WHERE</Word>
+    </Keywords>
+    <Keywords color="Type">
+      <Word>BIGINT</Word>
+      <Word>BINARY</Word>
+      <Word>BIT</Word>
+      <Word>CHAR</Word>
+      <Word>DATE</Word>
+      <Word>DATETIME</Word>
+      <Word>DATETIME2</Word>
+      <Word>DECIMAL</Word>
+      <Word>FLOAT</Word>
+      <Word>IMAGE</Word>
+      <Word>INT</Word>
+      <Word>MONEY</Word>
+      <Word>NCHAR</Word>
+      <Word>NTEXT</Word>
+      <Word>NUMERIC</Word>
+      <Word>NVARCHAR</Word>
+      <Word>REAL</Word>
+      <Word>SMALLDATETIME</Word>
+      <Word>SMALLINT</Word>
+      <Word>SMALLMONEY</Word>
+      <Word>TEXT</Word>
+      <Word>TIME</Word>
+      <Word>TINYINT</Word>
+      <Word>UNIQUEIDENTIFIER</Word>
+      <Word>VARBINARY</Word>
+      <Word>VARCHAR</Word>
+      <Word>XML</Word>
+    </Keywords>
+    <Rule color="Number">\b\d+(\.\d+)?\b</Rule>
+  </RuleSet>
+</SyntaxDefinition>
