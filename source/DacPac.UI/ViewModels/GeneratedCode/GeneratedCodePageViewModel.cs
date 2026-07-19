@@ -28,18 +28,17 @@ public partial class GeneratedCodePageViewModel(IClipboardService clipboard) : S
     /// <summary>
     /// Gets the number of class declarations in the current C# source.
     /// </summary>
-    public int ClassCount => SyntaxFactory.ParseCompilationUnit(Code)
-        .DescendantNodes()
-        .OfType<ClassDeclarationSyntax>()
-        .Count();
+    [ObservableProperty]
+    public partial int ClassCount { get; set; }
 
     /// <summary>
     /// Loads newly generated code and records that the initial source was copied.
     /// </summary>
-    public void Load(string code)
+    public void Load(string code, int rowsRead)
     {
         Code = code;
         ClipboardMessage = "Generated code copied to clipboard.";
+        ClassCount = rowsRead;
     }
 
     /// <summary>
