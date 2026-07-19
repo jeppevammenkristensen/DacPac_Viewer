@@ -170,6 +170,14 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         Screen = screenPage;
     }
 
+    /// <summary>
+    /// Opens a screen page in a new tab and selects it.
+    /// </summary>
+    public Task LaunchScreenAsync(ScreenPage screenPage)
+    {
+        return Launch(screenPage);
+    }
+
     private bool CanExecuteClose(ScreenPage? screen)
     {
         if (screen is null) return false;
