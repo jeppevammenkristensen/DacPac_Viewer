@@ -163,7 +163,7 @@ public partial class LandingPageControlViewModel(
         var script = builder.Build(rows.Select(x => x.Source).ToArray());
         await clipboard.SetTextAsync(script);
         var generatedCodePage = locator.GetRequiredService<GeneratedCodePageViewModel>();
-        generatedCodePage.Load(script);
+        generatedCodePage.Load(script, rows.Length);
         await mainWindow.LaunchScreenAsync(generatedCodePage);
         SetStatusMessage(rows.Length == 1
             ? $"Copied generated code for {rows[0].Name} to the clipboard."
