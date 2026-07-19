@@ -8,11 +8,11 @@ namespace DacPac.UI.Tests.ViewModels;
 public class GeneratedCodePageViewModelTest
 {
     [Fact]
-    public void ClassCount_CountsEveryClassDeclaration()
+    public void ClassCount_CountSetFromInitalization()
     {
         var viewModel = new GeneratedCodePageViewModel(new ClipboardService());
 
-        viewModel.Load("public class First { } internal class Second { class Nested { } }");
+        viewModel.Load("public class First { } internal class Second { class Nested { } }", 3);
 
         Assert.Equal(3, viewModel.ClassCount);
     }
@@ -22,7 +22,7 @@ public class GeneratedCodePageViewModelTest
     {
         var clipboard = new ClipboardService();
         var viewModel = new GeneratedCodePageViewModel(clipboard);
-        viewModel.Load("public class Original { }");
+        viewModel.Load("public class Original { }", 1);
         viewModel.Code = "public class Edited { }";
 
         await viewModel.CopyCodeCommand.ExecuteAsync(null);
