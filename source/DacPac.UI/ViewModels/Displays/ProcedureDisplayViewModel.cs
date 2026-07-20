@@ -14,6 +14,8 @@ public partial class ProcedureDisplayViewModel : ViewModelBase, IDisplayViewMode
     [ObservableProperty] public partial string FullName { get; set; }
     [ObservableProperty] public partial ObservableCollection<ParameterWrapper> Parameters { get; set; }
     [ObservableProperty] public partial string Script { get; set; }
+    [ObservableProperty] public partial ObservableCollection<string> Referencing { get; set; }
+    [ObservableProperty] public partial IEnumerable<string> Referenced { get; set; }
 
     public ProcedureDisplayViewModel(TSqlObject model)
     {
@@ -28,6 +30,8 @@ public partial class ProcedureDisplayViewModel : ViewModelBase, IDisplayViewMode
         Parameters = [..model.GetReferenced(Procedure.Parameters).Select(x => new ParameterWrapper(x))];
 
         Script = model.GetScript();
+        Referencing = [..model.GetReferencing().Select(x => x.Name.ToString())];
+        Referenced = model.GetReferenced().Select(x => x.Name.ToString());
     }
 }
 
