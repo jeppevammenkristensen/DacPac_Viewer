@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using DacPac.UI.ApplicationLayer;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -14,13 +15,13 @@ namespace DacPac.UI.Tests.Infrastructure;
 [TestSubject(typeof(JsonFileSettingsService))]
 public class JsonFileSettingsServiceTest
 {
-    private static readonly AbsolutePath SettingsFilePath =
-        AbsolutePath.Create(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) / "DacPacViewer" / "settings.json";
+    private static readonly AbsolutePath RootSaveLocation = AbsolutePath.Create(@"C:\DacPacViewer");
+    private static readonly AbsolutePath SettingsFilePath = RootSaveLocation / "settings.json";
 
     [Fact]
     public void EnableBetaUpdates_DefaultsToFalse_WhenNoSettingsFileExists()
     {
-        var service = new JsonFileSettingsService(new MockFileSystem(), NullLogger<JsonFileSettingsService>.Instance);
+        var service = CreateService(new MockFileSystem(), NullLogger<JsonFileSettingsService>.Instance);
 
         Assert.False(service.EnableBetaUpdates);
     }
@@ -28,12 +29,9 @@ public class JsonFileSettingsServiceTest
     [Fact]
     public void EnableBetaUpdates_ReturnsPersistedValue_WhenSettingsFileExists()
     {
-        var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-        {
-            [SettingsFilePath.Value] = new MockFileData("""{"enableBetaUpdates":true}""")
-        });
+        var fileSystem = CreateFileSystemWithSettings("""{"enableBetaUpdates":true}""");
 
-        var service = new JsonFileSettingsService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
+        var service = CreateService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
 
         Assert.True(service.EnableBetaUpdates);
     }
@@ -42,7 +40,7 @@ public class JsonFileSettingsServiceTest
     public void EnableBetaUpdates_Setter_PersistsValueAsCamelCaseJson()
     {
         var fileSystem = new MockFileSystem();
-        var service = new JsonFileSettingsService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
+        var service = CreateService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
 
         service.EnableBetaUpdates = true;
 
@@ -54,7 +52,7 @@ public class JsonFileSettingsServiceTest
     public void EnableBetaUpdates_Setter_DoesNotWriteFile_WhenValueUnchanged()
     {
         var fileSystem = new MockFileSystem();
-        var service = new JsonFileSettingsService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
+        var service = CreateService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
 
         service.EnableBetaUpdates = false;
 
@@ -64,13 +62,10 @@ public class JsonFileSettingsServiceTest
     [Fact]
     public void EnableBetaUpdates_FallsBackToDefault_WhenSettingsFileContainsInvalidJson()
     {
-        var fileSystem = new MockFileSystem(new Dictionary<string, MockFileData>
-        {
-            [SettingsFilePath.Value] = new MockFileData("not valid json")
-        });
+        var fileSystem = CreateFileSystemWithSettings("not valid json");
         var logger = new RecordingLogger<JsonFileSettingsService>();
 
-        var service = new JsonFileSettingsService(fileSystem, logger);
+        var service = CreateService(fileSystem, logger);
 
         Assert.False(service.EnableBetaUpdates);
         Assert.True(logger.WarningLogged);
@@ -89,5 +84,23 @@ public class JsonFileSettingsServiceTest
         {
             if (logLevel == LogLevel.Warning) WarningLogged = true;
         }
+    }
+
+    private static JsonFileSettingsService CreateService(
+        IFileSystem fileSystem,
+        ILogger<JsonFileSettingsService> logger) =>
+        new(fileSystem, new TestFileLocations(), logger);
+
+    private static MockFileSystem CreateFileSystemWithSettings(string settingsJson) =>
+        new(new Dictionary<string, MockFileData>
+        {
+            [SettingsFilePath.Value] = new(settingsJson)
+        }, RootSaveLocation.Value);
+
+    private sealed class TestFileLocations : IFileLocations
+    {
+        public AbsolutePath RootSaveLocation => JsonFileSettingsServiceTest.RootSaveLocation;
+
+        public AbsolutePath TempSaveLocation => RootSaveLocation / "temp";
     }
 }

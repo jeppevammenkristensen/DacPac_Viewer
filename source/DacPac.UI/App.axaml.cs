@@ -7,6 +7,7 @@ using Avalonia.Threading;
 using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.Messaging;
 using DacPac.Core;
+using DacPac.UI.ApplicationLayer;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
@@ -131,8 +132,8 @@ public class App : Application
         services.AddSingleton<IClipboardService, TopLevelClipboardService>();
 
         services.AddSingleton<IFileSystem>(ctx => new FileSystem());
+        services.SetupApplicationLayerService();
         
-        services.AddSingleton<ISettingsService, JsonFileSettingsService>();
         services.AddSingleton<IUpdateService, VelopackUpdateService>();
         services.AddSingleton<DacPacLoader>();
         

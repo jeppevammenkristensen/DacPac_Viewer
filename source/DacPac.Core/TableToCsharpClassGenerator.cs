@@ -59,7 +59,7 @@ public class TableToCsharpClassGenerator : CsharpGenerator
         var dotnetType = dataType == null ? null : ExtensionMethods.GetDotNetDataType(dataType, isNullable);
         if (dotnetType == null)
         {
-            sb.AppendLine($"// Warning: Unrecognized SQL data type '{dataType}' for column '{columnName}'.");
+            sb.AppendLine($"// Warning: Unrecognized SQL data type '{dataType?.Name.ToString()}' for column '{columnName}'.");
             sb.AppendLine($"public object {columnName.ToPascalCase()} {{ get; set; }}");
         }
         else
