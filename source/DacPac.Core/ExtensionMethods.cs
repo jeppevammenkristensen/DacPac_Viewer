@@ -142,6 +142,12 @@ public static class ExtensionMethods
     /// <returns>The mapped .NET type, or <see langword="null"/> when the object is not a supported data type.</returns>
     public static DotnetType? GetDotNetDataType(this TSqlObject sqlDataTypeName, bool nullable = false)
     {
+        if (sqlDataTypeName.ObjectType == UserDefinedType.TypeClass)
+        {
+            return GetDotNetDataTypeFromUserDefinedType(sqlDataTypeName, nullable);
+        }
+        
+        
         if (sqlDataTypeName.ObjectType != DataType.TypeClass)
         {
             return null;
@@ -154,63 +160,20 @@ public static class ExtensionMethods
         
         var sqlDataType = sqlDataTypeName.GetProperty<SqlDataType>(DataType.SqlDataType);
         
-        switch (sqlDataType)
-        {
-            // Integer types
-            case SqlDataType.BigInt: return new DotnetType("long", nullable);
-            case SqlDataType.Int: return new DotnetType("int", nullable);
-            case SqlDataType.SmallInt: return new DotnetType("short", nullable);
-            case SqlDataType.TinyInt: return new DotnetType("byte", nullable);
-            case SqlDataType.Bit: return new DotnetType("bool", nullable);
-
-            // Exact / approximate numeric types
-            case SqlDataType.Decimal:
-            case SqlDataType.Numeric:
-            case SqlDataType.Money:
-            case SqlDataType.SmallMoney: return new DotnetType("decimal", nullable);
-            case SqlDataType.Float: return new DotnetType("double", nullable);
-            case SqlDataType.Real: return new DotnetType("float", nullable);
-
-            // Date & time types
-            case SqlDataType.DateTime:
-            case SqlDataType.SmallDateTime:
-            case SqlDataType.DateTime2:
-            case SqlDataType.Date: return new DotnetType("System.DateTime", nullable);
-            case SqlDataType.Time: return new DotnetType("System.TimeSpan", nullable);
-            case SqlDataType.DateTimeOffset: return new DotnetType("System.DateTimeOffset", nullable);
-
-            // Character / text types (reference types are never suffixed with '?')
-            case SqlDataType.Char: return new DotnetType("char", nullable);
-            case SqlDataType.VarChar:
-            case SqlDataType.Text:
-            case SqlDataType.NChar:
-            case SqlDataType.NVarChar:
-            case SqlDataType.NText:
-            case SqlDataType.Xml:
-            case SqlDataType.Json: return new DotnetType("string", false);
-
-            // Binary types
-            case SqlDataType.Binary:
-            case SqlDataType.VarBinary:
-            case SqlDataType.Image:
-            case SqlDataType.Timestamp:
-            case SqlDataType.Rowversion: return new DotnetType("byte[]", nullable);
-
-            // Other scalar types
-            case SqlDataType.UniqueIdentifier: return new DotnetType("System.Guid", nullable);
-            case SqlDataType.Variant: return new DotnetType("object", nullable);
-
-            // Types that have no meaningful CLR representation as a column value
-            case SqlDataType.Unknown:
-            case SqlDataType.Cursor:
-            case SqlDataType.Table:
-            case SqlDataType.Vector: return null;
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(sqlDataTypeName), sqlDataTypeName, null);
-        }
+        return GetDotNetDataType(sqlDataType, nullable);
     }
-    
+
+    private static DotnetType? GetDotNetDataTypeFromUserDefinedType(TSqlObject sqlDataTypeName, bool nullable)
+    {
+        var underlyingType = sqlDataTypeName.GetProperty(UserDefinedType.ClassName);
+        if (underlyingType is string {Length: > 0} type)
+        {
+            return new DotnetType(type, nullable);    
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// Converts a raw database identifier (such as a table or column name) into a
     /// <b>PascalCase</b> identifier suitable for a C# type or property name.
