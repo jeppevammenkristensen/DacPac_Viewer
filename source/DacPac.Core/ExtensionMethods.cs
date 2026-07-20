@@ -128,7 +128,7 @@ public static class ExtensionMethods
             case SqlDataType.Cursor:
             case SqlDataType.Table:
             case SqlDataType.Vector: return null;
-
+            
             default:
                 throw new ArgumentOutOfRangeException(nameof(sqlDataTypeName), sqlDataTypeName, null);
         }
