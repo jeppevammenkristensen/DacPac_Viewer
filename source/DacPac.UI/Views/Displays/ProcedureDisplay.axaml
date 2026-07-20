@@ -6,7 +6,7 @@
              xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="DacPac.UI.Views.Displays.ProcedureDisplay">
-    <Grid RowDefinitions="*,Auto,*">
+    <Grid RowDefinitions="*,Auto,*,Auto">
 
         <!-- Top half: identity + parameters -->
         <Grid Grid.Row="0" RowDefinitions="Auto,Auto,*" RowSpacing="6">
@@ -42,5 +42,16 @@
                        ShowLineNumbers="True"
                        WordWrap="False"
                        FontFamily="Cascadia Code,Cascadia Mono,Consolas,Menlo,monospace" />
+
+        <Grid Grid.Row="3" ColumnDefinitions="*,*" ColumnSpacing="12">
+            <StackPanel Grid.Column="0" Spacing="4">
+                <TextBlock Text="Referenced by:" FontWeight="SemiBold" />
+                <ListBox ItemsSource="{Binding Referencing}" MaxHeight="120" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Spacing="4">
+                <TextBlock Text="References:" FontWeight="SemiBold" />
+                <ListBox ItemsSource="{Binding Referenced}" MaxHeight="120" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -19,6 +19,8 @@ public partial class TableDisplayViewModel : ViewModelBase, IDisplayViewModel
     [ObservableProperty] public partial string FullName { get; set; }
     [ObservableProperty] public partial ObservableCollection<TableColumnWrapper> Columns { get; set; }
     [ObservableProperty] public partial string Script { get; set; }
+    [ObservableProperty] public partial ObservableCollection<string> Referencing { get; set; }
+    [ObservableProperty] public partial IEnumerable<string> Referenced { get; set; }
 
     public TableDisplayViewModel(TSqlObject model)
     {
@@ -31,6 +33,8 @@ public partial class TableDisplayViewModel : ViewModelBase, IDisplayViewModel
         FullName = model.Name.ToString();
         Columns = [..model.GetReferenced(Table.Columns).Select(x => new TableColumnWrapper(x))];
         Script = model.GetScript();
+        Referencing = [..model.GetReferencing().Select(x => x.Name.ToString())];
+        Referenced = model.GetReferenced().Select(x => x.Name.ToString());
     }
 }
 
