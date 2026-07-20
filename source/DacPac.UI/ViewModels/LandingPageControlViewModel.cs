@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using AvaloniaEdit.Utils;
 using DacPac.UI.Infrastructure;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -183,17 +184,16 @@ public partial class LandingPageControlViewModel(
             OpenedDacpacFiles.Clear();
             Results.Clear();
 
+            var uniqueFiles = files.Select(AbsolutePath.Create).ToList();
             List<SearchResultRow> searchResultRows = new();
-            foreach (var file in files.Select(AbsolutePath.Create))
-            {
-                SetStatusMessage($"Processing {file.Value}");
-                OpenedDacpacFiles.Add(file.Value);
-                var rows = await Task.Run(() => loader.Load(file).GetObjects(DacQueryScopes.UserDefined)
-                    .Where(x => x.Name.HasName)
-                    .Select(o => new SearchResultRow(o, file.GetFilenameWithoutExtension()))
-                    .ToList());
-                searchResultRows.AddRange(rows);
-            }
+            var resultRows = loader.LoadMultiple(uniqueFiles)
+                .SelectMany(x => x.Model.GetObjects(DacQueryScopes.UserDefined).Select(y => new {ObjectName = y, x.Path}))
+                .Where(x => x.ObjectName.Name.HasName)
+                .Select(x => new SearchResultRow(x.ObjectName, x.Path.GetFilenameWithoutExtension()));
+
+            OpenedDacpacFiles.AddRange(uniqueFiles.Select(x => x.Value));
+            
+            searchResultRows.AddRange(resultRows);
 
             CurrentTitle = string.Join(",", OpenedDacpacFiles.Select(AbsolutePath.Create).Select(x => x.FileName));
 
