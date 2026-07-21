@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -8,30 +7,18 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.ViewModels.Displays;
 
-public partial class ProcedureDisplayViewModel : ViewModelBase, IDisplayViewModel
+public partial class ProcedureDisplayViewModel : DisplayViewModel
 {
-    [ObservableProperty] public partial string ShortName { get; set; }
-    [ObservableProperty] public partial string FullName { get; set; }
     [ObservableProperty] public partial ObservableCollection<ParameterWrapper> Parameters { get; set; }
-    [ObservableProperty] public partial string Script { get; set; }
-    [ObservableProperty] public partial ObservableCollection<string> Referencing { get; set; }
-    [ObservableProperty] public partial IEnumerable<string> Referenced { get; set; }
 
-    public ProcedureDisplayViewModel(TSqlObject model)
+    public ProcedureDisplayViewModel(TSqlObject model) : base(model)
     {
         if (model.ObjectType != Procedure.TypeClass)
         {
             throw new InvalidOperationException($"The provided TSqlObject is not a procedure. Expected type: {Procedure.TypeClass.Name}, but got: {model.ObjectType.Name}");
         }
 
-        ShortName = model.Name.Parts.Last();
-        FullName = model.Name.ToString();
-
-        Parameters = [..model.GetReferenced(Procedure.Parameters).Select(x => new ParameterWrapper(x))];
-
-        Script = model.GetScript();
-        Referencing = [..model.GetReferencing().Select(x => x.Name.ToString())];
-        Referenced = model.GetReferenced().Select(x => x.Name.ToString());
+        Parameters = [..Model.GetReferenced(Procedure.Parameters).Select(x => new ParameterWrapper(x))];
     }
 }
 
