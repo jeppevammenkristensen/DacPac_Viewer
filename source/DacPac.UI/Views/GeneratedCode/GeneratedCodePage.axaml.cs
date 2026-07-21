@@ -10,9 +10,10 @@ public partial class GeneratedCodePage : UserControl
     public GeneratedCodePage()
     {
         InitializeComponent();
-        Editor.SyntaxHighlighting = CodeSyntaxHighlighting.GeneratedCSharp;
+        Editor.SyntaxHighlighting = CodeSyntaxHighlighting.CSharp;
         DataContextChanged += OnDataContextChanged;
         Editor.TextChanged += OnEditorTextChanged;
+        ActualThemeVariantChanged += OnActualThemeVariantChanged;
     }
 
     private void OnDataContextChanged(object? sender, EventArgs e)
@@ -26,4 +27,7 @@ public partial class GeneratedCodePage : UserControl
         if (DataContext is GeneratedCodePageViewModel viewModel && viewModel.Code != Editor.Text)
             viewModel.Code = Editor.Text;
     }
+
+    private void OnActualThemeVariantChanged(object? sender, EventArgs e)
+        => Editor.SyntaxHighlighting = CodeSyntaxHighlighting.CSharp;
 }
