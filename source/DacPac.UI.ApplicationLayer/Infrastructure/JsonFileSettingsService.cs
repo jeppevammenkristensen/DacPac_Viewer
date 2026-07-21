@@ -1,6 +1,7 @@
 using System.IO.Abstractions;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using DacPac.Core;
 using Microsoft.Extensions.Logging;
 using TruePath;
 

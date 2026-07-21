@@ -184,7 +184,7 @@ public partial class LandingPageControlViewModel(
             OpenedDacpacFiles.Clear();
             Results.Clear();
 
-            var uniqueFiles = files.Select(AbsolutePath.Create).ToList();
+            var uniqueFiles = files.Select(AbsolutePath.Create).Distinct().ToList();
             List<SearchResultRow> searchResultRows = new();
             var resultRows = await Task.Run(() =>loader.LoadMultiple(uniqueFiles)
                 .SelectMany(x => x.Model.GetObjects(DacQueryScopes.UserDefined).Select(y => new {ObjectName = y, x.Path}))

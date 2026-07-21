@@ -128,7 +128,7 @@ public static class ExtensionMethods
             case SqlDataType.Cursor:
             case SqlDataType.Table:
             case SqlDataType.Vector: return null;
-            
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(sqlDataTypeName), sqlDataTypeName, null);
         }
@@ -146,8 +146,7 @@ public static class ExtensionMethods
         {
             return GetDotNetDataTypeFromUserDefinedType(sqlDataTypeName, nullable);
         }
-        
-        
+
         if (sqlDataTypeName.ObjectType != DataType.TypeClass)
         {
             return null;
@@ -168,7 +167,7 @@ public static class ExtensionMethods
         var underlyingType = sqlDataTypeName.GetProperty(UserDefinedType.ClassName);
         if (underlyingType is string {Length: > 0} type)
         {
-            return new DotnetType(type, nullable);    
+            return new DotnetType(type, nullable);
         }
 
         return null;

@@ -1,5 +1,4 @@
 ﻿using System.IO.Abstractions;
-using DacPac.UI.ApplicationLayer;
 using Microsoft.SqlServer.Dac.Model;
 using TruePath;
 
@@ -15,52 +14,60 @@ public class DacPacLoader
     private readonly IFileLocations _location;
     private readonly IFileSystem _fileSystem;
     private readonly TimeProvider _timeProvider;
+    private readonly Func<AbsolutePath, TSqlModel> _loadModel;
 
     public DacPacLoader(IFileLocations location) : this(location, new FileSystem(), TimeProvider.System)
     {
     }
 
     public DacPacLoader(IFileLocations location, IFileSystem fileSystem, TimeProvider timeProvider)
+        : this(location, fileSystem, timeProvider, LoadModel)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a loader with explicit infrastructure dependencies and a model-loading operation.
+    /// </summary>
+    /// <remarks>
+    /// The model-loading operation is injectable so staging behavior can be tested without requiring DACFx
+    /// to read files from the host file system.
+    /// </remarks>
+    public DacPacLoader(
+        IFileLocations location,
+        IFileSystem fileSystem,
+        TimeProvider timeProvider,
+        Func<AbsolutePath, TSqlModel> loadModel)
     {
         _location = location;
         _fileSystem = fileSystem;
         _timeProvider = timeProvider;
+        _loadModel = loadModel;
     }
-   
-    // Removed. Use LoadMultiple
-    // /// <summary>
-    // /// Opens a DacPac file and returns its database schema model.
-    // /// </summary>
-    // /// <exception cref="FileNotFoundException">Thrown when the DacPac file does not exist.</exception>
-    // public TSqlModel Load(AbsolutePath source)
-    // {
-    //     if (!source.FileExists())
-    //     {
-    //         throw new FileNotFoundException($"The specified DacPac file '{source}' does not exist.");
-    //     }
-    //
-    //     using var stream = source.OpenRead();
-    //
-    //     return TSqlModel.LoadFromDacpac(stream, new ModelLoadOptions()
-    //     {
-    //
-    //     });
-    // }
-    
+
+    /// <summary>
+    /// Stages all selected DACPACs, then loads each staged copy while retaining its original path.
+    /// </summary>
     public IEnumerable<SqlModelAndPath> LoadMultiple(IReadOnlyList<AbsolutePath> sources)
     {
         var saveLocation = _location.TempSaveLocation / _timeProvider.GetUtcNow().ToString("yyyyMMddHHmmssfff");
-        saveLocation.CreateDirectory();
+        saveLocation.CreateDirectory(_fileSystem);
 
-        foreach (var absolutePath in sources)
+        var stagedSources = sources
+            .Distinct()
+            .Select((source, index) => (Source: source, Staged: saveLocation / $"{index:D4}-{source.FileName}"))
+            .ToList();
+
+        foreach (var stagedSource in stagedSources)
         {
-            absolutePath.FileCopy(saveLocation / absolutePath.FileName);
+            stagedSource.Source.FileCopy(stagedSource.Staged, _fileSystem);
         }
-        
-        foreach (var file in saveLocation.EnumerateFiles("*.dacpac"))
+
+        foreach (var stagedSource in stagedSources)
         {
-            yield return (TSqlModel.LoadFromDacpac(file.Value, new ModelLoadOptions() { }), file);
+            yield return (_loadModel(stagedSource.Staged), stagedSource.Source);
         }
-        
     }
+
+    private static TSqlModel LoadModel(AbsolutePath path) =>
+        TSqlModel.LoadFromDacpac(path.Value, new ModelLoadOptions());
 }

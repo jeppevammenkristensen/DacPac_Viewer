@@ -35,9 +35,8 @@ public partial class TableDisplayViewModel : DisplayViewModel
     protected override bool FilterReferenced(TSqlObject arg)
     {
         if (arg.ObjectType == Column.TypeClass)
-        {
-            return false; // Exclude columns from the referenced list
-        }
+            return false;
+
         return base.FilterReferenced(arg);
     }
 }
@@ -58,6 +57,4 @@ public class TableColumnWrapper
         IsIdentity = sqlObject.GetProperty<bool>(Column.IsIdentity);
         Type = sqlObject.GetReferenced(Column.DataType).FirstOrDefault()?.Name.Parts.Last();
     }
-    
-    
 }
