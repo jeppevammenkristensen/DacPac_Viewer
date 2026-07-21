@@ -136,6 +136,7 @@ public class App : Application
         
         services.AddSingleton<IUpdateService, VelopackUpdateService>();
         services.AddSingleton<DacPacLoader>();
+        services.AddSingleton<IStagingFilesCleanup, StagingFilesCleanup>();
         
         services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 

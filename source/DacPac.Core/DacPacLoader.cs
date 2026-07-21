@@ -14,14 +14,12 @@ public class DacPacLoader
     private readonly IFileLocations _location;
     private readonly IFileSystem _fileSystem;
     private readonly TimeProvider _timeProvider;
+    private readonly IStagingFilesCleanup _cleanup;
+
     private readonly Func<AbsolutePath, TSqlModel> _loadModel;
 
-    public DacPacLoader(IFileLocations location) : this(location, new FileSystem(), TimeProvider.System)
-    {
-    }
-
-    public DacPacLoader(IFileLocations location, IFileSystem fileSystem, TimeProvider timeProvider)
-        : this(location, fileSystem, timeProvider, LoadModel)
+    public DacPacLoader(IFileLocations location, IStagingFilesCleanup cleanup, IFileSystem fileSystem, TimeProvider timeProvider)
+        : this(location, cleanup,fileSystem, timeProvider, LoadModel)
     {
     }
 
@@ -34,6 +32,7 @@ public class DacPacLoader
     /// </remarks>
     public DacPacLoader(
         IFileLocations location,
+        IStagingFilesCleanup cleanup,
         IFileSystem fileSystem,
         TimeProvider timeProvider,
         Func<AbsolutePath, TSqlModel> loadModel)
@@ -41,6 +40,7 @@ public class DacPacLoader
         _location = location;
         _fileSystem = fileSystem;
         _timeProvider = timeProvider;
+        _cleanup = cleanup;
         _loadModel = loadModel;
     }
 
@@ -49,6 +49,8 @@ public class DacPacLoader
     /// </summary>
     public IEnumerable<SqlModelAndPath> LoadMultiple(IReadOnlyList<AbsolutePath> sources)
     {
+        _cleanup.CleanupStagingFiles();
+        
         var saveLocation = _location.TempSaveLocation / _timeProvider.GetUtcNow().ToString("yyyyMMddHHmmssfff");
         saveLocation.CreateDirectory(_fileSystem);
 

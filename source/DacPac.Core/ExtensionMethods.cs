@@ -110,7 +110,7 @@ public static class ExtensionMethods
             case SqlDataType.NVarChar:
             case SqlDataType.NText:
             case SqlDataType.Xml:
-            case SqlDataType.Json: return new DotnetType("string", false);
+            case SqlDataType.Json: return new DotnetType("string", nullable);
 
             // Binary types
             case SqlDataType.Binary:
