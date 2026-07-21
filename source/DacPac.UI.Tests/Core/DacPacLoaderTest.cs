@@ -4,6 +4,7 @@ using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using DacPac.Core;
+using FileBasedApp.Toolkit;
 using Microsoft.SqlServer.Dac.Model;
 using TruePath;
 using Xunit;
@@ -25,6 +26,7 @@ public class DacPacLoaderTest
         var loadedPaths = new List<AbsolutePath>();
         var loader = new DacPacLoader(
             new TestFileLocations(),
+            new NoOpStagingFilesCleanup(),
             fileSystem,
             new FakeTimeProvider(),
             path =>
@@ -45,9 +47,9 @@ public class DacPacLoaderTest
 
     private sealed class TestFileLocations : IFileLocations
     {
-        public static readonly AbsolutePath StagingDirectory = AbsolutePath.Create(@"C:\Temp\DacPacs\20260721120000000");
+        public static readonly AbsolutePath StagingDirectory = Environment.SpecialFolder.LocalApplicationData.GetSpecialFolder() / "DacPacViewerTests" / "DacPacs" / "20260721120000000";
 
-        public AbsolutePath RootSaveLocation => AbsolutePath.Create(@"C:\Temp");
+        public AbsolutePath RootSaveLocation => Environment.SpecialFolder.LocalApplicationData.GetSpecialFolder() / "DacPacViewerTests";
 
         public AbsolutePath TempSaveLocation => RootSaveLocation / "DacPacs";
     }
@@ -55,5 +57,12 @@ public class DacPacLoaderTest
     private sealed class FakeTimeProvider : TimeProvider
     {
         public override DateTimeOffset GetUtcNow() => new(2026, 7, 21, 12, 0, 0, TimeSpan.Zero);
+    }
+
+    private sealed class NoOpStagingFilesCleanup : IStagingFilesCleanup
+    {
+        public void CleanupStagingFiles()
+        {
+        }
     }
 }

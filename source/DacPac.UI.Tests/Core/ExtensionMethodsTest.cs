@@ -8,7 +8,7 @@ namespace DacPac.UI.Tests.Core;
 public class ExtensionMethodsTest
 {
     [Fact]
-    public void GetDotNetDataType_MapsUserDefinedTypeName()
+    public void GetDotNetDataType_MapsUserDefinedTypeNameToUnderlyingType()
     {
         using var model = new TSqlModel(SqlServerVersion.Sql160, new TSqlModelOptions());
         model.AddObjects("CREATE TYPE [dbo].[PhoneNumber] FROM nvarchar(20);");
@@ -19,6 +19,6 @@ public class ExtensionMethodsTest
 
         var result = dataType.GetDotNetDataType(nullable: true);
 
-        Assert.Equal(new DotnetType("PhoneNumber", true), result);
+        Assert.Equal(new DotnetType("string", true), result);
     }
 }
