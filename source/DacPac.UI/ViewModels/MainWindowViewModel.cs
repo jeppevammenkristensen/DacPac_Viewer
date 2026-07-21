@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
@@ -10,19 +12,33 @@ using DacPac.UI.ViewModels.Settings;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.Extensions.Configuration;
+using DacPac.UI.ApplicationLayer.Infrastructure;
+using TruePath;
 
 namespace DacPac.UI.ViewModels;
+
+/// <summary>
+/// Represents a group of dacpac files that was opened together.
+/// </summary>
+public sealed record RecentDacpacFiles(IReadOnlyList<AbsolutePath> Paths)
+{
+    /// <summary>
+    /// Gets the filenames displayed for this recent entry.
+    /// </summary>
+    public string Title => string.Join(", ", Paths.Select(path => path.FileName));
+}
 
 public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDataMessage>, IRecipient<StatusValueDataMessage>
 {
     private readonly IServiceLocator _locator;
     private readonly IUpdateService _updateService;
+    private readonly ISettingsService _settingsService;
 
-    public MainWindowViewModel(IServiceLocator locator, IConfiguration configuration, IUpdateService updateService)
+    public MainWindowViewModel(IServiceLocator locator, IUpdateService updateService, ISettingsService settingsService)
     {
         _locator = locator;
         _updateService = updateService;
+        _settingsService = settingsService;
         Screens = [];
         Status = string.Empty;
         Title = "DacPac viewer";
@@ -42,9 +58,26 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         }
     }
 
+    [RelayCommand(CanExecute = nameof(CanExecuteOpenDacPac))]
+    private async Task LoadRecentDacpacs(RecentDacpacFiles recentFiles)
+    {
+        if (Screen is not LandingPageControlViewModel landingPage)
+            return;
+
+        await landingPage.OpenDacpacFilesAsync(recentFiles.Paths);
+        LoadRecentDacpacFiles();
+    }
+
 
     [ObservableProperty] public partial ObservableCollection<ScreenPage> Screens { get; set; }
 
+    /// <summary>
+    /// Gets the dacpac file groups available from previous open operations.
+    /// </summary>
+    public ObservableCollection<RecentDacpacFiles> RecentDacpacFiles { get; } = [];
+
+    [NotifyCanExecuteChangedFor(nameof(OpenDacPacCommand))]
+    [NotifyCanExecuteChangedFor(nameof(LoadRecentDacpacsCommand))]
     [ObservableProperty] public partial ScreenPage? Screen { get; set; }
 
     [ObservableProperty] public partial string Status { get; set; }
@@ -98,6 +131,7 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         await longRunningTask.ExecuteTask(token);
         Loaded = true;
         await LaunchPrimaryCommand.ExecuteAsync(null);
+        LoadRecentDacpacFiles();
 
         // Fire-and-forget; must never block or fail startup
         _ = CheckForUpdatesAsync();
@@ -111,6 +145,16 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         UpdateAvailable = true;
         Status = $"Version {version} has been downloaded. Restart to apply it.";
         StatusType = StatusType.Info;
+    }
+
+    /// <summary>
+    /// Refreshes the recent dacpac menu entries from persisted settings.
+    /// </summary>
+    private void LoadRecentDacpacFiles()
+    {
+        RecentDacpacFiles.Clear();
+        foreach (var paths in _settingsService.GetStoredPaths())
+            RecentDacpacFiles.Add(new RecentDacpacFiles(paths));
     }
 
     [RelayCommand(CanExecute = nameof(UpdateAvailable))]

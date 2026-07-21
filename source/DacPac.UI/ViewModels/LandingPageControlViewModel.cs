@@ -180,13 +180,21 @@ public partial class LandingPageControlViewModel(
         if (files.Count == 0)
             return;
 
+        await OpenDacpacFilesAsync(files.Select(AbsolutePath.Create).ToList());
+    }
+
+    /// <summary>
+    /// Loads the supplied dacpac files and records them as a recent open operation.
+    /// </summary>
+    public async Task OpenDacpacFilesAsync(IReadOnlyList<AbsolutePath> files)
+    {
         IsLoading = true;
         try
         {
             OpenedDacpacFiles.Clear();
             Results.Clear();
 
-            var uniqueFiles = files.Select(AbsolutePath.Create).Distinct().ToList();
+            var uniqueFiles = files.Distinct().ToList();
             List<SearchResultRow> searchResultRows = new();
             var resultRows = await Task.Run(() =>loader.LoadMultiple(uniqueFiles)
                 .SelectMany(x => x.Model.GetObjects(DacQueryScopes.UserDefined).Select(y => new {ObjectName = y, x.Path}))

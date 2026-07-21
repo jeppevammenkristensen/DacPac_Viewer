@@ -103,4 +103,36 @@ public class JsonFileSettingsServiceTest
 
         public AbsolutePath TempSaveLocation => RootSaveLocation / "temp";
     }
+
+    [Fact]
+    public void SaveOrUpdatePaths_PersistsPaths_WhenNoStoredPathsFileExists()
+    {
+        var fileSystem = new MockFileSystem();
+        var service = CreateService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
+
+        service.SaveOrUpdatePaths([AbsolutePath.Create(@"C:\first"), AbsolutePath.Create(@"C:\second")]);
+
+        var storedPathsFile = RootSaveLocation / "storedpaths.json";
+        Assert.Equal(
+            """{"paths":[{"path":["C:\\first","C:\\second"]}]}""",
+            fileSystem.File.ReadAllText(storedPathsFile));
+    }
+
+    [Fact]
+    public void SaveOrUpdatePaths_MovesExistingPathsToFront_AndPreservesOtherPaths()
+    {
+        var fileSystem = new MockFileSystem();
+        var service = CreateService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
+        var firstPaths = new[] { AbsolutePath.Create(@"C:\first") };
+        var secondPaths = new[] { AbsolutePath.Create(@"C:\second") };
+
+        service.SaveOrUpdatePaths(firstPaths);
+        service.SaveOrUpdatePaths(secondPaths);
+        service.SaveOrUpdatePaths(firstPaths);
+
+        var storedPathsFile = RootSaveLocation / "storedpaths.json";
+        Assert.Equal(
+            """{"paths":[{"path":["C:\\first"]},{"path":["C:\\second"]}]}""",
+            fileSystem.File.ReadAllText(storedPathsFile));
+    }
 }
