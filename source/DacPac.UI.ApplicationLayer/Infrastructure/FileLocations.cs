@@ -1,5 +1,6 @@
 ﻿using FileBasedApp.Toolkit;
 using TruePath;
+using DacPac.Core;
 
 namespace DacPac.UI.ApplicationLayer;
 

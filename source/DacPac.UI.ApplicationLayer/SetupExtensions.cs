@@ -1,4 +1,5 @@
-﻿using DacPac.UI.ApplicationLayer.Infrastructure;
+﻿using DacPac.Core;
+using DacPac.UI.ApplicationLayer.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DacPac.UI.ApplicationLayer;
