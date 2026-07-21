@@ -13,7 +13,7 @@ public class TableDisplayViewModelTest
         using var model = new TSqlModel(SqlServerVersion.Sql160, new TSqlModelOptions());
         model.AddObjects("CREATE TABLE [dbo].[Customer] ([Id] int NOT NULL);");
         var table = model.GetObjects(DacQueryScopes.UserDefined, Table.TypeClass).Single();
-        var column = model.GetObjects(DacQueryScopes.UserDefined, Column.TypeClass).Single();
+        var column = table.GetReferenced(Table.Columns).Single();
         var viewModel = new TestTableDisplayViewModel(table);
 
         Assert.False(viewModel.Includes(column));

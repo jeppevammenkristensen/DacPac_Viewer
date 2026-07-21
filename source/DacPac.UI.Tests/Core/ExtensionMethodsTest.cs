@@ -11,11 +11,10 @@ public class ExtensionMethodsTest
     public void GetDotNetDataType_MapsUserDefinedTypeName()
     {
         using var model = new TSqlModel(SqlServerVersion.Sql160, new TSqlModelOptions());
-        model.AddObjects("""
-                         CREATE TYPE [dbo].[PhoneNumber] FROM nvarchar(20);
-                         CREATE TABLE [dbo].[Customer] ([Phone] [dbo].[PhoneNumber] NULL);
-                         """);
-        var column = model.GetObjects(DacQueryScopes.UserDefined, Column.TypeClass).Single();
+        model.AddObjects("CREATE TYPE [dbo].[PhoneNumber] FROM nvarchar(20);");
+        model.AddObjects("CREATE TABLE [dbo].[Customer] ([Phone] [dbo].[PhoneNumber] NULL);");
+        var table = model.GetObjects(DacQueryScopes.UserDefined, Table.TypeClass).Single();
+        var column = table.GetReferenced(Table.Columns).Single();
         var dataType = column.GetReferenced(Column.DataType).Single();
 
         var result = dataType.GetDotNetDataType(nullable: true);

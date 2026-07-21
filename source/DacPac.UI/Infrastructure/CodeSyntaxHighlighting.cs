@@ -16,15 +16,22 @@ internal static class CodeSyntaxHighlighting
     private static readonly Lazy<IHighlightingDefinition> SqlDefinition = new(LoadSqlDefinition);
 
     /// <summary>Gets C# syntax highlighting appropriate for the current theme.</summary>
-    /// <remarks>In dark mode a Variant is used that has better contrast. In light mode the default is used</remarks>
+    /// <remarks>
+    /// In dark mode, a variant with better contrast is used. In light mode, the built-in <c>C#</c>
+    /// definition is used when available.
+    /// </remarks>
     public static IHighlightingDefinition CSharp => IsDarkTheme
         ? GeneratedCSharpDefinition.Value
-        : HighlightingManager.Instance.GetDefinition("C#");
+        : HighlightingManager.Instance.GetDefinition("C#") ?? GeneratedCSharpDefinition.Value;
 
     /// <summary>Gets SQL syntax highlighting appropriate for the current theme.</summary>
+    /// <remarks>
+    /// In dark mode, a variant with better contrast is used. In light mode, the built-in <c>TSQL</c>
+    /// definition is used when available.
+    /// </remarks>
     public static IHighlightingDefinition Sql => IsDarkTheme
         ? SqlDefinition.Value
-        : HighlightingManager.Instance.GetDefinition("TSQL");
+        : HighlightingManager.Instance.GetDefinition("TSQL") ?? SqlDefinition.Value;
 
     private static bool IsDarkTheme => Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
 
