@@ -1,6 +1,8 @@
 using System;
 using System.Xml;
+using Avalonia;
 using Avalonia.Platform;
+using Avalonia.Styling;
 using AvaloniaEdit.Highlighting;
 using AvaloniaEdit.Highlighting.Xshd;
 
@@ -13,16 +15,18 @@ internal static class CodeSyntaxHighlighting
     private static readonly Lazy<IHighlightingDefinition> GeneratedCSharpDefinition = new(LoadGeneratedCSharpDefinition);
     private static readonly Lazy<IHighlightingDefinition> SqlDefinition = new(LoadSqlDefinition);
 
-    /// <summary>Gets the high-contrast syntax definition for generated C# code.</summary>
-    public static IHighlightingDefinition GeneratedCSharp => GeneratedCSharpDefinition.Value;
+    /// <summary>Gets C# syntax highlighting appropriate for the current theme.</summary>
+    /// <remarks>In dark mode a Variant is used that has better contrast. In light mode the default is used</remarks>
+    public static IHighlightingDefinition CSharp => IsDarkTheme
+        ? GeneratedCSharpDefinition.Value
+        : HighlightingManager.Instance.GetDefinition("C#");
 
-    /// <summary>Gets highlighting appropriate for SQL scripts or generated C# code.</summary>
-    public static IHighlightingDefinition For(string text)
-    {
-        return text.TrimStart().StartsWith("public ", StringComparison.Ordinal)
-            ? GeneratedCSharpDefinition.Value
-            : SqlDefinition.Value;
-    }
+    /// <summary>Gets SQL syntax highlighting appropriate for the current theme.</summary>
+    public static IHighlightingDefinition Sql => IsDarkTheme
+        ? SqlDefinition.Value
+        : HighlightingManager.Instance.GetDefinition("TSQL");
+
+    private static bool IsDarkTheme => Application.Current?.ActualThemeVariant == ThemeVariant.Dark;
 
     private static IHighlightingDefinition LoadGeneratedCSharpDefinition()
         => LoadDefinition(GeneratedCSharpDefinitionUri);
