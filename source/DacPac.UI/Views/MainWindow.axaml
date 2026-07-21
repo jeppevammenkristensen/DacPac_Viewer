@@ -28,6 +28,16 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="Open Dacpac"
                               Command="{Binding OpenDacPacCommand}" />
+                    <MenuItem Header="Load latest"
+                              ItemsSource="{Binding RecentDacpacFiles}">
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate x:DataType="vm:RecentDacpacFiles">
+                                <MenuItem Header="{Binding Title}"
+                                          Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).LoadRecentDacpacsCommand}"
+                                          CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
+                    </MenuItem>
                     <MenuItem Header="Settings"
                               Command="{Binding LaunchSettingsCommand}" />
                 </MenuItem>

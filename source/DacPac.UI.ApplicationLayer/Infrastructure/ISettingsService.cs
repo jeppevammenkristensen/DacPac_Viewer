@@ -14,4 +14,5 @@ public interface ISettingsService
     bool EnableBetaUpdates { get; set; }
     
     void SaveOrUpdatePaths(IReadOnlyList<AbsolutePath> paths);
+    IReadOnlyList<AbsolutePath[]> GetStoredPaths();
 }
