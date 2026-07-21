@@ -156,7 +156,7 @@ public class ProcedureToClassGeneratorTest
         var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
 
         Assert.Contains("public long CustomerId { get; set; }", output);
-        Assert.Contains("public string Name { get; set; }", output);
+        Assert.Contains("public string? Name { get; set; }", output);
         Assert.DoesNotContain("could not be resolved unambiguously", output);
     }
 
