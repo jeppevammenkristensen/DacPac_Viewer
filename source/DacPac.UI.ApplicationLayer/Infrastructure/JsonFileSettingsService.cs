@@ -93,13 +93,19 @@ public partial class JsonFileSettingsService : ISettingsService
         }
     }
 
+    public IReadOnlyList<AbsolutePath[]> GetStoredPaths()
+    {
+        var storedPaths = _storedPathsWrapper.Load();
+        return storedPaths.Paths.Select(x => x.Path.Select(AbsolutePath.Create).ToArray()).ToList();
+    }
+    
     public void SaveOrUpdatePaths(IReadOnlyList<AbsolutePath> paths)
     {
         var storedPaths = _storedPathsWrapper.Load();
         var storedPath = new StoredPath(paths.Select(x => x.Value).ToArray());
         ImmutableArray<StoredPath> newPath = [storedPath,..storedPaths.Paths.Where(x => !x.Equals(storedPath))];
         
-        storedPaths = storedPaths with { Paths = newPath };
+        storedPaths = new StoredPaths(Paths: newPath);
         _storedPathsWrapper.Save(storedPaths);
     }
 
