@@ -14,15 +14,15 @@ namespace DacPac.UI.Tests;
 public class StagingFilesCleanupTest
 {
     [Fact]
-    public void CleanupStagingFiles_DeletesStagingFoldersOlderThanSevenDays()
+    public void CleanupStagingFiles_DeletesStagingFoldersOlderThanOneDay()
     {
         var oldStagingFolder = TestFileLocations.TempSaveLocation / "old";
         var recentStagingFolder = TestFileLocations.TempSaveLocation / "recent";
         var fileSystem = new MockFileSystem();
         oldStagingFolder.CreateDirectory(fileSystem);
         recentStagingFolder.CreateDirectory(fileSystem);
-        oldStagingFolder.NewDirectoryInfo(fileSystem).LastAccessTimeUtc = DateTime.UtcNow.AddHours(-25);
-        recentStagingFolder.NewDirectoryInfo(fileSystem).LastAccessTimeUtc = DateTime.UtcNow.AddHours(-23);
+        oldStagingFolder.NewDirectoryInfo(fileSystem).LastWriteTimeUtc = FakeTimeProvider.Now.AddHours(-25).UtcDateTime;
+        recentStagingFolder.NewDirectoryInfo(fileSystem).LastWriteTimeUtc = FakeTimeProvider.Now.AddHours(-23).UtcDateTime;
 
         CreateCleanup(fileSystem).CleanupStagingFiles();
 
@@ -36,7 +36,7 @@ public class StagingFilesCleanupTest
         var unrelatedFolder = TestFileLocations.RootSaveLocation / "settings";
         var fileSystem = new MockFileSystem();
         unrelatedFolder.CreateDirectory(fileSystem);
-        unrelatedFolder.NewDirectoryInfo(fileSystem).LastAccessTimeUtc = DateTime.UtcNow.AddHours(-25);
+        unrelatedFolder.NewDirectoryInfo(fileSystem).LastWriteTimeUtc = FakeTimeProvider.Now.AddHours(-25).UtcDateTime;
 
         CreateCleanup(fileSystem).CleanupStagingFiles();
 
@@ -44,7 +44,14 @@ public class StagingFilesCleanupTest
     }
 
     private static StagingFilesCleanup CreateCleanup(MockFileSystem fileSystem) =>
-        new(NullLogger<StagingFilesCleanup>.Instance, new TestFileLocations(), fileSystem, TimeProvider.System);
+        new(NullLogger<StagingFilesCleanup>.Instance, new TestFileLocations(), fileSystem, new FakeTimeProvider());
+
+    private sealed class FakeTimeProvider : TimeProvider
+    {
+        public static readonly DateTimeOffset Now = new(2026, 7, 21, 12, 0, 0, TimeSpan.Zero);
+
+        public override DateTimeOffset GetUtcNow() => Now;
+    }
 
     private sealed class TestFileLocations : IFileLocations
     {

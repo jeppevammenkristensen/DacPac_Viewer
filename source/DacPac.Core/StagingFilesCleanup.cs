@@ -16,16 +16,30 @@ public partial class StagingFilesCleanup(ILogger<StagingFilesCleanup> logger, IF
         if (!fileLocations.TempSaveLocation.DirectoryExists(fileSystem))
             return;
 
-        var weekAgo = timeProvider.GetUtcNow().AddDays(-1);
+        var retentionCutoff = timeProvider.GetUtcNow().AddDays(-1);
 
         foreach (var oldFolders in fileLocations.TempSaveLocation.EnumerateDirectories(fileSystem)
-                     .Where(dir => dir.NewDirectoryInfo(fileSystem).LastAccessTimeUtc < weekAgo))
-        { 
-            LogDeletingStagingFolderPath(oldFolders);
-            oldFolders.DirectoryDelete(true, fileSystem);
+                     .Where(dir => dir.NewDirectoryInfo(fileSystem).LastWriteTimeUtc < retentionCutoff))
+        {
+            try
+            {
+                LogDeletingStagingFolderPath(oldFolders);
+                oldFolders.DirectoryDelete(true, fileSystem);
+            }
+            catch (IOException exception)
+            {
+                LogFailedToDeleteStagingFolder(exception, oldFolders);
+            }
+            catch (UnauthorizedAccessException exception)
+            {
+                LogFailedToDeleteStagingFolder(exception, oldFolders);
+            }
         }
     }
 
     [LoggerMessage(LogLevel.Information, "Deleting staging folder {Path}")]
     partial void LogDeletingStagingFolderPath(AbsolutePath path);
+
+    [LoggerMessage(LogLevel.Warning, "Failed to delete stale staging folder {Path}")]
+    partial void LogFailedToDeleteStagingFolder(Exception exception, AbsolutePath path);
 }
