@@ -1,3 +1,5 @@
+using TruePath;
+
 namespace DacPac.UI.ApplicationLayer.Infrastructure;
 
 /// <summary>
@@ -10,4 +12,6 @@ public interface ISettingsService
     /// Setting this value persists it immediately.
     /// </summary>
     bool EnableBetaUpdates { get; set; }
+    
+    void SaveOrUpdatePaths(IReadOnlyList<AbsolutePath> paths);
 }
