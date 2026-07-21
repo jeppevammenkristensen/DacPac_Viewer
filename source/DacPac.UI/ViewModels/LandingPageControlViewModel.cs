@@ -9,6 +9,7 @@ using DacPac.UI.Infrastructure;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DacPac.Core;
+using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.ViewModels.Displays;
 using DacPac.UI.ViewModels.GeneratedCode;
 using Microsoft.Extensions.Logging;
@@ -27,6 +28,7 @@ public partial class LandingPageControlViewModel(
     Builder builder,
     IClipboardService clipboard,
     IServiceLocator locator,
+    ISettingsService settingsService,
     MainWindowViewModel mainWindow)
     : ScreenPage
 {
@@ -192,6 +194,7 @@ public partial class LandingPageControlViewModel(
                 .Select(x => new SearchResultRow(x.ObjectName, x.Path.GetFilenameWithoutExtension())).ToList());
 
             OpenedDacpacFiles.AddRange(uniqueFiles.Select(x => x.Value));
+            settingsService.SaveOrUpdatePaths(uniqueFiles);
             
             searchResultRows.AddRange(resultRows);
 
