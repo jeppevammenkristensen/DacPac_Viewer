@@ -26,17 +26,18 @@
                     ToolTip.Tip="Toggle light/dark theme" />
             <Menu>
                 <MenuItem Header="_File">
-                    <MenuItem Header="Open Dacpac"
-                              Command="{Binding OpenDacPacCommand}" />
-                    <MenuItem Header="Load latest"
-                              ItemsSource="{Binding RecentDacpacFiles}">
-                        <MenuItem.ItemTemplate>
-                            <DataTemplate x:DataType="vm:RecentDacpacFiles">
+                    <MenuItem Header="Open"
+                              ItemsSource="{Binding OpenDacpacMenuItems}">
+                        <MenuItem.DataTemplates>
+                            <DataTemplate x:DataType="vm:OpenDacpacMenuItem">
                                 <MenuItem Header="{Binding Title}"
-                                          Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).LoadRecentDacpacsCommand}"
+                                          Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).OpenDacpacMenuItemCommand}"
                                           CommandParameter="{Binding}" />
                             </DataTemplate>
-                        </MenuItem.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SplitterMenuItem">
+                                <Separator />
+                            </DataTemplate>
+                        </MenuItem.DataTemplates>
                     </MenuItem>
                     <MenuItem Header="Settings"
                               Command="{Binding LaunchSettingsCommand}" />

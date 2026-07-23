@@ -28,7 +28,27 @@ public sealed record RecentDacpacFiles(IReadOnlyList<AbsolutePath> Paths)
     public string Title => string.Join(", ", Paths.Select(path => path.FileName));
 }
 
-public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDataMessage>, IRecipient<StatusValueDataMessage>
+public interface IOpenMenuItem
+{
+    
+}
+
+public sealed record SplitterMenuItem : IOpenMenuItem
+{
+}
+
+/// <summary>
+/// Represents an item in the Open menu, either the file picker or a recent entry.
+/// </summary>
+public sealed record OpenDacpacMenuItem(RecentDacpacFiles? RecentFiles) : IOpenMenuItem
+{
+    /// <summary>
+    /// Gets the text shown in the Open menu.
+    /// </summary>
+    public string Title => RecentFiles?.Title ?? "Open Dacpac";
+}
+
+public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDataMessage>, IRecipient<StatusValueDataMessage>, IRecipient<StoredPathsChangedMessage>
 {
     private readonly IServiceLocator _locator;
     private readonly IUpdateService _updateService;
@@ -49,7 +69,6 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         return Screen is LandingPageControlViewModel;
     }
 
-    [RelayCommand(CanExecute = nameof(CanExecuteOpenDacPac))]
     private async Task OpenDacPac()
     {
         if (Screen is LandingPageControlViewModel landingPage)
@@ -58,26 +77,24 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanExecuteOpenDacPac))]
     private async Task LoadRecentDacpacs(RecentDacpacFiles recentFiles)
     {
         if (Screen is not LandingPageControlViewModel landingPage)
             return;
 
         await landingPage.OpenDacpacFilesAsync(recentFiles.Paths);
-        LoadRecentDacpacFiles();
     }
 
 
     [ObservableProperty] public partial ObservableCollection<ScreenPage> Screens { get; set; }
+    
 
     /// <summary>
-    /// Gets the dacpac file groups available from previous open operations.
+    /// Gets the entries shown in the Open submenu.
     /// </summary>
-    public ObservableCollection<RecentDacpacFiles> RecentDacpacFiles { get; } = [];
+    public ObservableCollection<IOpenMenuItem> OpenDacpacMenuItems { get; } = [];
 
-    [NotifyCanExecuteChangedFor(nameof(OpenDacPacCommand))]
-    [NotifyCanExecuteChangedFor(nameof(LoadRecentDacpacsCommand))]
+    [NotifyCanExecuteChangedFor(nameof(OpenDacpacMenuItemCommand))]
     [ObservableProperty] public partial ScreenPage? Screen { get; set; }
 
     [ObservableProperty] public partial string Status { get; set; }
@@ -148,13 +165,43 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
     }
 
     /// <summary>
+    /// Refreshes the recent dacpac menu after persisted paths change.
+    /// </summary>
+    public void Receive(StoredPathsChangedMessage message)
+    {
+        UpdateOpenDacpacMenuItems(message.Value);
+    }
+
+    private void UpdateOpenDacpacMenuItems(IEnumerable<AbsolutePath[]> files)
+    {
+        OpenDacpacMenuItems.Clear();
+        OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(null));
+        
+        foreach (var indexTuple in files.Index())
+        {
+            if (indexTuple.Index == 0)
+            {
+                OpenDacpacMenuItems.Add(new SplitterMenuItem());
+            }
+            OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(new RecentDacpacFiles(indexTuple.Item)));
+        }
+    }
+
+    /// <summary>
     /// Refreshes the recent dacpac menu entries from persisted settings.
     /// </summary>
     private void LoadRecentDacpacFiles()
     {
-        RecentDacpacFiles.Clear();
-        foreach (var paths in _settingsService.GetStoredPaths())
-            RecentDacpacFiles.Add(new RecentDacpacFiles(paths));
+        UpdateOpenDacpacMenuItems(_settingsService.GetStoredPaths());
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteOpenDacPac))]
+    private async Task OpenDacpacMenuItem(OpenDacpacMenuItem menuItem)
+    {
+        if (menuItem.RecentFiles is null)
+            await OpenDacPac();
+        else
+            await LoadRecentDacpacs(menuItem.RecentFiles);
     }
 
     [RelayCommand(CanExecute = nameof(UpdateAvailable))]
