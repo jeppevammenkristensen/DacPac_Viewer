@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Styling;
 using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
@@ -28,19 +29,10 @@ public sealed record RecentDacpacFiles(IReadOnlyList<AbsolutePath> Paths)
     public string Title => string.Join(", ", Paths.Select(path => path.FileName));
 }
 
-public interface IOpenMenuItem
-{
-    
-}
-
-public sealed record SplitterMenuItem : IOpenMenuItem
-{
-}
-
 /// <summary>
 /// Represents an item in the Open menu, either the file picker or a recent entry.
 /// </summary>
-public sealed record OpenDacpacMenuItem(RecentDacpacFiles? RecentFiles) : IOpenMenuItem
+public sealed record OpenDacpacMenuItem(RecentDacpacFiles? RecentFiles)
 {
     /// <summary>
     /// Gets the text shown in the Open menu.
@@ -92,7 +84,7 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
     /// <summary>
     /// Gets the entries shown in the Open submenu.
     /// </summary>
-    public ObservableCollection<IOpenMenuItem> OpenDacpacMenuItems { get; } = [];
+    public ObservableCollection<object> OpenDacpacMenuItems { get; } = [];
 
     [NotifyCanExecuteChangedFor(nameof(OpenDacpacMenuItemCommand))]
     [ObservableProperty] public partial ScreenPage? Screen { get; set; }
@@ -181,7 +173,7 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         {
             if (indexTuple.Index == 0)
             {
-                OpenDacpacMenuItems.Add(new SplitterMenuItem());
+                OpenDacpacMenuItems.Add(new Separator());
             }
             OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(new RecentDacpacFiles(indexTuple.Item)));
         }
