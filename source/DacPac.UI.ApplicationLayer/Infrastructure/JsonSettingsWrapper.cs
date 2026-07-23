@@ -28,7 +28,7 @@ public class JsonSettingsWrapper<TData>
             var json = _filePath.ReadAllText(_fileSystem);
             return JsonSerializer.Deserialize(json, _typeInfo) ?? _createEmpty();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return _createEmpty();
         }
@@ -41,7 +41,7 @@ public class JsonSettingsWrapper<TData>
             directory.CreateDirectory(_fileSystem);
             _fileSystem.File.WriteAllText(_filePath, JsonSerializer.Serialize(data, _typeInfo));
         }
-        catch (Exception ex)
+        catch (Exception)
         {
         }
     }
