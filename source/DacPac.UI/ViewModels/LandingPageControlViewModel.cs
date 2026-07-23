@@ -64,8 +64,24 @@ public partial class LandingPageControlViewModel(
     [RelayCommand]
     private void ToggleFilter(string filter)
     {
-        if (!SelectedFilters.Remove(filter))
-            SelectedFilters.Add(filter);
+        bool isRemoved = SelectedFilters.Remove(filter);
+        
+        if (filter == "All")
+        {
+            if (isRemoved)
+            {
+                SelectedFilters = [];
+            }
+            else
+            {
+                SelectedFilters = [.. FilterOptions];
+            }
+        }
+        else
+        {
+            if (!isRemoved)
+                SelectedFilters.Add(filter);    
+        }
 
         OnPropertyChanged(nameof(SelectedFilters));
         OnPropertyChanged(nameof(FilterSummary));
@@ -128,7 +144,7 @@ public partial class LandingPageControlViewModel(
         
     }
 
-    private bool SearcFilter(SearchResultRow row)
+    private bool SearchFilter(SearchResultRow row)
     {
         return row.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
     }
@@ -138,20 +154,12 @@ public partial class LandingPageControlViewModel(
     [RelayCommand(CanExecute = nameof(CanSearch))]
     private void Search()
     {
-        // TODO: populate Results / DetailsText based on SearchText and SelectedFilters.
-        if (SelectedFilters.Any(x => x == "All"))
-        {
-            FilteredResults = [..Results.Where(SearcFilter)];
-        }
-        else
-        {
-            FilteredResults =
+       FilteredResults =
             [
                 ..Results
                     .Where(x => SelectedFilters.Contains(x.Type))
-                    .Where(SearcFilter)
+                    .Where(SearchFilter)
             ];
-        }
     }
 
     private bool CanGenerateCode(IList? items) => items is { Count: > 0 };
@@ -216,7 +224,7 @@ public partial class LandingPageControlViewModel(
             Results = new ObservableCollection<SearchResultRow>(searchResultRows);
             FilteredResults = [..Results];
             FilterOptions = ["All", ..filterOptions];
-            SelectedFilters = [FilterOptions[0]];
+            SelectedFilters = ["All",..filterOptions];
             SetStatusMessage($"Opened {files.Count} dacpac file(s).");
         }
         finally
