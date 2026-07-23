@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using DacPac.Core;
+using CommunityToolkit.Mvvm.Messaging;
+using DacPac.UI.ApplicationLayer.Infrastructure;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -89,7 +91,7 @@ public class JsonFileSettingsServiceTest
     private static JsonFileSettingsService CreateService(
         IFileSystem fileSystem,
         ILogger<JsonFileSettingsService> logger) =>
-        new(fileSystem, new TestFileLocations(), logger);
+        new(fileSystem, new TestFileLocations(), logger, WeakReferenceMessenger.Default);
 
     private static MockFileSystem CreateFileSystemWithSettings(string settingsJson) =>
         new(new Dictionary<string, MockFileData>
@@ -134,5 +136,25 @@ public class JsonFileSettingsServiceTest
         Assert.Equal(
             """{"paths":[{"path":["C:\\first"]},{"path":["C:\\second"]}]}""",
             fileSystem.File.ReadAllText(storedPathsFile));
+    }
+
+    [Fact]
+    public void SaveOrUpdatePaths_PublishesStoredPathsChangedMessage()
+    {
+        var messenger = new StrongReferenceMessenger();
+        var recipient = new StoredPathsChangedRecipient();
+        messenger.Register<StoredPathsChangedRecipient, StoredPathsChangedMessage>(recipient,
+            static (r, _) => r.Received = true);
+        var service = new JsonFileSettingsService(new MockFileSystem(), new TestFileLocations(),
+            NullLogger<JsonFileSettingsService>.Instance, messenger);
+
+        service.SaveOrUpdatePaths([AbsolutePath.Create(@"C:\first")]);
+
+        Assert.True(recipient.Received);
+    }
+
+    private sealed class StoredPathsChangedRecipient
+    {
+        public bool Received { get; set; }
     }
 }
