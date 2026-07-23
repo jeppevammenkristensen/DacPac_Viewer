@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using DacPac.Core;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using TruePath;
 
@@ -67,11 +68,13 @@ public partial class JsonFileSettingsService : ISettingsService
     private readonly IFileLocations _fileLocations;
 
 
-    public JsonFileSettingsService(IFileSystem fileSystem, IFileLocations fileLocations, ILogger<JsonFileSettingsService> logger)
+    public JsonFileSettingsService(IFileSystem fileSystem, IFileLocations fileLocations, ILogger<JsonFileSettingsService> logger,
+        IMessenger messenger)
     {
         _fileSystem = fileSystem;
         _fileLocations = fileLocations;
         _logger = logger;
+        _messenger = messenger;
         _data = Load();
         _storedPathsWrapper = StoredPathsJsonContext.Default.StoredPaths.WrapperFromTypeInfo(_fileLocations.RootSaveLocation / "storedpaths.json", _fileSystem, () => new StoredPaths(ImmutableArray<StoredPath>.Empty));
     }
@@ -79,6 +82,7 @@ public partial class JsonFileSettingsService : ISettingsService
     private AbsolutePath SettingsFilePath => _fileLocations.RootSaveLocation / "settings.json";
 
     private readonly ILogger<JsonFileSettingsService> _logger;
+    private readonly IMessenger _messenger;
     private readonly SettingsData _data;
     private JsonSettingsWrapper<StoredPaths> _storedPathsWrapper;
 
@@ -107,6 +111,7 @@ public partial class JsonFileSettingsService : ISettingsService
         
         storedPaths = new StoredPaths(Paths: newPath);
         _storedPathsWrapper.Save(storedPaths);
+        _messenger.Send(new StoredPathsChangedMessage(storedPaths.Paths.Select(x => x.Path.Select(AbsolutePath.Create).ToArray()).ToList()));
     }
 
     private SettingsData Load()
