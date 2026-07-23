@@ -58,6 +58,7 @@ public partial class VelopackUpdateService : IUpdateService
                 return null;
             }
 
+            _messenger.Send(new StatusValueDataMessage(new StatusMessage("Downloading update", StatusType.Info)));
             await updateManager.DownloadUpdatesAsync(update, cancelToken: cancellationToken);
             _lastUsedManager = updateManager;
             _pendingUpdate = update;
