@@ -34,9 +34,6 @@
                                           Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).OpenDacpacMenuItemCommand}"
                                           CommandParameter="{Binding}" />
                             </DataTemplate>
-                            <DataTemplate x:DataType="vm:SplitterMenuItem">
-                                <Separator />
-                            </DataTemplate>
                         </MenuItem.DataTemplates>
                     </MenuItem>
                     <MenuItem Header="Settings"
