@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.SqlServer.Dac.Model;
 
-namespace DacPac.Core;
+namespace DacPac.Core.Generators;
 
 /// <summary>
 /// Defines the common validation and output flow for generators that convert DacPac objects into C# source.

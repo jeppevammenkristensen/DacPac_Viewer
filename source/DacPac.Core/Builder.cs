@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using DacPac.Core.Generators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.SqlServer.Dac.Model;
