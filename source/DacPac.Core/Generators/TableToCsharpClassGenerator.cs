@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.SqlServer.Dac.Model;
 
-namespace DacPac.Core;
+namespace DacPac.Core.Generators;
 
 /// <summary>
 /// Generates a C# data class from a DacPac table definition.
