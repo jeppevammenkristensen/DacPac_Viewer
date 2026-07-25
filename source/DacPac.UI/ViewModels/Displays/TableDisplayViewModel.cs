@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using DacPac.Core;
 using DacPac.UI.Infrastructure;
 using Microsoft.SqlServer.Dac.Model;
 
@@ -14,16 +15,13 @@ public interface IDisplayViewModel
 
 public partial class TableDisplayViewModel : DisplayViewModel
 {
-    [ObservableProperty] public partial ObservableCollection<TableColumnWrapper> Columns { get; set; }
+    [ObservableProperty] public partial ObservableCollection<ColumnWrapper> Columns { get; set; }
 
     public TableDisplayViewModel(TSqlObject model) : base(model)
     {
-        if (model.ObjectType != Table.TypeClass)
-        {
-            throw new InvalidOperationException($"The provided TSqlObject is not a table. Expected type: {Table.TypeClass.Name}, but got: {model.ObjectType.Name}");
-        }
+        model.ThrowIfIncorrectType(Table.TypeClass);
 
-        Columns = [..Model.GetReferenced(Table.Columns).Select(x => new TableColumnWrapper(x))];
+        Columns = [..Model.GetReferenced(Table.Columns).Select(x => new ColumnWrapper(x))];
     }
 
     /// <summary>
@@ -38,23 +36,5 @@ public partial class TableDisplayViewModel : DisplayViewModel
             return false;
 
         return base.FilterReferenced(arg);
-    }
-}
-
-public class TableColumnWrapper
-{
-    public string ColumnName { get;  }
-    public bool IsNullable { get;  }
-    
-    public bool IsIdentity { get; }
-    
-    public string? Type { get; set; }
-
-    public TableColumnWrapper(TSqlObject sqlObject)
-    {
-        ColumnName = sqlObject.Name.Parts.Last();
-        IsNullable = sqlObject.GetProperty<bool>(Column.Nullable);
-        IsIdentity = sqlObject.GetProperty<bool>(Column.IsIdentity);
-        Type = sqlObject.GetReferenced(Column.DataType).FirstOrDefault()?.Name.Parts.Last();
     }
 }
