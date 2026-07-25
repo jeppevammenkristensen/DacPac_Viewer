@@ -131,6 +131,11 @@ public partial class LandingPageControlViewModel(
         {
             Detail = new ProcedureDisplayViewModel(value.Source);
         }
+        else if (value.Source.ObjectType == View.TypeClass)
+        {
+            Detail = new ViewDisplayViewModel(value.Source);
+        }
+        
         else
         {
             Detail = new DefaultDisplayViewModel(value.Source);    

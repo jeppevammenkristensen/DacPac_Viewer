@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using DacPac.Core;
 using DacPac.UI.Infrastructure;
 using Microsoft.SqlServer.Dac.Model;
 
@@ -13,11 +14,7 @@ public partial class ProcedureDisplayViewModel : DisplayViewModel
 
     public ProcedureDisplayViewModel(TSqlObject model) : base(model)
     {
-        if (model.ObjectType != Procedure.TypeClass)
-        {
-            throw new InvalidOperationException($"The provided TSqlObject is not a procedure. Expected type: {Procedure.TypeClass.Name}, but got: {model.ObjectType.Name}");
-        }
-
+        model.ThrowIfIncorrectType(Procedure.TypeClass);
         Parameters = [..Model.GetReferenced(Procedure.Parameters).Select(x => new ParameterWrapper(x))];
     }
 }
