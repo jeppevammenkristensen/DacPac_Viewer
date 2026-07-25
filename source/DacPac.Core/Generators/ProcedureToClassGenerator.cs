@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.SqlServer.Dac.Model;
 
-namespace DacPac.Core;
+namespace DacPac.Core.Generators;
 
 /// <summary>
 /// Generates a Dapper-backed C# API and result models for a DacPac stored procedure.

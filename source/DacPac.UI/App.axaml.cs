@@ -7,6 +7,7 @@ using Avalonia.Threading;
 using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.Messaging;
 using DacPac.Core;
+using DacPac.Core.Generators;
 using DacPac.UI.ApplicationLayer;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure;
