@@ -155,7 +155,6 @@ public sealed record ViewSelectColumn(
 
     private static readonly Dictionary<string, string> KnownNumericFunctionTypes = new(StringComparer.OrdinalIgnoreCase)
     {
-        ["Abs"] = "decimal",
         ["Acos"] = "double",
         ["Approx_Count_Distinct"] = "long",
         ["Ascii"] = "int",
@@ -164,7 +163,6 @@ public sealed record ViewSelectColumn(
         ["Atn2"] = "double",
         ["Avg"] = "decimal",
         ["Binary_Checksum"] = "int",
-        ["Ceiling"] = "decimal",
         ["Charindex"] = "int",
         ["Checksum"] = "int",
         ["Checksum_Agg"] = "int",
@@ -178,7 +176,6 @@ public sealed record ViewSelectColumn(
         ["Dense_Rank"] = "long",
         ["Difference"] = "int",
         ["Exp"] = "double",
-        ["Floor"] = "decimal",
         ["Grouping"] = "int",
         ["Grouping_Id"] = "int",
         ["Isnumeric"] = "int",
@@ -189,16 +186,12 @@ public sealed record ViewSelectColumn(
         ["Patindex"] = "int",
         ["Percent_Rank"] = "double",
         ["Pi"] = "double",
-        ["Power"] = "decimal",
         ["Radians"] = "decimal",
         ["Rand"] = "double",
         ["Rank"] = "long",
-        ["Round"] = "decimal",
         ["Row_Number"] = "long",
-        ["Sign"] = "decimal",
         ["Sin"] = "double",
         ["Sqrt"] = "double",
-        ["Square"] = "decimal",
         ["Stdev"] = "double",
         ["Stdevp"] = "double",
         ["Sum"] = "decimal",
@@ -210,6 +203,10 @@ public sealed record ViewSelectColumn(
 
     private static readonly HashSet<string> PromotedNumericAggregateFunctions = new(
         ["Avg", "Sum"],
+        StringComparer.OrdinalIgnoreCase);
+
+    private static readonly HashSet<string> ArgumentDependentNumericFunctions = new(
+        ["Abs", "Ceiling", "Floor", "Power", "Round", "Sign", "Square"],
         StringComparer.OrdinalIgnoreCase);
     
     /// <summary>
@@ -243,6 +240,13 @@ public sealed record ViewSelectColumn(
                 function.ArgumentTypes.FirstOrDefault() is { } argumentType)
             {
                 return (PromoteNumericAggregateType(argumentType, nullable), true);
+            }
+
+            if (ArgumentDependentNumericFunctions.Contains(function.Name))
+            {
+                return function.ArgumentTypes.FirstOrDefault() is { } resolvedArgumentType
+                    ? (new DotnetType(resolvedArgumentType.Name, nullable), true)
+                    : (null, true);
             }
 
             if (KnownNumericFunctionTypes.TryGetValue(function.Name, out var numericType))
