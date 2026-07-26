@@ -143,6 +143,7 @@ public class App : Application
 
         services.AddSingleton<CsharpGenerator,TableToCsharpClassGenerator>();
         services.AddSingleton<CsharpGenerator,ProcedureToClassGenerator>();
+        services.AddSingleton<CsharpGenerator, ViewToCsharpClassGenerator>();
         
         services.AddSingleton<Builder>();
     }
