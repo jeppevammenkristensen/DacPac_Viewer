@@ -16,7 +16,6 @@ public static class WrongSqlType
         if (model.ObjectType != typeClass)
         {
             throw new ArgumentException($"The provided TSqlObject is not of the expected type. Expected type: {typeClass.Name}, but got: {model.ObjectType.Name}", paramName);
-            throw new InvalidOperationException($"The provided TSqlObject is not of the expected type. Expected type: {typeClass.Name}, but got: {model.ObjectType.Name}");
         }
     }
 }

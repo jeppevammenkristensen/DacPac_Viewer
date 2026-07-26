@@ -158,12 +158,14 @@ public class App : Application
         // it would technically be enough to only register the MainWindowViewModel with
         // collection.AddSingleton<MainWindowViewModel>() but for good measure it's registered here 
         // also
-        
+
         collection
             .AddViewModelAndRegisterView<MainWindowViewModel, MainWindow>(ViewModelScope.Singleton)
             .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient)
             .AddViewModelAndRegisterView<GeneratedCodePageViewModel, GeneratedCodePage>(ViewModelScope.Transient)
-            .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton);
+            .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton)
+            .AddViewModelAndRegisterView<InstallationViewModel, Installation>(ViewModelScope.Transient);
+        
 
         collection.AddView<TableDisplayViewModel, TableDisplay>();
         collection.AddView<ProcedureDisplayViewModel, ProcedureDisplay>();
