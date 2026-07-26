@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using DacPac.Core;
+using DacPac.UI.ViewModels.Displays;
 using Microsoft.SqlServer.Dac.Model;
 using Xunit;
 
@@ -67,6 +68,32 @@ public class ViewSelectStatementAnalyzerTest
     }
 
     [Fact]
+    public void GuessType_UsesArgumentTypeForArgumentDependentNumericFunctions()
+    {
+        using var model = CreateModel("""
+                                      CREATE TABLE [dbo].[Metrics]
+                                      (
+                                          [BigValue] bigint NOT NULL,
+                                          [DecimalValue] decimal(10, 2) NOT NULL
+                                      );
+                                      GO
+                                      CREATE VIEW [dbo].[CalculatedMetrics]
+                                      AS
+                                      SELECT
+                                          ABS(1) AS AbsoluteInteger,
+                                          ABS(BigValue) AS AbsoluteBigValue,
+                                          ROUND(DecimalValue, 2) AS RoundedDecimalValue
+                                      FROM dbo.Metrics;
+                                      """);
+
+        var columns = _analyzer.Analyze(GetView(model));
+
+        Assert.Equal("int", columns[0].GuessType().property?.Name);
+        Assert.Equal("long", columns[1].GuessType().property?.Name);
+        Assert.Equal("decimal", columns[2].GuessType().property?.Name);
+    }
+
+    [Fact]
     public void GuessType_AppliesAggregateReturnTypePromotion()
     {
         using var model = CreateModel("""
@@ -126,6 +153,37 @@ public class ViewSelectStatementAnalyzerTest
 
         Assert.Contains("2 output columns", exception.Message);
         Assert.Contains("0 directly mappable scalar expressions", exception.Message);
+    }
+
+    [Fact]
+    public void ViewDisplayViewModel_FallsBackToDacpacColumnsWhenExpressionsCannotBeMapped()
+    {
+        using var model = CreateModel("""
+                                      CREATE TABLE [dbo].[Customers]
+                                      (
+                                          [CustomerId] int NOT NULL,
+                                          [Name] nvarchar(100) NULL
+                                      );
+                                      GO
+                                      CREATE VIEW [dbo].[CustomerNames]
+                                      AS
+                                      SELECT * FROM dbo.Customers;
+                                      """);
+
+        var viewModel = new ViewDisplayViewModel(GetView(model));
+
+        Assert.Collection(
+            viewModel.ColumnWrappers,
+            column =>
+            {
+                Assert.Equal("CustomerId", column.ColumnName);
+                Assert.Equal("Expression unavailable", column.Expression);
+            },
+            column =>
+            {
+                Assert.Equal("Name", column.ColumnName);
+                Assert.Equal("Expression unavailable", column.Expression);
+            });
     }
 
     private static TSqlModel CreateModel(string script)
