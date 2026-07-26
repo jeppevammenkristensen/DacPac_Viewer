@@ -2,7 +2,9 @@
 
 namespace DacPac.UI.Infrastructure.LongRunning;
 
-public enum StatusType { Info, Error }
+public enum StatusType { Info, Error,
+    Success
+}
 
 
 public record StatusMessage(string Value, StatusType StatusType);

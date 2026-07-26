@@ -38,6 +38,27 @@ public class ProcedureToClassGeneratorTest
     }
 
     [Fact]
+    public void Build_IncludesTheProcedureScriptInRemarks()
+    {
+        using var model = CreateModel("""
+                                   CREATE PROCEDURE [dbo].[GetCustomer]
+                                   AS
+                                   BEGIN
+                                       SELECT 1 AS [Value & Count];
+                                   END
+                                   """);
+
+        var output = new Builder([new ProcedureToClassGenerator()]).Build([GetProcedure(model)]);
+
+        Assert.Contains("/// <remarks>", output);
+        Assert.Contains("/// <code>", output);
+        Assert.Contains("/// CREATE PROCEDURE [dbo].[GetCustomer]", output);
+        Assert.Contains("///     SELECT 1 AS [Value &amp; Count];", output);
+        Assert.Contains("/// </code>", output);
+        Assert.Contains("/// </remarks>", output);
+    }
+
+    [Fact]
     public void Build_LeavesParametersOutOfDapperCalls_WhenProcedureHasNoParameters()
     {
         using var model = CreateModel("""
