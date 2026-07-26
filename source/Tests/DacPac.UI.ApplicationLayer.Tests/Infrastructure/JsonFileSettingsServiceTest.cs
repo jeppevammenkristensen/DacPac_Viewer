@@ -12,7 +12,7 @@ using TruePath;
 using Xunit;
 using JsonFileSettingsService = DacPac.UI.ApplicationLayer.Infrastructure.JsonFileSettingsService;
 
-namespace DacPac.UI.Tests.Infrastructure;
+namespace DacPac.UI.ApplicationLayer.Tests.Infrastructure;
 
 [TestSubject(typeof(JsonFileSettingsService))]
 public class JsonFileSettingsServiceTest

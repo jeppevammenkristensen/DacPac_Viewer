@@ -3,7 +3,7 @@ using DacPac.Core;
 using Microsoft.SqlServer.Dac.Model;
 using Xunit;
 
-namespace DacPac.UI.Tests.Core;
+namespace DacPac.Core.Tests;
 
 public class ExtensionMethodsTest
 {

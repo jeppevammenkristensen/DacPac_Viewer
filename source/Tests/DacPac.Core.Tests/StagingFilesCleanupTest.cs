@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using TruePath;
 using Xunit;
 
-namespace DacPac.UI.Tests;
+namespace DacPac.Core.Tests;
 
 [TestSubject(typeof(StagingFilesCleanup))]
 public class StagingFilesCleanupTest
