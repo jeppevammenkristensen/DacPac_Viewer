@@ -50,6 +50,7 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
     {
         _locator = locator;
         _updateService = updateService;
+        _settingsService = settingsService;
         Screens = [];
         Status = string.Empty;
         Title = "DacPac viewer";

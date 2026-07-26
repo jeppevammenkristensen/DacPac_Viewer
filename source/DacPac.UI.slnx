@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Tests/">
-    <Project Path="DacPac.UI.Tests/DacPac.UI.Tests.csproj" />
+    <Project Path="Tests/DacPac.Core.Tests/DacPac.Core.Tests.csproj" />
+    <Project Path="Tests/DacPac.UI.ApplicationLayer.Tests/DacPac.UI.ApplicationLayer.Tests.csproj" />
+    <Project Path="Tests/DacPac.UI.Tests/DacPac.UI.Tests.csproj" />
   </Folder>
   <Project Path="DacPac.Core/DacPac.Core.csproj" />
   <Project Path="DacPac.UI.ApplicationLayer/DacPac.UI.ApplicationLayer.csproj" />
