@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Security;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core.Generators;
@@ -7,16 +8,21 @@ public class ViewToCsharpClassGenerator : CsharpGenerator
 {
     protected override void DoBuild(TSqlObject sqlObject, StringBuilder sb)
     {
-        sb.AppendLine($"""
-                       /// <summary>
-                       /// Represents a {sqlObject.Name.Parts.Last()} {sqlObject.Name.ToString()}
-                       /// </summary>
-                       /// <remarks>
-                       /// The generated view is not 100% reliable because not all result types can be derived from the DACPAC.
-                       /// If the database is installed, retrieve the result types with
-                       /// <code>EXEC sys.sp_describe_first_result_set N'SELECT * FROM {sqlObject.Name}';</code>
-                       /// </remarks>
-                       """);
+        sb.AppendLine("/// <summary>");
+        sb.AppendLine($"/// Represents a {sqlObject.Name.Parts.Last()} {sqlObject.Name}");
+        sb.AppendLine("/// </summary>");
+        sb.AppendLine("/// <remarks>");
+        sb.AppendLine("/// The generated view is not 100% reliable because not all result types can be derived from the DACPAC.");
+        sb.AppendLine("/// If the database is installed, retrieve the result types with");
+        sb.AppendLine($"/// <code>EXEC sys.sp_describe_first_result_set N'SELECT * FROM {sqlObject.Name}';</code>");
+        sb.AppendLine("/// <code>");
+        foreach (var line in sqlObject.GetScript().Split('\n'))
+        {
+            sb.AppendLine($"/// {SecurityElement.Escape(line.TrimEnd('\r'))}");
+        }
+
+        sb.AppendLine("/// </code>");
+        sb.AppendLine("/// </remarks>");
 
         sb.AppendLine($"public class {sqlObject.Name.Parts.Last().ToPascalCase()}");
         sb.AppendLine("{");

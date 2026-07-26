@@ -28,7 +28,7 @@
     <Grid RowDefinitions="Auto,*" RowSpacing="12">
 
         <!-- Search bar -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto, Auto" ColumnSpacing="8">
             <TextBox Grid.Column="0"
                      PlaceholderText="Search…"
                      Classes="Search"
@@ -69,6 +69,11 @@
                     Content="Open"
                     VerticalAlignment="Top"
                     Command="{Binding OpenDacpacCommand}" />
+            <Button Grid.Column="4"
+                    Classes="Accent"
+                    Content="Install"
+                    VerticalAlignment="Top"
+                    Command="{Binding InstallCommand}" />
         </Grid>
     
         <!-- Results split -->

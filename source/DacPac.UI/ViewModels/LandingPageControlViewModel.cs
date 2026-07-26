@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using DacPac.UI.Infrastructure;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Input;
 using DacPac.Core;
 using DacPac.UI.ApplicationLayer.Infrastructure;
+using DacPac.UI.Infrastructure.Messages;
 using DacPac.UI.ViewModels.Displays;
 using DacPac.UI.ViewModels.GeneratedCode;
 using Microsoft.Extensions.Logging;
@@ -117,6 +119,18 @@ public partial class LandingPageControlViewModel(
     partial void OnPreventCloseChanged(bool value)
     {
         CanClose = !value;
+    }
+
+    private bool CanExecuteInstall()
+    {
+        return OpenedDacpacFiles.Count > 0;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteInstall))]
+    private async Task Install()
+    {
+        await this.Messenger.Send(new OpenInstallationMessage(OpenedDacpacFiles.Select(AbsolutePath.Create).ToArray()));
+        
     }
 
     partial void OnSelectedResultChanged(SearchResultRow? value)
@@ -231,6 +245,7 @@ public partial class LandingPageControlViewModel(
             FilterOptions = ["All", ..filterOptions];
             SelectedFilters = ["All",..filterOptions];
             SetStatusMessage($"Opened {files.Count} dacpac file(s).");
+            InstallCommand.NotifyCanExecuteChanged();
         }
         finally
         {

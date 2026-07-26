@@ -14,6 +14,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DacPac.UI.ApplicationLayer.Infrastructure;
+using DacPac.UI.Infrastructure.Messages;
 using TruePath;
 
 namespace DacPac.UI.ViewModels;
@@ -40,7 +41,11 @@ public sealed record OpenDacpacMenuItem(RecentDacpacFiles? RecentFiles)
     public string Title => RecentFiles?.Title ?? "Open Dacpac";
 }
 
-public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDataMessage>, IRecipient<StatusValueDataMessage>, IRecipient<StoredPathsChangedMessage>
+public partial class MainWindowViewModel : ViewModelBase,
+    IRecipient<ProgressDataMessage>,
+    IRecipient<StatusValueDataMessage>,
+    IRecipient<StoredPathsChangedMessage>,
+    IRecipient<OpenInstallationMessage>
 {
     private readonly IServiceLocator _locator;
     private readonly IUpdateService _updateService;
@@ -58,22 +63,32 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
 
     private bool CanExecuteOpenDacPac()
     {
-        return Screen is LandingPageControlViewModel;
+        return true;
     }
 
     private async Task OpenDacPac()
     {
-        if (Screen is LandingPageControlViewModel landingPage)
+        var landingPage = await EnsureLandingPage();
+        await landingPage.OpenDacpacCommand.ExecuteAsync(null);
+    }
+
+    private async Task<LandingPageControlViewModel> EnsureLandingPage()
+    {
+        var landingPageControlViewModel = Screens.OfType<LandingPageControlViewModel>().FirstOrDefault();
+        if (landingPageControlViewModel == null)
         {
-            await landingPage.OpenDacpacCommand.ExecuteAsync(null);
+            await LaunchPrimaryCommand.ExecuteAsync(null);
+            return Screens.OfType<LandingPageControlViewModel>().First();
+        }
+        else
+        {
+            return landingPageControlViewModel;
         }
     }
 
     private async Task LoadRecentDacpacs(RecentDacpacFiles recentFiles)
     {
-        if (Screen is not LandingPageControlViewModel landingPage)
-            return;
-
+        var landingPage = await EnsureLandingPage();
         await landingPage.OpenDacpacFilesAsync(recentFiles.Paths);
     }
 
@@ -104,7 +119,11 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
     public partial bool UpdateAvailable { get; set; }
 
     [ObservableProperty] public partial string Title { get; set; }
-    [NotifyPropertyChangedFor(nameof(DisplayInfo))] [NotifyPropertyChangedFor(nameof(DisplayInfoError))] [ObservableProperty] public partial StatusType StatusType { get; set; }
+    [NotifyPropertyChangedFor(nameof(DisplayInfo))]
+    [NotifyPropertyChangedFor(nameof(DisplayInfoError))]
+    [NotifyPropertyChangedFor(nameof(DisplaySuccess))]
+    [ObservableProperty] 
+    public partial StatusType StatusType { get; set; }
 
     [NotifyPropertyChangedFor(nameof(ThemeToggleGlyph))]
     [ObservableProperty]
@@ -112,6 +131,8 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
 
     public bool DisplayInfo => StatusType == StatusType.Info;
     public bool DisplayInfoError => StatusType == StatusType.Error;
+
+    public bool DisplaySuccess => StatusType == StatusType.Success;
 
     /// <summary>
     ///     Glyph shown on the theme toggle button, representing the theme that will be switched to.
@@ -278,4 +299,18 @@ public partial class MainWindowViewModel : ViewModelBase, IRecipient<ProgressDat
         else
             Screen = null;
     }
+
+    public void Receive(OpenInstallationMessage message)
+    {
+        message.Reply(LaunchInstallation(message.Paths));
+    }
+
+    private async Task<bool> LaunchInstallation(AbsolutePath[] paths)
+    {
+        var installationViewModel = _locator.GetRequiredService<InstallationViewModel>();
+        installationViewModel.SetPackages(paths);
+        await LaunchScreenAsync(installationViewModel);
+        return true;
+    }
+    
 }
