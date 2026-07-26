@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Security;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core.Generators;
@@ -20,6 +21,15 @@ public class ProcedureToClassGenerator : CsharpGenerator
                        /// Represents a {sqlObject.Name.Parts.Last()} {sqlObject.Name.ToString()}
                        /// </summary>
                        """);
+        sb.AppendLine("/// <remarks>");
+        sb.AppendLine("/// <code>");
+        foreach (var line in sqlObject.GetScript().Split('\n'))
+        {
+            sb.AppendLine($"/// {SecurityElement.Escape(line.TrimEnd('\r'))}");
+        }
+
+        sb.AppendLine("/// </code>");
+        sb.AppendLine("/// </remarks>");
         sb.AppendLine($"public class {sqlObject.Name.Parts.Last().ToPascalCase()}Procedure");
         sb.AppendLine("{");
 

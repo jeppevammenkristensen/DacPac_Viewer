@@ -1,0 +1,36 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels" x:DataType="viewModel:InstallationViewModel"
+              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+              x:Class="DacPac.UI.Views.Installation">
+    <Grid RowDefinitions="Auto,Auto,*" RowSpacing="12">
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+            <TextBox Grid.Column="0"
+                     MinWidth="480"
+                     VerticalAlignment="Center"
+                     PlaceholderText="Server=...;Database=master;..."
+                     Text="{Binding MasterConnectionString, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Grid.Column="1"
+                    Command="{Binding TestCommand}"
+                    Content="Test" />
+            <Button Grid.Column="2"
+                    Classes="Accent"
+                    Content="Install" Command="{Binding InstallCommand}" />
+        </Grid>
+        
+        <TextBox Grid.Row="1" Text="{Binding DatabaseName}"></TextBox>
+
+        <Border Grid.Row="2"
+                Background="{DynamicResource SurfaceElevatedBrush}"
+                BorderBrush="{DynamicResource BorderBrushSoft}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource RadiusMd}">
+            <TextBlock Margin="12"
+                       TextWrapping="Wrap"
+                       Text="{Binding Status, Mode=OneWay}"
+                       VerticalAlignment="Top" />
+        </Border>
+    </Grid>
+</UserControl>

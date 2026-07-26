@@ -59,6 +59,7 @@
                 <GradientStop Color="#222838" Offset="1.0" />
             </LinearGradientBrush>
             <SolidColorBrush x:Key="StatusBarErrorBrush" Color="#7F1D1D" />
+            <SolidColorBrush x:Key="StatusBarSuccessBrush" Color="MediumSeaGreen"></SolidColorBrush>
         </ResourceDictionary>
 
         <!-- ===== Light theme ===== -->
@@ -117,6 +118,7 @@
                 <GradientStop Color="#E4E7EF" Offset="1.0" />
             </LinearGradientBrush>
             <SolidColorBrush x:Key="StatusBarErrorBrush" Color="#DC2626" />
+            <SolidColorBrush x:Key="StatusBarSuccessBrush" Color="MediumSeaGreen"></SolidColorBrush>
         </ResourceDictionary>
 
     </ResourceDictionary.ThemeDictionaries>
