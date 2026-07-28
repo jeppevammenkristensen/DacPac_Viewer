@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using DacPac.Wrappers;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core.Generators;
@@ -32,16 +33,25 @@ public class TableToCsharpClassGenerator : CsharpGenerator
     /// </summary>
     private void BuildProperties(TSqlObject sqlObject, StringBuilder sb)
     {
+        var foreignKeyConstraintWrappers = sqlObject.GetReferencingRelationshipInstances()
+            .Select(x => x.FromObject)
+            .Where(x => x.ObjectType == ForeignKeyConstraint.TypeClass)
+            .Select(x => x.ToForeignKeyConstraint()).ToList();
+
+        var hostedForeignKeyConstraints = foreignKeyConstraintWrappers
+            .Where(x => x.Host.Any(y => y.Name.ToString() == sqlObject.Name.ToString()))
+            .ToList();
+
+        var referencingForeignKeyConstraints = foreignKeyConstraintWrappers.Where(x =>
+            x.ForeignTable.Any(y => y.Name.ToString() == sqlObject.Name.ToString())).ToList();
+        
         foreach (var column in sqlObject.GetReferenced(Table.Columns))
         {
-            GeneratePropertyWithSummary(column, sb); 
+            GeneratePropertyWithSummary(column, sb, hostedForeignKeyConstraints, referencingForeignKeyConstraints); 
         }
     }
 
-    /// <summary>
-    /// Writes the XML documentation and C# type declaration for a table column.
-    /// </summary>
-    private StringBuilder GeneratePropertyWithSummary(TSqlObject column, StringBuilder sb)
+    private StringBuilder GeneratePropertyWithSummary(TSqlObject column, StringBuilder sb, List<ForeignKeyConstraintWrapper> hostedForeignKeyConstraints, List<ForeignKeyConstraintWrapper> referencingForeignKeyConstraints)
     {
         var columnName = column.Name.Parts.Last();
         var dataType = column.GetReferenced(Column.DataType).FirstOrDefault();
@@ -56,6 +66,20 @@ public class TableToCsharpClassGenerator : CsharpGenerator
                        /// </summary>
                        """);
         
+        sb.AppendLine("///<remarks>");
+        foreach (var foreignKeyConstraintWrapper in hostedForeignKeyConstraints.Where(x => x.Columns.Any(y => y.Name.ToString() == column.Name.ToString())))
+        {
+            sb.AppendLine(
+                $"/// Foreign key pointing to {foreignKeyConstraintWrapper.ForeignColumns.Select(x => x.Name.ToString()).First()} in {foreignKeyConstraintWrapper.ForeignTable.First().Name.ToString()}");
+        }
+
+        foreach (var referencingForeignKeyConstraint in referencingForeignKeyConstraints.Where(x => x.ForeignColumns.Any(y => y.Name.ToString() == column.Name.ToString())))
+        {
+            sb.AppendLine($"/// Key referenced by {referencingForeignKeyConstraint.Columns.Select(x => x.Name.ToString()).First()} in {referencingForeignKeyConstraint.Host.First().Name.ToString()}");
+        }
+        
+        sb.AppendLine("/// </remarks>");
+        
         var dotnetType = dataType == null ? null : ExtensionMethods.GetDotNetDataType(dataType, isNullable);
         if (dotnetType == null)
         {
@@ -69,6 +93,8 @@ public class TableToCsharpClassGenerator : CsharpGenerator
 
         return sb;
     }
+
+    
 
     /// <summary>
     /// Determines whether the object is a named table.

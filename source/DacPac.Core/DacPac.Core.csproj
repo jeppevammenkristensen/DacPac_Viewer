@@ -14,4 +14,8 @@
     <PackageReference Include="TruePath.TestableIO.System.IO" Version="0.16.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DacPac.Wrappers\DacPac.Wrappers.csproj" />
+  </ItemGroup>
+
 </Project>
