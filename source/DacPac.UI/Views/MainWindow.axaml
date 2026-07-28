@@ -31,7 +31,9 @@
                         <MenuItem.DataTemplates>
                             <DataTemplate x:DataType="vm:OpenDacpacMenuItem">
                                 <MenuItem Header="{Binding Title}"
+                                          ToolTip.Tip="{Binding ToolTip}"
                                           Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).OpenDacpacMenuItemCommand}"
+                                          
                                           CommandParameter="{Binding}" />
                             </DataTemplate>
                         </MenuItem.DataTemplates>
