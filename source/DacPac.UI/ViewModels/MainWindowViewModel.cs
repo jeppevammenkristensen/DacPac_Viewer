@@ -15,6 +15,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure.Messages;
+using JetBrains.Annotations;
 using TruePath;
 
 namespace DacPac.UI.ViewModels;
@@ -33,7 +34,7 @@ public sealed record RecentDacpacFiles(IReadOnlyList<AbsolutePath> Paths)
 /// <summary>
 /// Represents an item in the Open menu, either the file picker or a recent entry.
 /// </summary>
-public sealed record OpenDacpacMenuItem(RecentDacpacFiles? RecentFiles)
+public sealed record OpenDacpacMenuItem(RecentDacpacFiles? RecentFiles, string? ToolTip)
 {
     /// <summary>
     /// Gets the text shown in the Open menu.
@@ -41,6 +42,7 @@ public sealed record OpenDacpacMenuItem(RecentDacpacFiles? RecentFiles)
     public string Title => RecentFiles?.Title ?? "Open Dacpac";
 }
 
+[UsedImplicitly]
 public partial class MainWindowViewModel : ViewModelBase,
     IRecipient<ProgressDataMessage>,
     IRecipient<StatusValueDataMessage>,
@@ -188,7 +190,7 @@ public partial class MainWindowViewModel : ViewModelBase,
     private void UpdateOpenDacpacMenuItems(IEnumerable<AbsolutePath[]> files)
     {
         OpenDacpacMenuItems.Clear();
-        OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(null));
+        OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(null, "Open one or more dac pac files"));
         
         foreach (var indexTuple in files.Index())
         {
@@ -196,7 +198,7 @@ public partial class MainWindowViewModel : ViewModelBase,
             {
                 OpenDacpacMenuItems.Add(new Separator());
             }
-            OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(new RecentDacpacFiles(indexTuple.Item)));
+            OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(new RecentDacpacFiles(indexTuple.Item), string.Join(",",indexTuple.Item)));
         }
     }
 
