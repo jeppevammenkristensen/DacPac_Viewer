@@ -15,4 +15,5 @@ public interface ISettingsService
     
     void SaveOrUpdatePaths(IReadOnlyList<AbsolutePath> paths);
     IReadOnlyList<AbsolutePath[]> GetStoredPaths();
+    void RemovePaths(IReadOnlyList<AbsolutePath> files);
 }

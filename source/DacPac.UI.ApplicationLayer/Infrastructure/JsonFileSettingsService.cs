@@ -49,7 +49,17 @@ public partial class JsonFileSettingsService : ISettingsService
         var storedPaths = _storedPathsWrapper.Load();
         return storedPaths.Paths.Select(x => x.Path.Select(AbsolutePath.Create).ToArray()).ToList();
     }
-    
+
+    public void RemovePaths(IReadOnlyList<AbsolutePath> files)
+    {
+        var storedPaths = _storedPathsWrapper.Load();
+        var pathToRemove = new StoredPath([.. files.Select(x => x.Value)]);
+        var newPath = storedPaths.Paths.Remove(pathToRemove);
+
+        storedPaths = new StoredPaths(newPath);
+        SaveNotitfyUpdatedStoredPaths(storedPaths);
+    }
+
     public void SaveOrUpdatePaths(IReadOnlyList<AbsolutePath> paths)
     {
         var storedPaths = _storedPathsWrapper.Load();
@@ -57,6 +67,12 @@ public partial class JsonFileSettingsService : ISettingsService
         ImmutableArray<StoredPath> newPath = [storedPath,..storedPaths.Paths.Where(x => !x.Equals(storedPath))];
         
         storedPaths = new StoredPaths(Paths: newPath);
+        
+        SaveNotitfyUpdatedStoredPaths(storedPaths);
+    }
+
+    private void SaveNotitfyUpdatedStoredPaths(StoredPaths storedPaths)
+    {
         _storedPathsWrapper.Save(storedPaths);
         _messenger.Send(new StoredPathsChangedMessage(storedPaths.Paths.Select(x => x.Path.Select(AbsolutePath.Create).ToArray()).ToList()));
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
@@ -218,6 +219,12 @@ public partial class LandingPageControlViewModel(
         IsLoading = true;
         try
         {
+            if (!CheckFiles(files))
+            {
+                settingsService.RemovePaths(files);
+                return;
+            }
+            
             OpenedDacpacFiles.Clear();
             Results.Clear();
 
@@ -251,6 +258,18 @@ public partial class LandingPageControlViewModel(
         {
             IsLoading = false;
         }
+    }
+
+    private bool CheckFiles(IReadOnlyList<AbsolutePath> files)
+    {
+        var nonExisting = files.Where(x => !x.FileExists()).ToList();
+        if (nonExisting.Count > 0)
+        {
+            Messenger.SendError($"{nonExisting.Count} file(s) was not found at the location");
+            return false;
+        }
+
+        return true;
     }
 
     public override Task OnActivatedAsync()

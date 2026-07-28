@@ -139,6 +139,26 @@ public class JsonFileSettingsServiceTest
     }
 
     [Fact]
+    public void RemovePaths_RemovesMatchingPaths_AndPreservesOtherPaths()
+    {
+        var fileSystem = new MockFileSystem();
+        var service = CreateService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
+        var firstPaths = new[] { AbsolutePath.Create(@"C:\first") };
+        var secondPaths = new[] { AbsolutePath.Create(@"C:\second-one"), AbsolutePath.Create(@"C:\second-two") };
+        var thirdPaths = new[] { AbsolutePath.Create(@"C:\third") };
+
+        service.SaveOrUpdatePaths(firstPaths);
+        service.SaveOrUpdatePaths(secondPaths);
+        service.SaveOrUpdatePaths(thirdPaths);
+        service.RemovePaths(secondPaths);
+
+        var storedPathsFile = RootSaveLocation / "storedpaths.json";
+        Assert.Equal(
+            """{"paths":[{"path":["C:\\third"]},{"path":["C:\\first"]}]}""",
+            fileSystem.File.ReadAllText(storedPathsFile));
+    }
+
+    [Fact]
     public void SaveOrUpdatePaths_PublishesStoredPathsChangedMessage()
     {
         var messenger = new StrongReferenceMessenger();
