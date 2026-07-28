@@ -33,18 +33,20 @@ public class TableToCsharpClassGenerator : CsharpGenerator
     /// </summary>
     private void BuildProperties(TSqlObject sqlObject, StringBuilder sb)
     {
-        var foreignKeyConstraintWrappers = sqlObject.GetReferencingRelationshipInstances()
+        var foreignKeyConstraintWrappers = sqlObject.GetReferencingRelationshipInstances(DacQueryScopes.All)
             .Select(x => x.FromObject)
             .Where(x => x.ObjectType == ForeignKeyConstraint.TypeClass)
-            .Select(x => x.ToForeignKeyConstraint()).ToList();
+            .Select(x => x.ToForeignKeyConstraint())
+            .ToList();
 
         var hostedForeignKeyConstraints = foreignKeyConstraintWrappers
             .Where(x => x.Host.Any(y => y.Name.ToString() == sqlObject.Name.ToString()))
             .ToList();
 
-        var referencingForeignKeyConstraints = foreignKeyConstraintWrappers.Where(x =>
-            x.ForeignTable.Any(y => y.Name.ToString() == sqlObject.Name.ToString())).ToList();
-        
+        var referencingForeignKeyConstraints = foreignKeyConstraintWrappers
+            .Where(x => x.ForeignTable.Any(y => y.Name.ToString() == sqlObject.Name.ToString()))
+            .ToList();
+
         foreach (var column in sqlObject.GetReferenced(Table.Columns))
         {
             GeneratePropertyWithSummary(column, sb, hostedForeignKeyConstraints, referencingForeignKeyConstraints); 
@@ -67,13 +69,13 @@ public class TableToCsharpClassGenerator : CsharpGenerator
                        """);
         
         sb.AppendLine("///<remarks>");
-        foreach (var foreignKeyConstraintWrapper in hostedForeignKeyConstraints.Where(x => x.Columns.Any(y => y.Name.ToString() == column.Name.ToString())))
+        foreach (var foreignKeyConstraintWrapper in hostedForeignKeyConstraints.Where(x => x.Columns.Any(y => y.Name.Parts.Last() == columnName)))
         {
             sb.AppendLine(
                 $"/// Foreign key pointing to {foreignKeyConstraintWrapper.ForeignColumns.Select(x => x.Name.ToString()).First()} in {foreignKeyConstraintWrapper.ForeignTable.First().Name.ToString()}");
         }
 
-        foreach (var referencingForeignKeyConstraint in referencingForeignKeyConstraints.Where(x => x.ForeignColumns.Any(y => y.Name.ToString() == column.Name.ToString())))
+        foreach (var referencingForeignKeyConstraint in referencingForeignKeyConstraints.Where(x => x.ForeignColumns.Any(y => y.Name.Parts.Last() == columnName)))
         {
             sb.AppendLine($"/// Key referenced by {referencingForeignKeyConstraint.Columns.Select(x => x.Name.ToString()).First()} in {referencingForeignKeyConstraint.Host.First().Name.ToString()}");
         }
