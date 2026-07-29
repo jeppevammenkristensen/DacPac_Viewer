@@ -65,7 +65,8 @@ public partial class SqlServerSetupPageViewModel(
         }
 
         var containersList = await dockerService.ListContainers().ToListAsync();
-        var existingContainer = containersList.FirstOrDefault(x => x.Names.Contains(ContainerName));
+        var existingContainer = containersList.FirstOrDefault(x =>
+            string.Equals(x.Names, ContainerName, System.StringComparison.Ordinal));
         if (existingContainer is not null)
         {
             var shouldReplace = await confirmationDialogService.ConfirmAsync(
@@ -117,7 +118,7 @@ public partial class SqlServerSetupPageViewModel(
             .AddArgumentPair("-e", "ACCEPT_EULA=Y")
             .AddArgumentPair("-e", $"MSSQL_SA_PASSWORD={SaPassword}")
             .AddArgumentPair("-p", $"{HostPort}:1433")
-            .AddArgumentPair("-v", $"{ContainerName} not connected yet.")
+            .AddArgumentPair("-v", $"{ContainerName}")
             .AddArgumentPair("-d", "mcr.microsoft.com/mssql/server:2025-latest")
             .WithEchoPrefix("Docker-Setup")
             .ReadAsync();
