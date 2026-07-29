@@ -91,7 +91,7 @@ public class JsonFileSettingsServiceTest
     private static JsonFileSettingsService CreateService(
         IFileSystem fileSystem,
         ILogger<JsonFileSettingsService> logger) =>
-        new(fileSystem, new TestFileLocations(), logger, WeakReferenceMessenger.Default);
+        new(fileSystem, new TestFileLocations(), logger, new TestStringEncrypter(), WeakReferenceMessenger.Default);
 
     private static MockFileSystem CreateFileSystemWithSettings(string settingsJson) =>
         new(new Dictionary<string, MockFileData>
@@ -125,8 +125,8 @@ public class JsonFileSettingsServiceTest
     {
         var fileSystem = new MockFileSystem();
         var service = CreateService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
-        var firstPaths = new[] { AbsolutePath.Create(@"C:\first") };
-        var secondPaths = new[] { AbsolutePath.Create(@"C:\second") };
+        var firstPaths = new[] {AbsolutePath.Create(@"C:\first")};
+        var secondPaths = new[] {AbsolutePath.Create(@"C:\second")};
 
         service.SaveOrUpdatePaths(firstPaths);
         service.SaveOrUpdatePaths(secondPaths);
@@ -143,9 +143,9 @@ public class JsonFileSettingsServiceTest
     {
         var fileSystem = new MockFileSystem();
         var service = CreateService(fileSystem, NullLogger<JsonFileSettingsService>.Instance);
-        var firstPaths = new[] { AbsolutePath.Create(@"C:\first") };
-        var secondPaths = new[] { AbsolutePath.Create(@"C:\second-one"), AbsolutePath.Create(@"C:\second-two") };
-        var thirdPaths = new[] { AbsolutePath.Create(@"C:\third") };
+        var firstPaths = new[] {AbsolutePath.Create(@"C:\first")};
+        var secondPaths = new[] {AbsolutePath.Create(@"C:\second-one"), AbsolutePath.Create(@"C:\second-two")};
+        var thirdPaths = new[] {AbsolutePath.Create(@"C:\third")};
 
         service.SaveOrUpdatePaths(firstPaths);
         service.SaveOrUpdatePaths(secondPaths);
@@ -166,7 +166,7 @@ public class JsonFileSettingsServiceTest
         messenger.Register<StoredPathsChangedRecipient, StoredPathsChangedMessage>(recipient,
             static (r, _) => r.Received = true);
         var service = new JsonFileSettingsService(new MockFileSystem(), new TestFileLocations(),
-            NullLogger<JsonFileSettingsService>.Instance, messenger);
+            NullLogger<JsonFileSettingsService>.Instance, new TestStringEncrypter(), messenger);
 
         service.SaveOrUpdatePaths([AbsolutePath.Create(@"C:\first")]);
 
@@ -176,5 +176,21 @@ public class JsonFileSettingsServiceTest
     private sealed class StoredPathsChangedRecipient
     {
         public bool Received { get; set; }
+    }
+
+    /// <summary>
+    /// Provides deterministic connection-string protection for settings tests.
+    /// </summary>
+    private sealed class TestStringEncrypter : IStringEncrypter
+    {
+        /// <summary>
+        /// Returns the test value unchanged.
+        /// </summary>
+        public string? Decrypt(string source) => source;
+
+        /// <summary>
+        /// Returns the test value unchanged.
+        /// </summary>
+        public string Encrypt(string source) => source;
     }
 }

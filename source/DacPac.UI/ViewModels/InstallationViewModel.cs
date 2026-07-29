@@ -4,8 +4,8 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure;
-using DacPac.UI.Infrastructure.LongRunning;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Dac;
 using TruePath;
@@ -15,11 +15,14 @@ namespace DacPac.UI.ViewModels;
 public partial class InstallationViewModel : ScreenPage
 {
     private readonly IMessenger _messenger;
+    private readonly ISettingsService _settingsService;
+
     private string _title = "Installation";
 
-    public InstallationViewModel(IMessenger messenger)
+    public InstallationViewModel(IMessenger messenger, ISettingsService settingsService)
     {
         _messenger = messenger;
+        _settingsService = settingsService;
     }
     
     public override string Title => _title;
@@ -29,11 +32,7 @@ public partial class InstallationViewModel : ScreenPage
     {
         Paths = messageValue;
         DatabaseName = Paths[0].GetFilenameWithoutExtension();
-    }
-
-    public override Task OnActivatedAsync()
-    {
-        return base.OnActivatedAsync();
+        MasterConnectionString = _settingsService.LatestConnectionString;
     }
 
     [NotifyCanExecuteChangedFor(nameof(TestCommand))]
@@ -42,9 +41,9 @@ public partial class InstallationViewModel : ScreenPage
     public partial string? MasterConnectionString { get; set; }
     
     [ObservableProperty]
-    public partial string DatabaseName { get; set; }
+    public partial string? DatabaseName { get; set; }
 
-    [ObservableProperty] public partial string Status { get; set; } 
+    [ObservableProperty] public partial string Status { get; set; } = string.Empty;
 
     private bool CanExecuteTest()
     {
@@ -70,12 +69,15 @@ public partial class InstallationViewModel : ScreenPage
         try
         {
             await sqlConnection.OpenAsync();
-            _messenger.SendSuccess("Successfully established connection");   
+            _messenger.SendSuccess("Successfully established connection");
+            
         }
         catch (Exception e)
         {
             _messenger.SendError($"Cannot establish connection. {e.Message}");
         }
+        
+        _settingsService.LatestConnectionString = MasterConnectionString;
     }
 
     private bool CanExecuteInstall()
@@ -115,6 +117,7 @@ public partial class InstallationViewModel : ScreenPage
 
                     services.Deploy(dacpac, DatabaseName, true, dacDeployOptions);
                     _messenger.SendSuccess("Installed database");
+                    _settingsService.LatestConnectionString = MasterConnectionString;
                 }
             });
         }

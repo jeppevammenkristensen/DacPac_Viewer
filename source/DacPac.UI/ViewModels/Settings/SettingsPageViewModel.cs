@@ -10,8 +10,17 @@ public partial class SettingsPageViewModel(ISettingsService settingsService) : S
 
     [ObservableProperty] public partial bool EnableBetaUpdates { get; set; } = settingsService.EnableBetaUpdates;
 
+
+    [ObservableProperty]
+    public partial bool PersistConnectionStrings { get; set; } = settingsService.StoreConnectionStrings;
+    
     partial void OnEnableBetaUpdatesChanged(bool value)
     {
         settingsService.EnableBetaUpdates = value;
+    }
+
+    partial void OnPersistConnectionStringsChanged(bool value)
+    {
+        settingsService.StoreConnectionStrings = value;
     }
 }

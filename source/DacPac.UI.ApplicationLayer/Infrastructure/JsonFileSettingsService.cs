@@ -9,30 +9,46 @@ using TruePath;
 
 namespace DacPac.UI.ApplicationLayer.Infrastructure;
 
+/// <summary>
+/// Persists application settings in JSON files.
+/// </summary>
 public partial class JsonFileSettingsService : ISettingsService
 {
     private readonly IFileSystem _fileSystem;
     private readonly IFileLocations _fileLocations;
 
 
-    public JsonFileSettingsService(IFileSystem fileSystem, IFileLocations fileLocations, ILogger<JsonFileSettingsService> logger,
+    /// <summary>
+    /// Initializes a JSON-backed settings service.
+    /// </summary>
+    public JsonFileSettingsService(IFileSystem fileSystem,
+        IFileLocations fileLocations,
+        ILogger<JsonFileSettingsService> logger,
+        IStringEncrypter encrypter,
         IMessenger messenger)
     {
         _fileSystem = fileSystem;
         _fileLocations = fileLocations;
         _logger = logger;
+        _encrypter = encrypter;
         _messenger = messenger;
         _data = Load();
-        _storedPathsWrapper = StoredPathsJsonContext.Default.StoredPaths.WrapperFromTypeInfo(_fileLocations.RootSaveLocation / "storedpaths.json", _fileSystem, () => new StoredPaths(ImmutableArray<StoredPath>.Empty));
+        _storedPathsWrapper = StoredPathsJsonContext.Default.StoredPaths.WrapperFromTypeInfo(
+            _fileLocations.RootSaveLocation / "storedpaths.json", _fileSystem,
+            () => new StoredPaths(ImmutableArray<StoredPath>.Empty));
     }
 
     private AbsolutePath SettingsFilePath => _fileLocations.RootSaveLocation / "settings.json";
 
     private readonly ILogger<JsonFileSettingsService> _logger;
+    private readonly IStringEncrypter _encrypter;
     private readonly IMessenger _messenger;
     private readonly SettingsData _data;
     private JsonSettingsWrapper<StoredPaths> _storedPathsWrapper;
 
+    /// <summary>
+    /// Gets or sets whether update checks include beta releases.
+    /// </summary>
     public bool EnableBetaUpdates
     {
         get => _data.EnableBetaUpdates;
@@ -44,12 +60,60 @@ public partial class JsonFileSettingsService : ISettingsService
         }
     }
 
+    public bool StoreConnectionStrings
+    {
+        get => _data.PersistLatestConnectionString ?? false;
+        set
+        {
+            if (_data.PersistLatestConnectionString == value) return;
+            _data.PersistLatestConnectionString = value;
+            if (value == false)
+            {
+                _data.EncryptedLatestConnectionString = null;
+            }
+            Save();
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the latest connection string protected for the current Windows user.
+    /// </summary>
+    public string? LatestConnectionString
+    {
+        get
+        {
+            if (!StoreConnectionStrings)
+                return null;
+            
+            return string.IsNullOrWhiteSpace(_data.EncryptedLatestConnectionString)
+                ? null
+                : UnprotectConnectionString(_data.EncryptedLatestConnectionString);
+        }
+        set
+        {
+            if (!StoreConnectionStrings)
+                return;
+            
+            var protectedValue = string.IsNullOrEmpty(value) ? null : ProtectConnectionString(value);
+            if (_data.EncryptedLatestConnectionString == protectedValue) return;
+
+            _data.EncryptedLatestConnectionString = protectedValue;
+            Save();
+        }
+    }
+
+    /// <summary>
+    /// Gets the saved DacPac path groups.
+    /// </summary>
     public IReadOnlyList<AbsolutePath[]> GetStoredPaths()
     {
         var storedPaths = _storedPathsWrapper.Load();
         return storedPaths.Paths.Select(x => x.Path.Select(AbsolutePath.Create).ToArray()).ToList();
     }
 
+    /// <summary>
+    /// Removes a saved DacPac path group.
+    /// </summary>
     public void RemovePaths(IReadOnlyList<AbsolutePath> files)
     {
         var storedPaths = _storedPathsWrapper.Load();
@@ -60,23 +124,33 @@ public partial class JsonFileSettingsService : ISettingsService
         SaveNotitfyUpdatedStoredPaths(storedPaths);
     }
 
+    /// <summary>
+    /// Saves a DacPac path group and moves it to the front of the recent list.
+    /// </summary>
     public void SaveOrUpdatePaths(IReadOnlyList<AbsolutePath> paths)
     {
         var storedPaths = _storedPathsWrapper.Load();
         var storedPath = new StoredPath(paths.Select(x => x.Value).ToArray());
-        ImmutableArray<StoredPath> newPath = [storedPath,..storedPaths.Paths.Where(x => !x.Equals(storedPath))];
-        
+        ImmutableArray<StoredPath> newPath = [storedPath, .. storedPaths.Paths.Where(x => !x.Equals(storedPath))];
+
         storedPaths = new StoredPaths(Paths: newPath);
-        
+
         SaveNotitfyUpdatedStoredPaths(storedPaths);
     }
 
+    /// <summary>
+    /// Persists path groups and notifies subscribers of the updated list.
+    /// </summary>
     private void SaveNotitfyUpdatedStoredPaths(StoredPaths storedPaths)
     {
         _storedPathsWrapper.Save(storedPaths);
-        _messenger.Send(new StoredPathsChangedMessage(storedPaths.Paths.Select(x => x.Path.Select(AbsolutePath.Create).ToArray()).ToList()));
+        _messenger.Send(new StoredPathsChangedMessage(storedPaths.Paths
+            .Select(x => x.Path.Select(AbsolutePath.Create).ToArray()).ToList()));
     }
 
+    /// <summary>
+    /// Loads settings from disk, returning defaults when they cannot be read.
+    /// </summary>
     private SettingsData Load()
     {
         try
@@ -92,13 +166,17 @@ public partial class JsonFileSettingsService : ISettingsService
         }
     }
 
+    /// <summary>
+    /// Persists the current settings to disk.
+    /// </summary>
     private void Save()
     {
         try
         {
             var directory = SettingsFilePath / "..";
             directory.CreateDirectory(_fileSystem);
-            _fileSystem.File.WriteAllText(SettingsFilePath, JsonSerializer.Serialize(_data, SettingsJsonContext.Default.SettingsData));
+            _fileSystem.File.WriteAllText(SettingsFilePath,
+                JsonSerializer.Serialize(_data, SettingsJsonContext.Default.SettingsData));
         }
         catch (Exception ex)
         {
@@ -106,13 +184,45 @@ public partial class JsonFileSettingsService : ISettingsService
         }
     }
 
-    private  class SettingsData
+    /// <summary>
+    /// Encrypts a connection string using the current Windows user's DPAPI key.
+    /// </summary>
+    private string ProtectConnectionString(string connectionString)
     {
-        public bool EnableBetaUpdates { get; set; }
+        return _encrypter.Encrypt(connectionString);
     }
 
-    private record StoredPaths(ImmutableArray<StoredPath> Paths) {
-        
+    /// <summary>
+    /// Decrypts a connection string stored by <see cref="ProtectConnectionString"/>.
+    /// </summary>
+    private string? UnprotectConnectionString(string encryptedConnectionString)
+    {
+        return _encrypter.Decrypt(encryptedConnectionString);
+    }
+
+    /// <summary>
+    /// Represents the settings serialized to the main settings file.
+    /// </summary>
+    private class SettingsData
+    {
+        /// <summary>
+        /// Gets or sets whether update checks include beta releases.
+        /// </summary>
+        public bool EnableBetaUpdates { get; set; }
+
+        /// <summary>
+        /// Gets or sets the DPAPI-protected latest connection string.
+        /// </summary>
+        public string? EncryptedLatestConnectionString { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the latest connection string should be persisted.
+        /// </summary>
+        public bool? PersistLatestConnectionString { get; set; }
+    }
+
+    private record StoredPaths(ImmutableArray<StoredPath> Paths)
+    {
     }
 
     private record StoredPath(string[] Path)
@@ -130,13 +240,20 @@ public partial class JsonFileSettingsService : ISettingsService
         }
     }
 
+    /// <summary>
+    /// Provides source-generated JSON metadata for stored paths.
+    /// </summary>
     [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
     [JsonSerializable(typeof(StoredPaths))]
     private partial class StoredPathsJsonContext : JsonSerializerContext
     {
     }
 
-    [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
+    /// <summary>
+    /// Provides source-generated JSON metadata for application settings.
+    /// </summary>
+    [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonSerializable(typeof(SettingsData))]
     private partial class SettingsJsonContext : JsonSerializerContext
     {
