@@ -30,7 +30,7 @@
         <!-- Search bar -->
         <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto, Auto" ColumnSpacing="8">
             <TextBox Grid.Column="0"
-                     PlaceholderText="Search…"
+                     PlaceholderText="Search (press enter to execute)…"
                      Classes="Search"
                      VerticalAlignment="Top"
                      Text="{Binding SearchText}">
@@ -40,6 +40,7 @@
             </TextBox>
             <ComboBox Grid.Column="1"
                       MinWidth="160"
+                      ToolTip.Tip="Filter options. Click All to toggle all or deselect all"
                       VerticalAlignment="Top"
                       PlaceholderText="{Binding FilterSummary}"
                       ItemsSource="{Binding FilterOptions}">
@@ -62,16 +63,19 @@
             <Button Grid.Column="2"
                     Classes="Accent"
                     Content="Search"
+                    ToolTip.Tip="Click to execute search"
                     VerticalAlignment="Top"
                     Command="{Binding SearchCommand}" />
             <Button Grid.Column="3"
                     Classes="Accent"
+                    ToolTip.Tip="Open a file picker to select one or more dacpacs"
                     Content="Open"
                     VerticalAlignment="Top"
                     Command="{Binding OpenDacpacCommand}" />
             <Button Grid.Column="4"
                     Classes="Accent"
                     Content="Install"
+                    ToolTip.Tip="Open an tab to install the database"
                     VerticalAlignment="Top"
                     Command="{Binding InstallCommand}" />
         </Grid>

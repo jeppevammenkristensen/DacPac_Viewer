@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using DacPac.Core;
+﻿using DacPac.Core;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +9,8 @@ public static class SetupExtensions
     public static void SetupApplicationLayerService(this IServiceCollection services)
     {
         services.AddSingleton<IFileLocations, FileLocations>();
+        services.AddSingleton<IMachineIdentityProvider, LinuxMachineIdentityProvider>();
+        services.AddSingleton<IStringEncrypter, StringEncrypter>();
         services.AddSingleton<ISettingsService, JsonFileSettingsService>();
     }
 }

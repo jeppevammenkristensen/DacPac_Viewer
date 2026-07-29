@@ -12,7 +12,14 @@ public interface ISettingsService
     /// Setting this value persists it immediately.
     /// </summary>
     bool EnableBetaUpdates { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the latest connection string protected for the current Windows user.
+    /// </summary>
+    string? LatestConnectionString { get; set; }
+
+    bool StoreConnectionStrings { get; set; }
+
     void SaveOrUpdatePaths(IReadOnlyList<AbsolutePath> paths);
     IReadOnlyList<AbsolutePath[]> GetStoredPaths();
     void RemovePaths(IReadOnlyList<AbsolutePath> files);
