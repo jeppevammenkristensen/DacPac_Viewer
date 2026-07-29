@@ -45,6 +45,7 @@ public sealed record OpenDacpacMenuItem(RecentDacpacFiles? RecentFiles, string? 
 [UsedImplicitly]
 public partial class MainWindowViewModel : ViewModelBase,
     IRecipient<ProgressDataMessage>,
+    IRecipient<InstallationRunningMessage>,
     IRecipient<StatusValueDataMessage>,
     IRecipient<StoredPathsChangedMessage>,
     IRecipient<OpenInstallationMessage>
@@ -96,7 +97,7 @@ public partial class MainWindowViewModel : ViewModelBase,
 
 
     [ObservableProperty] public partial ObservableCollection<ScreenPage> Screens { get; set; }
-    
+
 
     /// <summary>
     /// Gets the entries shown in the Open submenu.
@@ -104,7 +105,8 @@ public partial class MainWindowViewModel : ViewModelBase,
     public ObservableCollection<object> OpenDacpacMenuItems { get; } = [];
 
     [NotifyCanExecuteChangedFor(nameof(OpenDacpacMenuItemCommand))]
-    [ObservableProperty] public partial ScreenPage? Screen { get; set; }
+    [ObservableProperty]
+    public partial ScreenPage? Screen { get; set; }
 
     [ObservableProperty] public partial string Status { get; set; }
 
@@ -114,6 +116,18 @@ public partial class MainWindowViewModel : ViewModelBase,
     [ObservableProperty]
     public partial double CurrentProgress { get; set; }
 
+    /// <summary>
+    /// Gets whether a DacPac installation is in progress.
+    /// </summary>
+    [NotifyPropertyChangedFor(nameof(IsProgressVisible))]
+    [ObservableProperty]
+    public partial bool IsInstalling { get; set; }
+
+    /// <summary>
+    /// Gets whether the shared progress indicator should be visible.
+    /// </summary>
+    public bool IsProgressVisible => StartupCommand.IsRunning || IsInstalling;
+
     [ObservableProperty] public partial bool Loaded { get; set; }
 
     [NotifyCanExecuteChangedFor(nameof(RestartAndUpdateCommand))]
@@ -121,10 +135,11 @@ public partial class MainWindowViewModel : ViewModelBase,
     public partial bool UpdateAvailable { get; set; }
 
     [ObservableProperty] public partial string Title { get; set; }
+
     [NotifyPropertyChangedFor(nameof(DisplayInfo))]
     [NotifyPropertyChangedFor(nameof(DisplayInfoError))]
     [NotifyPropertyChangedFor(nameof(DisplaySuccess))]
-    [ObservableProperty] 
+    [ObservableProperty]
     public partial StatusType StatusType { get; set; }
 
     [NotifyPropertyChangedFor(nameof(ThemeToggleGlyph))]
@@ -146,11 +161,18 @@ public partial class MainWindowViewModel : ViewModelBase,
         CurrentProgress = message.Value;
     }
 
+    /// <summary>
+    /// Updates the shared progress indicator while a DacPac installation runs.
+    /// </summary>
+    public void Receive(InstallationRunningMessage message)
+    {
+        IsInstalling = message.Value;
+    }
+
     public void Receive(StatusValueDataMessage message)
     {
         Status = message.Value.Value;
         StatusType = message.Value.StatusType;
-        
     }
 
     [RelayCommand]
@@ -191,14 +213,16 @@ public partial class MainWindowViewModel : ViewModelBase,
     {
         OpenDacpacMenuItems.Clear();
         OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(null, "Open one or more dac pac files"));
-        
+
         foreach (var indexTuple in files.Index())
         {
             if (indexTuple.Index == 0)
             {
                 OpenDacpacMenuItems.Add(new Separator());
             }
-            OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(new RecentDacpacFiles(indexTuple.Item), string.Join(",",indexTuple.Item)));
+
+            OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(new RecentDacpacFiles(indexTuple.Item),
+                string.Join(",", indexTuple.Item)));
         }
     }
 
@@ -314,5 +338,4 @@ public partial class MainWindowViewModel : ViewModelBase,
         await LaunchScreenAsync(installationViewModel);
         return true;
     }
-    
 }

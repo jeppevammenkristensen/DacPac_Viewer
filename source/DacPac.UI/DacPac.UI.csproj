@@ -50,4 +50,9 @@
       <ProjectReference Include="..\DacPac.Core\DacPac.Core.csproj" />
       <ProjectReference Include="..\DacPac.UI.ApplicationLayer\DacPac.UI.ApplicationLayer.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Infrastructure\IFolderLauncher.cs" />
+      <Compile Remove="Infrastructure\FolderLauncher.cs" />
+    </ItemGroup>
 </Project>
