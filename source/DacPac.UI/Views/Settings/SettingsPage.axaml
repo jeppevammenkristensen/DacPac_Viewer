@@ -7,19 +7,22 @@
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="300"
              x:Class="DacPac.UI.Views.Settings.SettingsPage">
     <Grid RowDefinitions="Auto,Auto">
-    <StackPanel Margin="12" Spacing="6">
-        <TextBlock Classes="Header" Text="Updates" />
-        <CheckBox Content="Enable beta updates"
-                  IsChecked="{Binding EnableBetaUpdates}" />
-        <TextBlock Classes="Subtitle" TextWrapping="Wrap"
-                   Text="When enabled, the app will also offer beta releases when checking for updates. Beta releases may be less stable than regular releases." />
-    </StackPanel>
+        <StackPanel Margin="12" Spacing="6">
+            <TextBlock Classes="Header" Text="Updates" />
+            <CheckBox Content="Enable beta updates"
+                      IsChecked="{Binding EnableBetaUpdates}" />
+            <TextBlock Classes="Subtitle" TextWrapping="Wrap"
+                       Text="When enabled, the app will also offer beta releases when checking for updates. Beta releases may be less stable than regular releases." />
+        </StackPanel>
         <StackPanel Grid.Row="1" Margin="12" Spacing="6">
             <TextBlock Classes="Header" Text="Persisted Data" />
             <CheckBox Content="Remember connectionstrings" ToolTip.Tip=""
                       IsChecked="{Binding PersistConnectionStrings}" />
             <TextBlock Classes="Subtitle" TextWrapping="Wrap"
                        Text="When enabled the latest used connection string will be persisted and encrypted, but it can present a security issue." />
+            <Button Content="Open Data Folder"
+                    Command="{Binding OpenDataFolderCommand}"
+                    ToolTip.Tip="Open the folder containing persisted application data" />
         </StackPanel>
     </Grid>
 </UserControl>
