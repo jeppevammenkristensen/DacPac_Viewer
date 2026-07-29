@@ -1,4 +1,5 @@
-﻿using DacPac.UI.ApplicationLayer.Infrastructure;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using DacPac.UI.ApplicationLayer.Infrastructure;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
@@ -32,7 +33,7 @@ public class StringEncrypterTest
     }
 
     private static StringEncrypter CreateEncrypter() =>
-        new(NullLogger<StringEncrypter>.Instance, new TestMachineIdentityProvider());
+        new(NullLogger<StringEncrypter>.Instance, new TestMachineIdentityProvider(), WeakReferenceMessenger.Default);
 
     /// <summary>
     /// Supplies a stable machine identity for encryption tests.
