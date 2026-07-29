@@ -40,6 +40,9 @@
                     </MenuItem>
                     <MenuItem Header="Settings"
                               Command="{Binding LaunchSettingsCommand}" />
+                    <MenuItem Header="Set up SQL Server in Docker"
+                              IsVisible="{Binding DockerIsAvailable}"
+                              Command="{Binding LaunchSqlServerSetupCommand}" />
                 </MenuItem>
                 <MenuItem Header="Restart to update"
                           IsVisible="{Binding UpdateAvailable}"

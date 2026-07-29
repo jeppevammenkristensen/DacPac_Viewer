@@ -8,4 +8,5 @@
   <Project Path="DacPac.UI.ApplicationLayer/DacPac.UI.ApplicationLayer.csproj" />
   <Project Path="DacPac.UI/DacPac.UI.csproj" />
   <Project Path="DacPac.Wrappers/DacPac.Wrappers.csproj" />
+  <Project Path="Playground/Playground.csproj" />
 </Solution>
