@@ -14,10 +14,12 @@ using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.ViewModels;
 using DacPac.UI.ViewModels.Displays;
+using DacPac.UI.ViewModels.Docker;
 using DacPac.UI.ViewModels.GeneratedCode;
 using DacPac.UI.ViewModels.Settings;
 using DacPac.UI.Views;
 using DacPac.UI.Views.Displays;
+using DacPac.UI.Views.Docker;
 using DacPac.UI.Views.GeneratedCode;
 using DacPac.UI.Views.Settings;
 using Microsoft.Extensions.DependencyInjection;
@@ -141,7 +143,9 @@ public class App : Application
         services.AddSingleton<IStagingFilesCleanup, StagingFilesCleanup>();
 
         services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
+        services.AddSingleton<IDockerService, DockerService>();
 
+        services.AddTransient<StartupTask>();
         services.AddSingleton<CsharpGenerator, TableToCsharpClassGenerator>();
         services.AddSingleton<CsharpGenerator, ProcedureToClassGenerator>();
         services.AddSingleton<CsharpGenerator, ViewToCsharpClassGenerator>();
@@ -163,9 +167,10 @@ public class App : Application
         collection
             .AddViewModelAndRegisterView<MainWindowViewModel, MainWindow>(ViewModelScope.Singleton)
             .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient)
-            .AddViewModelAndRegisterView<GeneratedCodePageViewModel, GeneratedCodePage>(ViewModelScope.Transient)
-            .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton)
-            .AddViewModelAndRegisterView<InstallationViewModel, Installation>(ViewModelScope.Transient);
+             .AddViewModelAndRegisterView<GeneratedCodePageViewModel, GeneratedCodePage>(ViewModelScope.Transient)
+             .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton)
+             .AddViewModelAndRegisterView<SqlServerSetupPageViewModel, SqlServerSetupPage>(ViewModelScope.Transient)
+             .AddViewModelAndRegisterView<InstallationViewModel, Installation>(ViewModelScope.Transient);
 
 
         collection.AddView<TableDisplayViewModel, TableDisplay>();
