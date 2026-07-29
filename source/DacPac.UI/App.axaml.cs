@@ -133,6 +133,7 @@ public class App : Application
         services.AddSingleton<TimeProvider>(_ => TimeProvider.System);
         services.AddSingleton<IFilePickerService, StorageProviderFilePickerService>();
         services.AddSingleton<IClipboardService, TopLevelClipboardService>();
+        services.AddSingleton<IConfirmationDialogService, ConfirmationDialogService>();
         services.AddSingleton<IFolderLauncher, FolderLauncher>();
 
         services.AddSingleton<IFileSystem>(ctx => new FileSystem());

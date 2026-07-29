@@ -97,7 +97,7 @@ public partial class MainWindowViewModel : ViewModelBase,
     }
 
 
-    [ObservableProperty] public partial ObservableCollection<ScreenPage> Screens { get; set; }
+    [ObservableProperty] public partial ObservableCollection<IScreenPage> Screens { get; set; }
 
 
     /// <summary>
@@ -107,7 +107,7 @@ public partial class MainWindowViewModel : ViewModelBase,
 
     [NotifyCanExecuteChangedFor(nameof(OpenDacpacMenuItemCommand))]
     [ObservableProperty]
-    public partial ScreenPage? Screen { get; set; }
+    public partial IScreenPage? Screen { get; set; }
 
     [ObservableProperty] public partial string Status { get; set; }
 
@@ -292,7 +292,7 @@ public partial class MainWindowViewModel : ViewModelBase,
         await Launch(screen);
     }
 
-    partial void OnScreenChanged(ScreenPage? oldValue, ScreenPage? newValue)
+    partial void OnScreenChanged(IScreenPage? oldValue, IScreenPage? newValue)
     {
         if (oldValue is not null) oldValue.PropertyChanged -= ScreenPropertyChanged;
 
@@ -304,7 +304,7 @@ public partial class MainWindowViewModel : ViewModelBase,
         if (e.PropertyName == nameof(Screen.CanClose)) CloseCommand.NotifyCanExecuteChanged();
     }
 
-    private async Task Launch(ScreenPage screenPage)
+    private async Task Launch(IScreenPage screenPage)
     {
         Screens.Add(screenPage);
         await screenPage.OnActivatedAsync();
@@ -319,7 +319,7 @@ public partial class MainWindowViewModel : ViewModelBase,
         return Launch(screenPage);
     }
 
-    private bool CanExecuteClose(ScreenPage? screen)
+    private bool CanExecuteClose(IScreenPage? screen)
     {
         if (screen is null) return false;
 
@@ -327,7 +327,7 @@ public partial class MainWindowViewModel : ViewModelBase,
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteClose))]
-    private async Task Close(ScreenPage screenPage)
+    private async Task Close(IScreenPage screenPage)
     {
         await screenPage.CloseAsync();
         Screens.Remove(screenPage);
