@@ -49,7 +49,7 @@ public class App : Application
                 {
                     DataContext = GlobalHost.Services.GetRequiredService<MainWindowViewModel>()
                 };
-                
+
                 SetupErrorHandling();
 
                 desktop.Exit += async (_, _) =>
@@ -78,7 +78,7 @@ public class App : Application
     private void SetupErrorHandling()
     {
         // Hook UI thread unhandled exceptions to log via Microsoft.Extensions.Logging
-        Dispatcher.UIThread.UnhandledException +=  (_, e) =>
+        Dispatcher.UIThread.UnhandledException += (_, e) =>
         {
             try
             {
@@ -94,7 +94,7 @@ public class App : Application
             }
 
             // This is a simplistic way to handle errors and should be refined
-                    
+
             var mainWindowViewModel = GlobalHost.Services.GetRequiredService<MainWindowViewModel>();
             mainWindowViewModel.Status = $"An error occurred  {e.Exception.Message}";
             mainWindowViewModel.StatusType = StatusType.Error;
@@ -112,7 +112,7 @@ public class App : Application
             {
                 // Example of using the context
                 // ctx.Configuration["SomeValue"];
-                
+
                 services
                     .AddTransient<IServiceLocator, ServiceCollectionServiceLocator>()
                     .AddTransient<ViewLocator>();
@@ -131,20 +131,21 @@ public class App : Application
         services.AddSingleton<TimeProvider>(_ => TimeProvider.System);
         services.AddSingleton<IFilePickerService, StorageProviderFilePickerService>();
         services.AddSingleton<IClipboardService, TopLevelClipboardService>();
+        services.AddSingleton<IFolderLauncher, FolderLauncher>();
 
         services.AddSingleton<IFileSystem>(ctx => new FileSystem());
         services.SetupApplicationLayerService();
-        
+
         services.AddSingleton<IUpdateService, VelopackUpdateService>();
         services.AddSingleton<DacPacLoader>();
         services.AddSingleton<IStagingFilesCleanup, StagingFilesCleanup>();
-        
+
         services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
-        services.AddSingleton<CsharpGenerator,TableToCsharpClassGenerator>();
-        services.AddSingleton<CsharpGenerator,ProcedureToClassGenerator>();
+        services.AddSingleton<CsharpGenerator, TableToCsharpClassGenerator>();
+        services.AddSingleton<CsharpGenerator, ProcedureToClassGenerator>();
         services.AddSingleton<CsharpGenerator, ViewToCsharpClassGenerator>();
-        
+
         services.AddSingleton<Builder>();
     }
 
@@ -165,12 +166,11 @@ public class App : Application
             .AddViewModelAndRegisterView<GeneratedCodePageViewModel, GeneratedCodePage>(ViewModelScope.Transient)
             .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton)
             .AddViewModelAndRegisterView<InstallationViewModel, Installation>(ViewModelScope.Transient);
-        
+
 
         collection.AddView<TableDisplayViewModel, TableDisplay>();
         collection.AddView<ProcedureDisplayViewModel, ProcedureDisplay>();
         collection.AddView<DefaultDisplayViewModel, DefaultDisplay>();
         collection.AddView<ViewDisplayViewModel, ViewDisplay>();
     }
-
 }

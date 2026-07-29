@@ -1,6 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Runtime.Versioning;
 using System.Text;
+using CommunityToolkit.Mvvm.Messaging;
+using DacPac.UI.Infrastructure;
 using Microsoft.Extensions.Logging;
 
 namespace DacPac.UI.ApplicationLayer.Infrastructure;
@@ -14,14 +16,18 @@ public class StringEncrypter : IStringEncrypter
     private const string LinuxPrefix = "aesgcm:";
     private readonly ILogger<StringEncrypter> _logger;
     private readonly IMachineIdentityProvider _machineIdentityProvider;
+    private readonly IMessenger _messenger;
 
     /// <summary>
     /// Initializes a string encrypter with the Linux machine identity source and decryption logging.
     /// </summary>
-    public StringEncrypter(ILogger<StringEncrypter> logger, IMachineIdentityProvider machineIdentityProvider)
+    public StringEncrypter(ILogger<StringEncrypter> logger,
+        IMachineIdentityProvider machineIdentityProvider, 
+        IMessenger messenger)
     {
         _logger = logger;
         _machineIdentityProvider = machineIdentityProvider;
+        _messenger = messenger;
     }
 
     /// <summary>
@@ -36,6 +42,7 @@ public class StringEncrypter : IStringEncrypter
         catch (Exception ex) when (ex is CryptographicException or FormatException)
         {
             _logger.LogWarning(ex, "Failed to decrypt the saved connection string; ignoring it");
+            _messenger.SendError("Failed to decrypt the saved connection string");
             return null;
         }
     }

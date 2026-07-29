@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure;
+using DacPac.UI.Infrastructure.LongRunning;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Dac;
 using TruePath;
@@ -24,7 +25,7 @@ public partial class InstallationViewModel : ScreenPage
         _messenger = messenger;
         _settingsService = settingsService;
     }
-    
+
     public override string Title => _title;
     public AbsolutePath[]? Paths { get; set; }
 
@@ -39,9 +40,8 @@ public partial class InstallationViewModel : ScreenPage
     [NotifyCanExecuteChangedFor(nameof(InstallCommand))]
     [ObservableProperty]
     public partial string? MasterConnectionString { get; set; }
-    
-    [ObservableProperty]
-    public partial string? DatabaseName { get; set; }
+
+    [ObservableProperty] public partial string? DatabaseName { get; set; }
 
     [ObservableProperty] public partial string Status { get; set; } = string.Empty;
 
@@ -54,7 +54,7 @@ public partial class InstallationViewModel : ScreenPage
     private async Task Test()
     {
         Status = string.Empty;
-        
+
         try
         {
             var r = new SqlConnectionStringBuilder(MasterConnectionString);
@@ -64,19 +64,18 @@ public partial class InstallationViewModel : ScreenPage
             Status += $"{e.Message}\r\n";
             return;
         }
-        
+
         var sqlConnection = new SqlConnection(MasterConnectionString);
         try
         {
             await sqlConnection.OpenAsync();
             _messenger.SendSuccess("Successfully established connection");
-            
         }
         catch (Exception e)
         {
             _messenger.SendError($"Cannot establish connection. {e.Message}");
         }
-        
+
         _settingsService.LatestConnectionString = MasterConnectionString;
     }
 
@@ -89,6 +88,7 @@ public partial class InstallationViewModel : ScreenPage
     private async Task Install()
     {
         Status = string.Empty;
+        _messenger.Send(new InstallationRunningMessage(true));
 
         try
         {
@@ -110,7 +110,9 @@ public partial class InstallationViewModel : ScreenPage
                         BlockOnPossibleDataLoss = false, //All these other options are respected. 
                         IgnoreColumnOrder = true,
                         AllowIncompatiblePlatform = true,
-                        ExcludeObjectTypes = [ObjectType.Users, ObjectType.RoleMembership, ObjectType.Permissions, ObjectType.Logins
+                        ExcludeObjectTypes =
+                        [
+                            ObjectType.Users, ObjectType.RoleMembership, ObjectType.Permissions, ObjectType.Logins
                         ],
                         TreatVerificationErrorsAsWarnings = true
                     };
@@ -125,6 +127,9 @@ public partial class InstallationViewModel : ScreenPage
         {
             _messenger.SendError($"Failed to install {ex.Message}");
         }
+        finally
+        {
+            _messenger.Send(new InstallationRunningMessage(false));
+        }
     }
-    
 }

@@ -33,7 +33,7 @@
                                 <MenuItem Header="{Binding Title}"
                                           ToolTip.Tip="{Binding ToolTip}"
                                           Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).OpenDacpacMenuItemCommand}"
-                                          
+
                                           CommandParameter="{Binding}" />
                             </DataTemplate>
                         </MenuItem.DataTemplates>
@@ -83,15 +83,15 @@
             </TabControl.ContentTemplate>
         </TabControl>
 
-        <Border Grid.Row="2" Classes.StatusBar="{Binding DisplayInfo}" 
+        <Border Grid.Row="2" Classes.StatusBar="{Binding DisplayInfo}"
                 Classes.StatusBarRed="{Binding DisplayInfoError}"
-                Classes.StatusBarSuccess="{Binding DisplaySuccess}"
-                >
+                Classes.StatusBarSuccess="{Binding DisplaySuccess}">
             <TextBlock Text="{Binding Status}" />
         </Border>
 
         <ProgressBar Grid.Row="3" ShowProgressText="False"
-                     IsVisible="{Binding StartupCommand.IsRunning}" IsIndeterminate="False" Minimum="0" Maximum="100"
+                     IsVisible="{Binding IsProgressVisible}"
+                     IsIndeterminate="{Binding IsInstalling}" Minimum="0" Maximum="100"
                      Value="{Binding CurrentProgress}" />
     </Grid>
 </Window>

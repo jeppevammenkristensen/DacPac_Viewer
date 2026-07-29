@@ -71,6 +71,7 @@ public partial class JsonFileSettingsService : ISettingsService
             {
                 _data.EncryptedLatestConnectionString = null;
             }
+
             Save();
         }
     }
@@ -84,16 +85,21 @@ public partial class JsonFileSettingsService : ISettingsService
         {
             if (!StoreConnectionStrings)
                 return null;
-            
-            return string.IsNullOrWhiteSpace(_data.EncryptedLatestConnectionString)
-                ? null
-                : UnprotectConnectionString(_data.EncryptedLatestConnectionString);
+
+            if (string.IsNullOrWhiteSpace(_data.EncryptedLatestConnectionString)) return null;
+
+            var connectionString = UnprotectConnectionString(_data.EncryptedLatestConnectionString);
+            if (connectionString is not null) return connectionString;
+
+            _data.EncryptedLatestConnectionString = null;
+            Save();
+            return null;
         }
         set
         {
             if (!StoreConnectionStrings)
                 return;
-            
+
             var protectedValue = string.IsNullOrEmpty(value) ? null : ProtectConnectionString(value);
             if (_data.EncryptedLatestConnectionString == protectedValue) return;
 
