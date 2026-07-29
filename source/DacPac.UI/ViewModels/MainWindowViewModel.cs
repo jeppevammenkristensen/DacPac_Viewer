@@ -10,6 +10,7 @@ using Avalonia.Styling;
 using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.ViewModels.Settings;
+using DacPac.UI.ViewModels.Docker;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -156,6 +157,8 @@ public partial class MainWindowViewModel : ViewModelBase,
     /// </summary>
     public string ThemeToggleGlyph => IsDarkTheme ? "☀" : "🌙";
 
+    [ObservableProperty] public partial bool DockerIsAvailable { get; set; }
+
     public void Receive(ProgressDataMessage message)
     {
         CurrentProgress = message.Value;
@@ -181,8 +184,9 @@ public partial class MainWindowViewModel : ViewModelBase,
         OnActivated(); // hooks up implemented IRecipient
 
         CurrentProgress = 0;
-        var longRunningTask = new DummyTask(Messenger);
+        var longRunningTask = _locator.GetRequiredService<StartupTask>();// new DummyTask(Messenger);
         await longRunningTask.ExecuteTask(token);
+        DockerIsAvailable = longRunningTask.DockerIsAvailable;
         Loaded = true;
         await LaunchPrimaryCommand.ExecuteAsync(null);
         LoadRecentDacpacFiles();
@@ -278,6 +282,13 @@ public partial class MainWindowViewModel : ViewModelBase,
     private async Task LaunchSettings()
     {
         var screen = _locator.GetRequiredService<SettingsPageViewModel>();
+        await Launch(screen);
+    }
+
+    [RelayCommand]
+    private async Task LaunchSqlServerSetup()
+    {
+        var screen = _locator.GetRequiredService<SqlServerSetupPageViewModel>();
         await Launch(screen);
     }
 

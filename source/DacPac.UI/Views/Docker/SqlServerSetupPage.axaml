@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels.Docker"
+             x:Class="DacPac.UI.Views.Docker.SqlServerSetupPage"
+             x:DataType="viewModel:SqlServerSetupPageViewModel">
+    <Grid RowDefinitions="Auto,*" RowSpacing="20">
+        <StackPanel Spacing="6">
+            <TextBlock Classes="Header" Text="SQL Server in Docker" />
+            <TextBlock Classes="Subtitle"
+                       Text="Create a local SQL Server container for opening and testing DacPacs."
+                       TextWrapping="Wrap" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Border Background="{DynamicResource SurfaceElevatedBrush}"
+                    BorderBrush="{DynamicResource BorderBrushSoft}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource RadiusMd}"
+                    Padding="16">
+                <StackPanel Spacing="12">
+                    <TextBlock FontSize="16" FontWeight="SemiBold" Text="Container settings" />
+
+                    <StackPanel Spacing="4">
+                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" Text="Container name" />
+                        <TextBox Text="{Binding ContainerName}" />
+                    </StackPanel>
+
+                    <StackPanel Spacing="4">
+                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" Text="Host port" />
+                        <TextBox Text="{Binding HostPort}" />
+                    </StackPanel>
+
+                    <StackPanel Spacing="4">
+                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" Text="SA password" />
+                        <TextBox IsVisible="{Binding !IsPasswordVisible}"
+                                 PasswordChar="*"
+                                 Text="{Binding SaPassword}" />
+                        <TextBox IsVisible="{Binding IsPasswordVisible}"
+                                 Text="{Binding SaPassword}" />
+                        <CheckBox Content="Show password"
+                                  IsChecked="{Binding IsPasswordVisible}" />
+                        <TextBlock Foreground="{DynamicResource TextMutedBrush}"
+                                   FontSize="12"
+                                   Text="Use a strong password with upper- and lowercase letters, numbers, and symbols."
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+
+                    <CheckBox Content="Persist database files in a Docker volume"
+                              IsChecked="{Binding PersistData}" />
+
+                    <Button Classes="Accent"
+                            Command="{Binding StartContainerCommand}"
+                            Content="Start SQL Server container"
+                            HorizontalAlignment="Left" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
