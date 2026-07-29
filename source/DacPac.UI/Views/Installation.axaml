@@ -12,12 +12,15 @@
                      VerticalAlignment="Center"
                      PlaceholderText="Server=...;Database=master;..."
                      Text="{Binding MasterConnectionString, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Grid.Column="1"
-                    Command="{Binding TestCommand}"
-                    Content="Test" />
-            <Button Grid.Column="2"
-                    Classes="Accent"
-                    Content="Install" Command="{Binding InstallCommand}" />
+             <Button Grid.Column="1"
+                     Command="{Binding TestCommand}"
+                     Content="Test"
+                     ToolTip.Tip="Test the database connection" />
+             <Button Grid.Column="2"
+                     Classes="Accent"
+                     Content="Install"
+                     Command="{Binding InstallCommand}"
+                     ToolTip.Tip="Install the DacPac to the database" />
         </Grid>
         
         <TextBox Grid.Row="1" Text="{Binding DatabaseName}"></TextBox>
