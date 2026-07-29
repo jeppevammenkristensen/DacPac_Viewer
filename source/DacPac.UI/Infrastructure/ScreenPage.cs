@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Threading.Tasks;
 using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -6,13 +7,33 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace DacPac.UI.Infrastructure;
 
+public interface IScreenPage : INotifyPropertyChanged
+{
+    /// <summary>
+    /// Override this to perform an operation after an instance of the given
+    /// screen page had been activated
+    /// </summary>
+    /// <returns></returns>
+    Task OnActivatedAsync();
+
+    /// <summary>
+    /// Signal if the current screen can close
+    /// </summary>
+    bool CanClose { get; set; }
+    
+    string Title { get; }
+
+    Task CloseAsync();
+
+}
+
 /// <summary>
 /// This is a screen displayed in the <see cref="MainWindow"/>
 /// </summary>
 /// <remarks>To register a coupling between a view model and a View use the extension method
 /// <see cref="ViewLocatorHelpers.AddViewModelAndRegisterView"/> in the <see cref="App.RegisterViews"/> part
 /// </remarks>
-public abstract partial class ScreenPage : ViewModelBase
+public abstract partial class ScreenPage : ViewModelBase, IScreenPage
 {
     /// <summary>
     /// The title displayed in the tab view

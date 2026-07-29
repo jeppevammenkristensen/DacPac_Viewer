@@ -22,21 +22,24 @@
 
                     <StackPanel Spacing="4">
                         <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" Text="Container name" />
-                        <TextBox Text="{Binding ContainerName}" />
+                        <TextBox Text="{Binding ContainerName, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
 
                     <StackPanel Spacing="4">
                         <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" Text="Host port" />
-                        <TextBox Text="{Binding HostPort}" />
+                        <NumericUpDown Minimum="1"
+                                       Maximum="65535"
+                                       FormatString="0"
+                                       Value="{Binding HostPort}" />
                     </StackPanel>
 
                     <StackPanel Spacing="4">
                         <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" Text="SA password" />
                         <TextBox IsVisible="{Binding !IsPasswordVisible}"
-                                 PasswordChar="*"
-                                 Text="{Binding SaPassword}" />
+                                  PasswordChar="*"
+                                  Text="{Binding SaPassword, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBox IsVisible="{Binding IsPasswordVisible}"
-                                 Text="{Binding SaPassword}" />
+                                  Text="{Binding SaPassword, UpdateSourceTrigger=PropertyChanged}" />
                         <CheckBox Content="Show password"
                                   IsChecked="{Binding IsPasswordVisible}" />
                         <TextBlock Foreground="{DynamicResource TextMutedBrush}"

@@ -1,0 +1,20 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:view="clr-namespace:DacPac.UI.Views"
+        x:Class="DacPac.UI.Views.ConfirmationDialog"
+        x:DataType="view:ConfirmationDialogViewModel"
+        CanResize="False"
+        ShowInTaskbar="False"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner">
+    <Border Width="420" Padding="20">
+        <StackPanel Spacing="16">
+            <TextBlock Classes="Header" Text="{Binding Title}" />
+            <TextBlock Text="{Binding Message}" TextWrapping="Wrap" />
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8">
+                <Button Command="{Binding CancelCommand}" Content="{Binding CancelText}" IsCancel="True" />
+                <Button Classes="Accent" Command="{Binding ConfirmCommand}" Content="{Binding ConfirmText}" IsDefault="True" />
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>
