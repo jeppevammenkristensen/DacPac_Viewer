@@ -6,34 +6,34 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExtendedProcedure object.</summary>
 public readonly struct ExtendedProcedureWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExtendedProcedureWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExtendedProcedureWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ExeccuteAsCaller property.</summary>
-    public bool ExeccuteAsCaller => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.ExeccuteAsCaller);
+    public bool ExeccuteAsCaller => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.ExeccuteAsCaller);
     /// <summary>Gets the WithEncryption property.</summary>
-    public bool WithEncryption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.WithEncryption);
+    public bool WithEncryption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.WithEncryption);
     /// <summary>Gets the ExecuteAsOwner property.</summary>
-    public bool ExecuteAsOwner => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.ExecuteAsOwner);
+    public bool ExecuteAsOwner => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.ExecuteAsOwner);
     /// <summary>Gets the ExecuteAsSelf property.</summary>
-    public bool ExecuteAsSelf => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.ExecuteAsSelf);
+    public bool ExecuteAsSelf => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.ExecuteAsSelf);
     ///<summary>
     /// Name: Login. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Login => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.Login);
+    public IEnumerable<TSqlObject> Login => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.Login);
     ///<summary>
     /// Name: Parameters. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Parameters => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.Parameters);
+    public IEnumerable<TSqlObject> Parameters => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.Parameters);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.Schema);
     ///<summary>
     /// Name: User. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> User => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.User);
+    public IEnumerable<TSqlObject> User => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProcedure.User);
 }
 
 public static class ExtendedProcedureExtensions

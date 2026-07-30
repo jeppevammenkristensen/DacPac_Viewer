@@ -6,30 +6,30 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalModel object.</summary>
 public readonly struct ExternalModelWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalModelWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalModelWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Location property.</summary>
-    public string? Location => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.Location);
+    public string? Location => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.Location);
     /// <summary>Gets the ApiFormat property.</summary>
-    public string? ApiFormat => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.ApiFormat);
+    public string? ApiFormat => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.ApiFormat);
     /// <summary>Gets the ModelType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ExternalModelType ModelType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ExternalModelType>(Microsoft.SqlServer.Dac.Model.ExternalModel.ModelType);
+    public global::Microsoft.SqlServer.Dac.Model.ExternalModelType ModelType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ExternalModelType>(Microsoft.SqlServer.Dac.Model.ExternalModel.ModelType);
     /// <summary>Gets the ModelNameExternal property.</summary>
-    public string? ModelNameExternal => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.ModelNameExternal);
+    public string? ModelNameExternal => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.ModelNameExternal);
     /// <summary>Gets the Parameters property.</summary>
-    public string? Parameters => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.Parameters);
+    public string? Parameters => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.Parameters);
     /// <summary>Gets the LocalRuntimePath property.</summary>
-    public string? LocalRuntimePath => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.LocalRuntimePath);
+    public string? LocalRuntimePath => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalModel.LocalRuntimePath);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalModel.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalModel.Authorizer);
     ///<summary>
     /// Name: Credential. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Credential => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalModel.Credential);
+    public IEnumerable<TSqlObject> Credential => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalModel.Credential);
 }
 
 public static class ExternalModelExtensions

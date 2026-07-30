@@ -6,84 +6,84 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Column object.</summary>
 public readonly struct ColumnWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ColumnWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ColumnWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Collation property.</summary>
-    public string? Collation => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.Collation);
+    public string? Collation => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.Collation);
     /// <summary>Gets the IsIdentityNotForReplication property.</summary>
-    public bool IsIdentityNotForReplication => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsIdentityNotForReplication);
+    public bool IsIdentityNotForReplication => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsIdentityNotForReplication);
     /// <summary>Gets the Nullable property.</summary>
-    public bool Nullable => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.Nullable);
+    public bool Nullable => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.Nullable);
     /// <summary>Gets the IsRowGuidCol property.</summary>
-    public bool IsRowGuidCol => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsRowGuidCol);
+    public bool IsRowGuidCol => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsRowGuidCol);
     /// <summary>Gets the Sparse property.</summary>
-    public bool Sparse => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.Sparse);
+    public bool Sparse => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.Sparse);
     /// <summary>Gets the Expression property.</summary>
-    public string? Expression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.Column.Expression);
+    public string? Expression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.Column.Expression);
     /// <summary>Gets the Persisted property.</summary>
-    public bool Persisted => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.Persisted);
+    public bool Persisted => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.Persisted);
     /// <summary>Gets the PersistedNullable property.</summary>
-    public bool? PersistedNullable => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Column.PersistedNullable);
+    public bool? PersistedNullable => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Column.PersistedNullable);
     /// <summary>Gets the Scale property.</summary>
-    public int Scale => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.Scale);
+    public int Scale => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.Scale);
     /// <summary>Gets the Precision property.</summary>
-    public int Precision => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.Precision);
+    public int Precision => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.Precision);
     /// <summary>Gets the Length property.</summary>
-    public int Length => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.Length);
+    public int Length => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.Length);
     /// <summary>Gets the IsMax property.</summary>
-    public bool IsMax => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsMax);
+    public bool IsMax => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsMax);
     /// <summary>Gets the XmlStyle property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.XmlStyle XmlStyle => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.XmlStyle>(Microsoft.SqlServer.Dac.Model.Column.XmlStyle);
+    public global::Microsoft.SqlServer.Dac.Model.XmlStyle XmlStyle => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.XmlStyle>(Microsoft.SqlServer.Dac.Model.Column.XmlStyle);
     /// <summary>Gets the EncryptionAlgorithmName property.</summary>
-    public string? EncryptionAlgorithmName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.EncryptionAlgorithmName);
+    public string? EncryptionAlgorithmName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.EncryptionAlgorithmName);
     /// <summary>Gets the EncryptionType property.</summary>
-    public int EncryptionType => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.EncryptionType);
+    public int EncryptionType => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.EncryptionType);
     /// <summary>Gets the GeneratedAlwaysType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ColumnGeneratedAlwaysType GeneratedAlwaysType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ColumnGeneratedAlwaysType>(Microsoft.SqlServer.Dac.Model.Column.GeneratedAlwaysType);
+    public global::Microsoft.SqlServer.Dac.Model.ColumnGeneratedAlwaysType GeneratedAlwaysType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ColumnGeneratedAlwaysType>(Microsoft.SqlServer.Dac.Model.Column.GeneratedAlwaysType);
     /// <summary>Gets the GraphType property.</summary>
-    public int GraphType => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.GraphType);
+    public int GraphType => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.GraphType);
     /// <summary>Gets the IdentityIncrement property.</summary>
-    public string? IdentityIncrement => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.IdentityIncrement);
+    public string? IdentityIncrement => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.IdentityIncrement);
     /// <summary>Gets the IdentitySeed property.</summary>
-    public string? IdentitySeed => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.IdentitySeed);
+    public string? IdentitySeed => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.IdentitySeed);
     /// <summary>Gets the IsFileStream property.</summary>
-    public bool IsFileStream => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsFileStream);
+    public bool IsFileStream => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsFileStream);
     /// <summary>Gets the IsHidden property.</summary>
-    public bool IsHidden => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsHidden);
+    public bool IsHidden => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsHidden);
     /// <summary>Gets the IsIdentity property.</summary>
-    public bool IsIdentity => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsIdentity);
+    public bool IsIdentity => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsIdentity);
     /// <summary>Gets the IsPseudoColumn property.</summary>
-    public bool IsPseudoColumn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsPseudoColumn);
+    public bool IsPseudoColumn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Column.IsPseudoColumn);
     /// <summary>Gets the MaskingFunction property.</summary>
-    public string? MaskingFunction => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.MaskingFunction);
+    public string? MaskingFunction => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.MaskingFunction);
     /// <summary>Gets the SensitivityInformationType property.</summary>
-    public string? SensitivityInformationType => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.SensitivityInformationType);
+    public string? SensitivityInformationType => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.SensitivityInformationType);
     /// <summary>Gets the SensitivityInformationTypeId property.</summary>
-    public string? SensitivityInformationTypeId => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.SensitivityInformationTypeId);
+    public string? SensitivityInformationTypeId => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.SensitivityInformationTypeId);
     /// <summary>Gets the SensitivityLabel property.</summary>
-    public string? SensitivityLabel => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.SensitivityLabel);
+    public string? SensitivityLabel => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.SensitivityLabel);
     /// <summary>Gets the SensitivityLabelId property.</summary>
-    public string? SensitivityLabelId => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.SensitivityLabelId);
+    public string? SensitivityLabelId => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Column.SensitivityLabelId);
     /// <summary>Gets the SensitivityRank property.</summary>
-    public int SensitivityRank => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.SensitivityRank);
+    public int SensitivityRank => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Column.SensitivityRank);
     ///<summary>
     /// Name: ExpressionDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExpressionDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Column.ExpressionDependencies);
+    public IEnumerable<TSqlObject> ExpressionDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Column.ExpressionDependencies);
     ///<summary>
     /// Name: XmlSchemaCollection. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> XmlSchemaCollection => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Column.XmlSchemaCollection);
+    public IEnumerable<TSqlObject> XmlSchemaCollection => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Column.XmlSchemaCollection);
     ///<summary>
     /// Name: DataType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DataType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Column.DataType);
+    public IEnumerable<TSqlObject> DataType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Column.DataType);
     ///<summary>
     /// Name: ColumnEncryptionKey. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ColumnEncryptionKey => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Column.ColumnEncryptionKey);
+    public IEnumerable<TSqlObject> ColumnEncryptionKey => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Column.ColumnEncryptionKey);
 }
 
 public static class ColumnExtensions

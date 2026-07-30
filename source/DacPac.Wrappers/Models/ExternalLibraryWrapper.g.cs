@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalLibrary object.</summary>
 public readonly struct ExternalLibraryWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalLibraryWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalLibraryWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Language property.</summary>
-    public string? Language => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLibrary.Language);
+    public string? Language => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLibrary.Language);
     /// <summary>Gets the LibraryName property.</summary>
-    public string? LibraryName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLibrary.LibraryName);
+    public string? LibraryName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLibrary.LibraryName);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalLibrary.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalLibrary.Authorizer);
     ///<summary>
     /// Name: ExternalLibraryFiles. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> ExternalLibraryFiles => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalLibrary.ExternalLibraryFiles);
+    public IEnumerable<TSqlObject> ExternalLibraryFiles => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalLibrary.ExternalLibraryFiles);
 }
 
 public static class ExternalLibraryExtensions

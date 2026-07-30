@@ -6,18 +6,18 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx TcpProtocolSpecifier object.</summary>
 public readonly struct TcpProtocolSpecifierWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TcpProtocolSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TcpProtocolSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ListeningOnAllIPs property.</summary>
-    public bool ListeningOnAllIPs => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TcpProtocolSpecifier.ListeningOnAllIPs);
+    public bool ListeningOnAllIPs => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TcpProtocolSpecifier.ListeningOnAllIPs);
     /// <summary>Gets the ListenerIPv4 property.</summary>
-    public string? ListenerIPv4 => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TcpProtocolSpecifier.ListenerIPv4);
+    public string? ListenerIPv4 => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TcpProtocolSpecifier.ListenerIPv4);
     /// <summary>Gets the ListenerIPv6 property.</summary>
-    public string? ListenerIPv6 => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TcpProtocolSpecifier.ListenerIPv6);
+    public string? ListenerIPv6 => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TcpProtocolSpecifier.ListenerIPv6);
     /// <summary>Gets the ListenerPort property.</summary>
-    public int ListenerPort => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.TcpProtocolSpecifier.ListenerPort);
+    public int ListenerPort => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.TcpProtocolSpecifier.ListenerPort);
 }
 
 public static class TcpProtocolSpecifierExtensions

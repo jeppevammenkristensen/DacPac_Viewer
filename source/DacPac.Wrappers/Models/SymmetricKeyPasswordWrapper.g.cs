@@ -6,12 +6,12 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SymmetricKeyPassword object.</summary>
 public readonly struct SymmetricKeyPasswordWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SymmetricKeyPasswordWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SymmetricKeyPasswordWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Password property.</summary>
-    public string? Password => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SymmetricKeyPassword.Password);
+    public string? Password => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SymmetricKeyPassword.Password);
 }
 
 public static class SymmetricKeyPasswordExtensions

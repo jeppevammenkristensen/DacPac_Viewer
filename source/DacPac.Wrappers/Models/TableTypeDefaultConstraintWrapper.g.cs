@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx TableTypeDefaultConstraint object.</summary>
 public readonly struct TableTypeDefaultConstraintWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TableTypeDefaultConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TableTypeDefaultConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Expression property.</summary>
-    public string? Expression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.TableTypeDefaultConstraint.Expression);
+    public string? Expression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.TableTypeDefaultConstraint.Expression);
     ///<summary>
     /// Name: TargetColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> TargetColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeDefaultConstraint.TargetColumn);
+    public IEnumerable<TSqlObject> TargetColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeDefaultConstraint.TargetColumn);
     ///<summary>
     /// Name: ExpressionDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExpressionDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeDefaultConstraint.ExpressionDependencies);
+    public IEnumerable<TSqlObject> ExpressionDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeDefaultConstraint.ExpressionDependencies);
 }
 
 public static class TableTypeDefaultConstraintExtensions

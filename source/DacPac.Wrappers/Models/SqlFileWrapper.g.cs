@@ -6,34 +6,34 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SqlFile object.</summary>
 public readonly struct SqlFileWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SqlFileWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SqlFileWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Offline property.</summary>
-    public bool Offline => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SqlFile.Offline);
+    public bool Offline => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SqlFile.Offline);
     /// <summary>Gets the Unlimited property.</summary>
-    public bool Unlimited => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SqlFile.Unlimited);
+    public bool Unlimited => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SqlFile.Unlimited);
     /// <summary>Gets the FileGrowth property.</summary>
-    public int? FileGrowth => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SqlFile.FileGrowth);
+    public int? FileGrowth => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SqlFile.FileGrowth);
     /// <summary>Gets the FileGrowthUnit property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit FileGrowthUnit => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.SqlFile.FileGrowthUnit);
+    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit FileGrowthUnit => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.SqlFile.FileGrowthUnit);
     /// <summary>Gets the FileName property.</summary>
-    public string? FileName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SqlFile.FileName);
+    public string? FileName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SqlFile.FileName);
     /// <summary>Gets the IsLogFile property.</summary>
-    public bool IsLogFile => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SqlFile.IsLogFile);
+    public bool IsLogFile => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SqlFile.IsLogFile);
     /// <summary>Gets the MaxSize property.</summary>
-    public int? MaxSize => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SqlFile.MaxSize);
+    public int? MaxSize => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SqlFile.MaxSize);
     /// <summary>Gets the MaxSizeUnit property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit MaxSizeUnit => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.SqlFile.MaxSizeUnit);
+    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit MaxSizeUnit => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.SqlFile.MaxSizeUnit);
     /// <summary>Gets the Size property.</summary>
-    public int? Size => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SqlFile.Size);
+    public int? Size => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SqlFile.Size);
     /// <summary>Gets the SizeUnit property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit SizeUnit => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.SqlFile.SizeUnit);
+    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit SizeUnit => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.SqlFile.SizeUnit);
     ///<summary>
     /// Name: Filegroup. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SqlFile.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SqlFile.Filegroup);
 }
 
 public static class SqlFileExtensions

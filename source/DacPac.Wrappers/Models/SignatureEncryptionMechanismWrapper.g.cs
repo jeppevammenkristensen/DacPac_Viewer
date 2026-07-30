@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SignatureEncryptionMechanism object.</summary>
 public readonly struct SignatureEncryptionMechanismWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SignatureEncryptionMechanismWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SignatureEncryptionMechanismWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Password property.</summary>
-    public string? Password => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SignatureEncryptionMechanism.Password);
+    public string? Password => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SignatureEncryptionMechanism.Password);
     /// <summary>Gets the SignedBlob property.</summary>
-    public string? SignedBlob => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SignatureEncryptionMechanism.SignedBlob);
+    public string? SignedBlob => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SignatureEncryptionMechanism.SignedBlob);
     ///<summary>
     /// Name: AsymmetricKey. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> AsymmetricKey => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SignatureEncryptionMechanism.AsymmetricKey);
+    public IEnumerable<TSqlObject> AsymmetricKey => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SignatureEncryptionMechanism.AsymmetricKey);
     ///<summary>
     /// Name: Certificate. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Certificate => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SignatureEncryptionMechanism.Certificate);
+    public IEnumerable<TSqlObject> Certificate => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SignatureEncryptionMechanism.Certificate);
 }
 
 public static class SignatureEncryptionMechanismExtensions

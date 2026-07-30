@@ -6,26 +6,26 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx WorkloadGroup object.</summary>
 public readonly struct WorkloadGroupWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public WorkloadGroupWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public WorkloadGroupWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the GroupMaxRequests property.</summary>
-    public int GroupMaxRequests => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.GroupMaxRequests);
+    public int GroupMaxRequests => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.GroupMaxRequests);
     /// <summary>Gets the Importance property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Degree Importance => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.Importance);
+    public global::Microsoft.SqlServer.Dac.Model.Degree Importance => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.Importance);
     /// <summary>Gets the MaxDop property.</summary>
-    public int MaxDop => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.MaxDop);
+    public int MaxDop => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.MaxDop);
     /// <summary>Gets the RequestMaxCpuTimeSec property.</summary>
-    public int RequestMaxCpuTimeSec => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.RequestMaxCpuTimeSec);
+    public int RequestMaxCpuTimeSec => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.RequestMaxCpuTimeSec);
     /// <summary>Gets the RequestMaxMemoryGrantPercent property.</summary>
-    public int RequestMaxMemoryGrantPercent => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.RequestMaxMemoryGrantPercent);
+    public int RequestMaxMemoryGrantPercent => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.RequestMaxMemoryGrantPercent);
     /// <summary>Gets the RequestMemoryGrantTimeoutSec property.</summary>
-    public int RequestMemoryGrantTimeoutSec => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.RequestMemoryGrantTimeoutSec);
+    public int RequestMemoryGrantTimeoutSec => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroup.RequestMemoryGrantTimeoutSec);
     ///<summary>
     /// Name: ResourcePool. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ResourcePool => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.WorkloadGroup.ResourcePool);
+    public IEnumerable<TSqlObject> ResourcePool => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.WorkloadGroup.ResourcePool);
 }
 
 public static class WorkloadGroupExtensions

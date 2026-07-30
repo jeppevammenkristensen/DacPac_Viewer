@@ -6,32 +6,32 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx HttpProtocolSpecifier object.</summary>
 public readonly struct HttpProtocolSpecifierWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public HttpProtocolSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public HttpProtocolSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the CompressionEnabled property.</summary>
-    public bool CompressionEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.CompressionEnabled);
+    public bool CompressionEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.CompressionEnabled);
     /// <summary>Gets the ListeningOnAllNoneReservedSites property.</summary>
-    public bool ListeningOnAllNoneReservedSites => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.ListeningOnAllNoneReservedSites);
+    public bool ListeningOnAllNoneReservedSites => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.ListeningOnAllNoneReservedSites);
     /// <summary>Gets the ListeningOnAllSites property.</summary>
-    public bool ListeningOnAllSites => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.ListeningOnAllSites);
+    public bool ListeningOnAllSites => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.ListeningOnAllSites);
     /// <summary>Gets the AuthenticationMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.AuthenticationModes AuthenticationMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.AuthenticationModes>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.AuthenticationMode);
+    public global::Microsoft.SqlServer.Dac.Model.AuthenticationModes AuthenticationMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.AuthenticationModes>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.AuthenticationMode);
     /// <summary>Gets the AuthenticationRealm property.</summary>
-    public string? AuthenticationRealm => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.AuthenticationRealm);
+    public string? AuthenticationRealm => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.AuthenticationRealm);
     /// <summary>Gets the ClearPort property.</summary>
-    public int? ClearPort => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.ClearPort);
+    public int? ClearPort => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.ClearPort);
     /// <summary>Gets the DefaultLogonDomain property.</summary>
-    public string? DefaultLogonDomain => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.DefaultLogonDomain);
+    public string? DefaultLogonDomain => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.DefaultLogonDomain);
     /// <summary>Gets the Path property.</summary>
-    public string? Path => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.Path);
+    public string? Path => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.Path);
     /// <summary>Gets the Ports property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.HttpPorts Ports => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.HttpPorts>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.Ports);
+    public global::Microsoft.SqlServer.Dac.Model.HttpPorts Ports => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.HttpPorts>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.Ports);
     /// <summary>Gets the SslPort property.</summary>
-    public int? SslPort => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.SslPort);
+    public int? SslPort => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.SslPort);
     /// <summary>Gets the Website property.</summary>
-    public string? Website => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.Website);
+    public string? Website => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.HttpProtocolSpecifier.Website);
 }
 
 public static class HttpProtocolSpecifierExtensions

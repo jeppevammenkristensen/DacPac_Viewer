@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ClrTypeProperty object.</summary>
 public readonly struct ClrTypePropertyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ClrTypePropertyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ClrTypePropertyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Name property.</summary>
-    public string? Name => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ClrTypeProperty.Name);
+    public string? Name => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ClrTypeProperty.Name);
     ///<summary>
     /// Name: ClrType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ClrType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTypeProperty.ClrType);
+    public IEnumerable<TSqlObject> ClrType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTypeProperty.ClrType);
 }
 
 public static class ClrTypePropertyExtensions

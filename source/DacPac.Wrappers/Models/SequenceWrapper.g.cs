@@ -6,36 +6,36 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Sequence object.</summary>
 public readonly struct SequenceWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SequenceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SequenceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the NoMaxValue property.</summary>
-    public bool NoMaxValue => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Sequence.NoMaxValue);
+    public bool NoMaxValue => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Sequence.NoMaxValue);
     /// <summary>Gets the NoMinValue property.</summary>
-    public bool NoMinValue => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Sequence.NoMinValue);
+    public bool NoMinValue => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Sequence.NoMinValue);
     /// <summary>Gets the IncrementValue property.</summary>
-    public string? IncrementValue => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Sequence.IncrementValue);
+    public string? IncrementValue => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Sequence.IncrementValue);
     /// <summary>Gets the CacheSize property.</summary>
-    public int? CacheSize => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Sequence.CacheSize);
+    public int? CacheSize => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Sequence.CacheSize);
     /// <summary>Gets the IsCached property.</summary>
-    public bool IsCached => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Sequence.IsCached);
+    public bool IsCached => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Sequence.IsCached);
     /// <summary>Gets the IsCycling property.</summary>
-    public bool IsCycling => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Sequence.IsCycling);
+    public bool IsCycling => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Sequence.IsCycling);
     /// <summary>Gets the MaxValue property.</summary>
-    public string? MaxValue => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Sequence.MaxValue);
+    public string? MaxValue => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Sequence.MaxValue);
     /// <summary>Gets the MinValue property.</summary>
-    public string? MinValue => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Sequence.MinValue);
+    public string? MinValue => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Sequence.MinValue);
     /// <summary>Gets the StartValue property.</summary>
-    public string? StartValue => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Sequence.StartValue);
+    public string? StartValue => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Sequence.StartValue);
     ///<summary>
     /// Name: DataType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DataType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Sequence.DataType);
+    public IEnumerable<TSqlObject> DataType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Sequence.DataType);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Sequence.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Sequence.Schema);
 }
 
 public static class SequenceExtensions

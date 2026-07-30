@@ -6,28 +6,28 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalDataSource object.</summary>
 public readonly struct ExternalDataSourceWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalDataSourceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalDataSourceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ConnectionOptions property.</summary>
-    public string? ConnectionOptions => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.ConnectionOptions);
+    public string? ConnectionOptions => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.ConnectionOptions);
     /// <summary>Gets the DatabaseName property.</summary>
-    public string? DatabaseName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.DatabaseName);
+    public string? DatabaseName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.DatabaseName);
     /// <summary>Gets the DataSourceType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.DataSourceType DataSourceType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.DataSourceType>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.DataSourceType);
+    public global::Microsoft.SqlServer.Dac.Model.DataSourceType DataSourceType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.DataSourceType>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.DataSourceType);
     /// <summary>Gets the Location property.</summary>
-    public string? Location => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.Location);
+    public string? Location => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.Location);
     /// <summary>Gets the PushdownOption property.</summary>
-    public int PushdownOption => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.PushdownOption);
+    public int PushdownOption => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.PushdownOption);
     /// <summary>Gets the ResourceManagerLocation property.</summary>
-    public string? ResourceManagerLocation => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.ResourceManagerLocation);
+    public string? ResourceManagerLocation => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.ResourceManagerLocation);
     /// <summary>Gets the ShardMapName property.</summary>
-    public string? ShardMapName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.ShardMapName);
+    public string? ShardMapName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalDataSource.ShardMapName);
     ///<summary>
     /// Name: Credential. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Credential => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalDataSource.Credential);
+    public IEnumerable<TSqlObject> Credential => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalDataSource.Credential);
 }
 
 public static class ExternalDataSourceExtensions

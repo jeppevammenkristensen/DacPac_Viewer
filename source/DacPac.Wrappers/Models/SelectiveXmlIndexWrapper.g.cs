@@ -6,52 +6,52 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SelectiveXmlIndex object.</summary>
 public readonly struct SelectiveXmlIndexWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SelectiveXmlIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SelectiveXmlIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.Disabled);
     /// <summary>Gets the WithPadIndex property.</summary>
-    public bool WithPadIndex => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.WithPadIndex);
+    public bool WithPadIndex => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.WithPadIndex);
     /// <summary>Gets the AllowRowLocks property.</summary>
-    public bool AllowRowLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.AllowRowLocks);
+    public bool AllowRowLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.AllowRowLocks);
     /// <summary>Gets the AllowPageLocks property.</summary>
-    public bool AllowPageLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.AllowPageLocks);
+    public bool AllowPageLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.AllowPageLocks);
     /// <summary>Gets the IgnoreDuplicateKey property.</summary>
-    public bool IgnoreDuplicateKey => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.IgnoreDuplicateKey);
+    public bool IgnoreDuplicateKey => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.IgnoreDuplicateKey);
     /// <summary>Gets the RecomputeStatistics property.</summary>
-    public bool RecomputeStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.RecomputeStatistics);
+    public bool RecomputeStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.RecomputeStatistics);
     /// <summary>Gets the DoIncrementalStatistics property.</summary>
-    public bool DoIncrementalStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.DoIncrementalStatistics);
+    public bool DoIncrementalStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.DoIncrementalStatistics);
     /// <summary>Gets the FillFactor property.</summary>
-    public int? FillFactor => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.FillFactor);
+    public int? FillFactor => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.FillFactor);
     /// <summary>Gets the IsPrimary property.</summary>
-    public bool IsPrimary => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.IsPrimary);
+    public bool IsPrimary => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.IsPrimary);
     ///<summary>
     /// Name: PrimarySelectiveXmlIndex. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PrimarySelectiveXmlIndex => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.PrimarySelectiveXmlIndex);
+    public IEnumerable<TSqlObject> PrimarySelectiveXmlIndex => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.PrimarySelectiveXmlIndex);
     ///<summary>
     /// Name: PrimaryPromotedPath. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PrimaryPromotedPath => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.PrimaryPromotedPath);
+    public IEnumerable<TSqlObject> PrimaryPromotedPath => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.PrimaryPromotedPath);
     ///<summary>
     /// Name: Column. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Column => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.Column);
+    public IEnumerable<TSqlObject> Column => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.Column);
     ///<summary>
     /// Name: IndexedObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> IndexedObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.IndexedObject);
+    public IEnumerable<TSqlObject> IndexedObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.IndexedObject);
     ///<summary>
     /// Name: PromotedPaths. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> PromotedPaths => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.PromotedPaths);
+    public IEnumerable<TSqlObject> PromotedPaths => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.PromotedPaths);
     ///<summary>
     /// Name: XmlNamespaces. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> XmlNamespaces => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.XmlNamespaces);
+    public IEnumerable<TSqlObject> XmlNamespaces => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SelectiveXmlIndex.XmlNamespaces);
 }
 
 public static class SelectiveXmlIndexExtensions

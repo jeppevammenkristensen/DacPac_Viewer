@@ -6,38 +6,38 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DatabaseEventSession object.</summary>
 public readonly struct DatabaseEventSessionWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DatabaseEventSessionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DatabaseEventSessionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the StartupState property.</summary>
-    public bool StartupState => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.StartupState);
+    public bool StartupState => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.StartupState);
     /// <summary>Gets the TrackCausality property.</summary>
-    public bool TrackCausality => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.TrackCausality);
+    public bool TrackCausality => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.TrackCausality);
     /// <summary>Gets the MaxDispatchLatency property.</summary>
-    public int MaxDispatchLatency => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxDispatchLatency);
+    public int MaxDispatchLatency => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxDispatchLatency);
     /// <summary>Gets the MaxEventSizeUnit property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit MaxEventSizeUnit => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxEventSizeUnit);
+    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit MaxEventSizeUnit => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxEventSizeUnit);
     /// <summary>Gets the MaxMemoryUnit property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit MaxMemoryUnit => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxMemoryUnit);
+    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit MaxMemoryUnit => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxMemoryUnit);
     /// <summary>Gets the EventRetentionMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.EventRetentionMode EventRetentionMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.EventRetentionMode>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.EventRetentionMode);
+    public global::Microsoft.SqlServer.Dac.Model.EventRetentionMode EventRetentionMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.EventRetentionMode>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.EventRetentionMode);
     /// <summary>Gets the MaxEventSize property.</summary>
-    public int MaxEventSize => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxEventSize);
+    public int MaxEventSize => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxEventSize);
     /// <summary>Gets the MaxMemory property.</summary>
-    public int MaxMemory => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxMemory);
+    public int MaxMemory => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MaxMemory);
     /// <summary>Gets the MemoryPartitionMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.MemoryPartitionMode MemoryPartitionMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryPartitionMode>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MemoryPartitionMode);
+    public global::Microsoft.SqlServer.Dac.Model.MemoryPartitionMode MemoryPartitionMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryPartitionMode>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.MemoryPartitionMode);
     /// <summary>Gets the SessionScope property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.EventSessionScope SessionScope => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.EventSessionScope>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.SessionScope);
+    public global::Microsoft.SqlServer.Dac.Model.EventSessionScope SessionScope => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.EventSessionScope>(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.SessionScope);
     ///<summary>
     /// Name: EventDefinitions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> EventDefinitions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.EventDefinitions);
+    public IEnumerable<TSqlObject> EventDefinitions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.EventDefinitions);
     ///<summary>
     /// Name: EventTargets. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> EventTargets => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.EventTargets);
+    public IEnumerable<TSqlObject> EventTargets => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseEventSession.EventTargets);
 }
 
 public static class DatabaseEventSessionExtensions

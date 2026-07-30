@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ResourcePool object.</summary>
 public readonly struct ResourcePoolWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ResourcePoolWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ResourcePoolWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the CapCpuPercent property.</summary>
-    public int CapCpuPercent => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.CapCpuPercent);
+    public int CapCpuPercent => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.CapCpuPercent);
     /// <summary>Gets the MaxCpuPercent property.</summary>
-    public int MaxCpuPercent => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MaxCpuPercent);
+    public int MaxCpuPercent => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MaxCpuPercent);
     /// <summary>Gets the MaxIopsPerVolume property.</summary>
-    public int MaxIopsPerVolume => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MaxIopsPerVolume);
+    public int MaxIopsPerVolume => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MaxIopsPerVolume);
     /// <summary>Gets the MaxMemoryPercent property.</summary>
-    public int MaxMemoryPercent => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MaxMemoryPercent);
+    public int MaxMemoryPercent => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MaxMemoryPercent);
     /// <summary>Gets the MinCpuPercent property.</summary>
-    public int MinCpuPercent => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MinCpuPercent);
+    public int MinCpuPercent => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MinCpuPercent);
     /// <summary>Gets the MinIopsPerVolume property.</summary>
-    public int MinIopsPerVolume => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MinIopsPerVolume);
+    public int MinIopsPerVolume => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MinIopsPerVolume);
     /// <summary>Gets the MinMemoryPercent property.</summary>
-    public int MinMemoryPercent => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MinMemoryPercent);
+    public int MinMemoryPercent => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ResourcePool.MinMemoryPercent);
 }
 
 public static class ResourcePoolExtensions

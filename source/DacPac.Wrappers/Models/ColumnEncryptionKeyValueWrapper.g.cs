@@ -6,18 +6,18 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ColumnEncryptionKeyValue object.</summary>
 public readonly struct ColumnEncryptionKeyValueWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ColumnEncryptionKeyValueWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ColumnEncryptionKeyValueWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the EncryptedValue property.</summary>
-    public string? EncryptedValue => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnEncryptionKeyValue.EncryptedValue);
+    public string? EncryptedValue => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnEncryptionKeyValue.EncryptedValue);
     /// <summary>Gets the EncryptionAlgorithm property.</summary>
-    public string? EncryptionAlgorithm => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnEncryptionKeyValue.EncryptionAlgorithm);
+    public string? EncryptionAlgorithm => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnEncryptionKeyValue.EncryptionAlgorithm);
     ///<summary>
     /// Name: ColumnMasterKey. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ColumnMasterKey => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnEncryptionKeyValue.ColumnMasterKey);
+    public IEnumerable<TSqlObject> ColumnMasterKey => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnEncryptionKeyValue.ColumnMasterKey);
 }
 
 public static class ColumnEncryptionKeyValueExtensions

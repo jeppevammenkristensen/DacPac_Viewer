@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx MessageType object.</summary>
 public readonly struct MessageTypeWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public MessageTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public MessageTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ValidationMethod property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ValidationMethod ValidationMethod => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ValidationMethod>(Microsoft.SqlServer.Dac.Model.MessageType.ValidationMethod);
+    public global::Microsoft.SqlServer.Dac.Model.ValidationMethod ValidationMethod => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ValidationMethod>(Microsoft.SqlServer.Dac.Model.MessageType.ValidationMethod);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.MessageType.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.MessageType.Authorizer);
     ///<summary>
     /// Name: XmlSchemaCollection. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> XmlSchemaCollection => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.MessageType.XmlSchemaCollection);
+    public IEnumerable<TSqlObject> XmlSchemaCollection => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.MessageType.XmlSchemaCollection);
 }
 
 public static class MessageTypeExtensions

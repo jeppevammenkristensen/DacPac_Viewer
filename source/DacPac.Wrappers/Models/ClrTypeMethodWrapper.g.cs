@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ClrTypeMethod object.</summary>
 public readonly struct ClrTypeMethodWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ClrTypeMethodWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ClrTypeMethodWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Name property.</summary>
-    public string? Name => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ClrTypeMethod.Name);
+    public string? Name => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ClrTypeMethod.Name);
     ///<summary>
     /// Name: Parameters. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Parameters => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTypeMethod.Parameters);
+    public IEnumerable<TSqlObject> Parameters => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTypeMethod.Parameters);
     ///<summary>
     /// Name: ReturnType. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> ReturnType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTypeMethod.ReturnType);
+    public IEnumerable<TSqlObject> ReturnType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTypeMethod.ReturnType);
 }
 
 public static class ClrTypeMethodExtensions

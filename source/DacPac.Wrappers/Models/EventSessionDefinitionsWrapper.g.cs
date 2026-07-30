@@ -6,26 +6,26 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx EventSessionDefinitions object.</summary>
 public readonly struct EventSessionDefinitionsWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public EventSessionDefinitionsWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public EventSessionDefinitionsWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the WhereExpression property.</summary>
-    public string? WhereExpression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.WhereExpression);
+    public string? WhereExpression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.WhereExpression);
     /// <summary>Gets the EventModuleGuid property.</summary>
-    public string? EventModuleGuid => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.EventModuleGuid);
+    public string? EventModuleGuid => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.EventModuleGuid);
     /// <summary>Gets the EventName property.</summary>
-    public string? EventName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.EventName);
+    public string? EventName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.EventName);
     /// <summary>Gets the EventPackageName property.</summary>
-    public string? EventPackageName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.EventPackageName);
+    public string? EventPackageName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.EventPackageName);
     ///<summary>
     /// Name: Actions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Actions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.Actions);
+    public IEnumerable<TSqlObject> Actions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.Actions);
     ///<summary>
     /// Name: AttributeSettings. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> AttributeSettings => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.AttributeSettings);
+    public IEnumerable<TSqlObject> AttributeSettings => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.EventSessionDefinitions.AttributeSettings);
 }
 
 public static class EventSessionDefinitionsExtensions

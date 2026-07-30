@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx PartitionValue object.</summary>
 public readonly struct PartitionValueWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public PartitionValueWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public PartitionValueWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Expression property.</summary>
-    public string? Expression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.PartitionValue.Expression);
+    public string? Expression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.PartitionValue.Expression);
     ///<summary>
     /// Name: ExpressionDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExpressionDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.PartitionValue.ExpressionDependencies);
+    public IEnumerable<TSqlObject> ExpressionDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.PartitionValue.ExpressionDependencies);
 }
 
 public static class PartitionValueExtensions

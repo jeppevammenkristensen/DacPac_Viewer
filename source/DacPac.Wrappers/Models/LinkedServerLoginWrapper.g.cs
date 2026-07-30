@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx LinkedServerLogin object.</summary>
 public readonly struct LinkedServerLoginWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public LinkedServerLoginWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public LinkedServerLoginWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the UseSelf property.</summary>
-    public bool UseSelf => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.UseSelf);
+    public bool UseSelf => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.UseSelf);
     /// <summary>Gets the LinkedServerLoginName property.</summary>
-    public string? LinkedServerLoginName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.LinkedServerLoginName);
+    public string? LinkedServerLoginName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.LinkedServerLoginName);
     /// <summary>Gets the LinkedServerPassword property.</summary>
-    public string? LinkedServerPassword => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.LinkedServerPassword);
+    public string? LinkedServerPassword => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.LinkedServerPassword);
     ///<summary>
     /// Name: LinkedServer. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> LinkedServer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.LinkedServer);
+    public IEnumerable<TSqlObject> LinkedServer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.LinkedServer);
     ///<summary>
     /// Name: LocalLogin. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> LocalLogin => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.LocalLogin);
+    public IEnumerable<TSqlObject> LocalLogin => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.LinkedServerLogin.LocalLogin);
 }
 
 public static class LinkedServerLoginExtensions

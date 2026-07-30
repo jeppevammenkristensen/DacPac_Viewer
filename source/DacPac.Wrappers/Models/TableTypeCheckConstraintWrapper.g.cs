@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx TableTypeCheckConstraint object.</summary>
 public readonly struct TableTypeCheckConstraintWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TableTypeCheckConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TableTypeCheckConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Expression property.</summary>
-    public string? Expression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.TableTypeCheckConstraint.Expression);
+    public string? Expression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.TableTypeCheckConstraint.Expression);
     ///<summary>
     /// Name: ExpressionDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExpressionDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeCheckConstraint.ExpressionDependencies);
+    public IEnumerable<TSqlObject> ExpressionDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeCheckConstraint.ExpressionDependencies);
 }
 
 public static class TableTypeCheckConstraintExtensions

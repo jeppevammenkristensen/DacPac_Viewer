@@ -6,18 +6,18 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ColumnMasterKey object.</summary>
 public readonly struct ColumnMasterKeyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ColumnMasterKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ColumnMasterKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AllowEnclaveComputations property.</summary>
-    public bool AllowEnclaveComputations => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ColumnMasterKey.AllowEnclaveComputations);
+    public bool AllowEnclaveComputations => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ColumnMasterKey.AllowEnclaveComputations);
     /// <summary>Gets the KeyPath property.</summary>
-    public string? KeyPath => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnMasterKey.KeyPath);
+    public string? KeyPath => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnMasterKey.KeyPath);
     /// <summary>Gets the KeyStoreProviderName property.</summary>
-    public string? KeyStoreProviderName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnMasterKey.KeyStoreProviderName);
+    public string? KeyStoreProviderName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnMasterKey.KeyStoreProviderName);
     /// <summary>Gets the Signature property.</summary>
-    public string? Signature => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnMasterKey.Signature);
+    public string? Signature => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ColumnMasterKey.Signature);
 }
 
 public static class ColumnMasterKeyExtensions

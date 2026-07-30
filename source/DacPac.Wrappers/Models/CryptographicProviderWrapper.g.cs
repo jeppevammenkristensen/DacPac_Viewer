@@ -6,14 +6,14 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx CryptographicProvider object.</summary>
 public readonly struct CryptographicProviderWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public CryptographicProviderWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public CryptographicProviderWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the DllPath property.</summary>
-    public string? DllPath => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.CryptographicProvider.DllPath);
+    public string? DllPath => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.CryptographicProvider.DllPath);
     /// <summary>Gets the Enabled property.</summary>
-    public bool Enabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.CryptographicProvider.Enabled);
+    public bool Enabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.CryptographicProvider.Enabled);
 }
 
 public static class CryptographicProviderExtensions

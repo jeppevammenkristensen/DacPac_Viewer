@@ -6,152 +6,152 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Table object.</summary>
 public readonly struct TableWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TableWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TableWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AnsiNullsOn property.</summary>
-    public bool? AnsiNullsOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Table.AnsiNullsOn);
+    public bool? AnsiNullsOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Table.AnsiNullsOn);
     /// <summary>Gets the ChangeDataCaptureEnabled property.</summary>
-    public bool ChangeDataCaptureEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.ChangeDataCaptureEnabled);
+    public bool ChangeDataCaptureEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.ChangeDataCaptureEnabled);
     /// <summary>Gets the ChangeTrackingEnabled property.</summary>
-    public bool ChangeTrackingEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.ChangeTrackingEnabled);
+    public bool ChangeTrackingEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.ChangeTrackingEnabled);
     /// <summary>Gets the FileStreamNull property.</summary>
-    public bool? FileStreamNull => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Table.FileStreamNull);
+    public bool? FileStreamNull => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Table.FileStreamNull);
     /// <summary>Gets the LargeValueTypesOutOfRow property.</summary>
-    public bool LargeValueTypesOutOfRow => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.LargeValueTypesOutOfRow);
+    public bool LargeValueTypesOutOfRow => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.LargeValueTypesOutOfRow);
     /// <summary>Gets the QuotedIdentifierOn property.</summary>
-    public bool? QuotedIdentifierOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Table.QuotedIdentifierOn);
+    public bool? QuotedIdentifierOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Table.QuotedIdentifierOn);
     /// <summary>Gets the TableLockOnBulkLoad property.</summary>
-    public bool TableLockOnBulkLoad => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.TableLockOnBulkLoad);
+    public bool TableLockOnBulkLoad => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.TableLockOnBulkLoad);
     /// <summary>Gets the TrackColumnsUpdated property.</summary>
-    public bool TrackColumnsUpdated => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.TrackColumnsUpdated);
+    public bool TrackColumnsUpdated => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.TrackColumnsUpdated);
     /// <summary>Gets the VardecimalStorageFormatEnabled property.</summary>
-    public bool VardecimalStorageFormatEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.VardecimalStorageFormatEnabled);
+    public bool VardecimalStorageFormatEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.VardecimalStorageFormatEnabled);
     /// <summary>Gets the MemoryOptimized property.</summary>
-    public bool MemoryOptimized => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.MemoryOptimized);
+    public bool MemoryOptimized => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.MemoryOptimized);
     /// <summary>Gets the DistributionPolicyType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.TableDistributionPolicyType DistributionPolicyType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.TableDistributionPolicyType>(Microsoft.SqlServer.Dac.Model.Table.DistributionPolicyType);
+    public global::Microsoft.SqlServer.Dac.Model.TableDistributionPolicyType DistributionPolicyType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.TableDistributionPolicyType>(Microsoft.SqlServer.Dac.Model.Table.DistributionPolicyType);
     /// <summary>Gets the RowCount property.</summary>
-    public long? RowCount => ObjectType.GetProperty<long?>(Microsoft.SqlServer.Dac.Model.Table.RowCount);
+    public long? RowCount => SqlObject.GetProperty<long?>(Microsoft.SqlServer.Dac.Model.Table.RowCount);
     /// <summary>Gets the DataSize property.</summary>
-    public double? DataSize => ObjectType.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.Table.DataSize);
+    public double? DataSize => SqlObject.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.Table.DataSize);
     /// <summary>Gets the IndexSize property.</summary>
-    public double? IndexSize => ObjectType.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.Table.IndexSize);
+    public double? IndexSize => SqlObject.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.Table.IndexSize);
     /// <summary>Gets the DataPages property.</summary>
-    public long? DataPages => ObjectType.GetProperty<long?>(Microsoft.SqlServer.Dac.Model.Table.DataPages);
+    public long? DataPages => SqlObject.GetProperty<long?>(Microsoft.SqlServer.Dac.Model.Table.DataPages);
     /// <summary>Gets the UsedPages property.</summary>
-    public long? UsedPages => ObjectType.GetProperty<long?>(Microsoft.SqlServer.Dac.Model.Table.UsedPages);
+    public long? UsedPages => SqlObject.GetProperty<long?>(Microsoft.SqlServer.Dac.Model.Table.UsedPages);
     /// <summary>Gets the Durability property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Durability Durability => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Durability>(Microsoft.SqlServer.Dac.Model.Table.Durability);
+    public global::Microsoft.SqlServer.Dac.Model.Durability Durability => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Durability>(Microsoft.SqlServer.Dac.Model.Table.Durability);
     /// <summary>Gets the IsAutoGeneratedHistoryTable property.</summary>
-    public bool IsAutoGeneratedHistoryTable => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsAutoGeneratedHistoryTable);
+    public bool IsAutoGeneratedHistoryTable => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsAutoGeneratedHistoryTable);
     /// <summary>Gets the IsDroppedLedgerTable property.</summary>
-    public bool IsDroppedLedgerTable => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsDroppedLedgerTable);
+    public bool IsDroppedLedgerTable => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsDroppedLedgerTable);
     /// <summary>Gets the IsEdge property.</summary>
-    public bool IsEdge => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsEdge);
+    public bool IsEdge => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsEdge);
     /// <summary>Gets the IsNode property.</summary>
-    public bool IsNode => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsNode);
+    public bool IsNode => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsNode);
     /// <summary>Gets the IsReplicated property.</summary>
-    public bool IsReplicated => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsReplicated);
+    public bool IsReplicated => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.IsReplicated);
     /// <summary>Gets the LedgerHistoryTableName property.</summary>
-    public string? LedgerHistoryTableName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerHistoryTableName);
+    public string? LedgerHistoryTableName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerHistoryTableName);
     /// <summary>Gets the LedgerHistoryTableSchemaName property.</summary>
-    public string? LedgerHistoryTableSchemaName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerHistoryTableSchemaName);
+    public string? LedgerHistoryTableSchemaName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerHistoryTableSchemaName);
     /// <summary>Gets the LedgerType property.</summary>
-    public int LedgerType => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Table.LedgerType);
+    public int LedgerType => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Table.LedgerType);
     /// <summary>Gets the LedgerViewName property.</summary>
-    public string? LedgerViewName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewName);
+    public string? LedgerViewName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewName);
     /// <summary>Gets the LedgerViewOperationTypeColumnName property.</summary>
-    public string? LedgerViewOperationTypeColumnName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewOperationTypeColumnName);
+    public string? LedgerViewOperationTypeColumnName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewOperationTypeColumnName);
     /// <summary>Gets the LedgerViewOperationTypeDescColumnName property.</summary>
-    public string? LedgerViewOperationTypeDescColumnName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewOperationTypeDescColumnName);
+    public string? LedgerViewOperationTypeDescColumnName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewOperationTypeDescColumnName);
     /// <summary>Gets the LedgerViewSchemaName property.</summary>
-    public string? LedgerViewSchemaName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewSchemaName);
+    public string? LedgerViewSchemaName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewSchemaName);
     /// <summary>Gets the LedgerViewSequenceNumberColumnName property.</summary>
-    public string? LedgerViewSequenceNumberColumnName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewSequenceNumberColumnName);
+    public string? LedgerViewSequenceNumberColumnName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewSequenceNumberColumnName);
     /// <summary>Gets the LedgerViewTransactionIdColumnName property.</summary>
-    public string? LedgerViewTransactionIdColumnName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewTransactionIdColumnName);
+    public string? LedgerViewTransactionIdColumnName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Table.LedgerViewTransactionIdColumnName);
     /// <summary>Gets the LockEscalation property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod LockEscalation => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod>(Microsoft.SqlServer.Dac.Model.Table.LockEscalation);
+    public global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod LockEscalation => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod>(Microsoft.SqlServer.Dac.Model.Table.LockEscalation);
     /// <summary>Gets the QueryScript property.</summary>
-    public string? QueryScript => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.Table.QueryScript);
+    public string? QueryScript => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.Table.QueryScript);
     /// <summary>Gets the RemoteDataEnabled property.</summary>
-    public bool RemoteDataEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.RemoteDataEnabled);
+    public bool RemoteDataEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Table.RemoteDataEnabled);
     /// <summary>Gets the RetentionUnit property.</summary>
-    public int RetentionUnit => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Table.RetentionUnit);
+    public int RetentionUnit => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Table.RetentionUnit);
     /// <summary>Gets the RetentionValue property.</summary>
-    public int RetentionValue => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Table.RetentionValue);
+    public int RetentionValue => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Table.RetentionValue);
     /// <summary>Gets the TextInRowSize property.</summary>
-    public int TextInRowSize => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Table.TextInRowSize);
+    public int TextInRowSize => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Table.TextInRowSize);
     ///<summary>
     /// Name: DistributionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DistributionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.DistributionColumn);
+    public IEnumerable<TSqlObject> DistributionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.DistributionColumn);
     ///<summary>
     /// Name: ClusterByColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ClusterByColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.ClusterByColumn);
+    public IEnumerable<TSqlObject> ClusterByColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.ClusterByColumn);
     ///<summary>
     /// Name: Columns. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.Columns);
     ///<summary>
     /// Name: DataCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> DataCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.DataCompressionOptions);
+    public IEnumerable<TSqlObject> DataCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.DataCompressionOptions);
     ///<summary>
     /// Name: DataRetention. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> DataRetention => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.DataRetention);
+    public IEnumerable<TSqlObject> DataRetention => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.DataRetention);
     ///<summary>
     /// Name: DynamicObjects. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> DynamicObjects => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.DynamicObjects);
+    public IEnumerable<TSqlObject> DynamicObjects => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.DynamicObjects);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.Filegroup);
     ///<summary>
     /// Name: FilegroupForTextImage. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FilegroupForTextImage => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.FilegroupForTextImage);
+    public IEnumerable<TSqlObject> FilegroupForTextImage => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.FilegroupForTextImage);
     ///<summary>
     /// Name: FileStreamFilegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamFilegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.FileStreamFilegroup);
+    public IEnumerable<TSqlObject> FileStreamFilegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.FileStreamFilegroup);
     ///<summary>
     /// Name: FileStreamPartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamPartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.FileStreamPartitionScheme);
+    public IEnumerable<TSqlObject> FileStreamPartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.FileStreamPartitionScheme);
     ///<summary>
     /// Name: PartitionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.PartitionColumn);
+    public IEnumerable<TSqlObject> PartitionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.PartitionColumn);
     ///<summary>
     /// Name: PartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.PartitionScheme);
+    public IEnumerable<TSqlObject> PartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.PartitionScheme);
     ///<summary>
     /// Name: PartitionSpecification. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionSpecification => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.PartitionSpecification);
+    public IEnumerable<TSqlObject> PartitionSpecification => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.PartitionSpecification);
     ///<summary>
     /// Name: QueryDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> QueryDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.QueryDependencies);
+    public IEnumerable<TSqlObject> QueryDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.QueryDependencies);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.Schema);
     ///<summary>
     /// Name: TemporalSystemVersioningHistoryTable. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> TemporalSystemVersioningHistoryTable => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.TemporalSystemVersioningHistoryTable);
+    public IEnumerable<TSqlObject> TemporalSystemVersioningHistoryTable => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.TemporalSystemVersioningHistoryTable);
     ///<summary>
     /// Name: XmlCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> XmlCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.XmlCompressionOptions);
+    public IEnumerable<TSqlObject> XmlCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Table.XmlCompressionOptions);
 }
 
 public static class TableExtensions

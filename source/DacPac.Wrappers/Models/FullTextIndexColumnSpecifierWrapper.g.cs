@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx FullTextIndexColumnSpecifier object.</summary>
 public readonly struct FullTextIndexColumnSpecifierWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public FullTextIndexColumnSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public FullTextIndexColumnSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the PartOfStatisticalSemantics property.</summary>
-    public bool PartOfStatisticalSemantics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndexColumnSpecifier.PartOfStatisticalSemantics);
+    public bool PartOfStatisticalSemantics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndexColumnSpecifier.PartOfStatisticalSemantics);
     /// <summary>Gets the LanguageId property.</summary>
-    public int? LanguageId => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.FullTextIndexColumnSpecifier.LanguageId);
+    public int? LanguageId => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.FullTextIndexColumnSpecifier.LanguageId);
     ///<summary>
     /// Name: Column. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Column => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndexColumnSpecifier.Column);
+    public IEnumerable<TSqlObject> Column => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndexColumnSpecifier.Column);
     ///<summary>
     /// Name: TypeColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> TypeColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndexColumnSpecifier.TypeColumn);
+    public IEnumerable<TSqlObject> TypeColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndexColumnSpecifier.TypeColumn);
 }
 
 public static class FullTextIndexColumnSpecifierExtensions

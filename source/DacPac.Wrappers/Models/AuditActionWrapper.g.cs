@@ -6,12 +6,12 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx AuditAction object.</summary>
 public readonly struct AuditActionWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public AuditActionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public AuditActionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Action property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.DatabaseAuditAction Action => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.DatabaseAuditAction>(Microsoft.SqlServer.Dac.Model.AuditAction.Action);
+    public global::Microsoft.SqlServer.Dac.Model.DatabaseAuditAction Action => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.DatabaseAuditAction>(Microsoft.SqlServer.Dac.Model.AuditAction.Action);
 }
 
 public static class AuditActionExtensions

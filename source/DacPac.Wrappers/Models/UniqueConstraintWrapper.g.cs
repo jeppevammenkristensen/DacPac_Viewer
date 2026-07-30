@@ -6,76 +6,76 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx UniqueConstraint object.</summary>
 public readonly struct UniqueConstraintWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public UniqueConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public UniqueConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AllowPageLocks property.</summary>
-    public bool AllowPageLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.AllowPageLocks);
+    public bool AllowPageLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.AllowPageLocks);
     /// <summary>Gets the AllowRowLocks property.</summary>
-    public bool AllowRowLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.AllowRowLocks);
+    public bool AllowRowLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.AllowRowLocks);
     /// <summary>Gets the IgnoreDuplicateKey property.</summary>
-    public bool IgnoreDuplicateKey => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.IgnoreDuplicateKey);
+    public bool IgnoreDuplicateKey => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.IgnoreDuplicateKey);
     /// <summary>Gets the RecomputeStatistics property.</summary>
-    public bool RecomputeStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.RecomputeStatistics);
+    public bool RecomputeStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.RecomputeStatistics);
     /// <summary>Gets the Clustered property.</summary>
-    public bool Clustered => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Clustered);
+    public bool Clustered => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Clustered);
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Disabled);
     /// <summary>Gets the FileStreamNull property.</summary>
-    public bool? FileStreamNull => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.FileStreamNull);
+    public bool? FileStreamNull => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.FileStreamNull);
     /// <summary>Gets the WithPadIndex property.</summary>
-    public bool WithPadIndex => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.WithPadIndex);
+    public bool WithPadIndex => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.WithPadIndex);
     /// <summary>Gets the Hash property.</summary>
-    public bool Hash => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Hash);
+    public bool Hash => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Hash);
     /// <summary>Gets the OptimizeForSequentialKey property.</summary>
-    public bool OptimizeForSequentialKey => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.OptimizeForSequentialKey);
+    public bool OptimizeForSequentialKey => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.OptimizeForSequentialKey);
     /// <summary>Gets the AutoCreated property.</summary>
-    public bool AutoCreated => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.AutoCreated);
+    public bool AutoCreated => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.AutoCreated);
     /// <summary>Gets the BucketCount property.</summary>
-    public int? BucketCount => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.BucketCount);
+    public int? BucketCount => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.BucketCount);
     /// <summary>Gets the DoIncrementalStatistics property.</summary>
-    public bool DoIncrementalStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.DoIncrementalStatistics);
+    public bool DoIncrementalStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.DoIncrementalStatistics);
     /// <summary>Gets the FillFactor property.</summary>
-    public int? FillFactor => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.FillFactor);
+    public int? FillFactor => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.FillFactor);
     /// <summary>Gets the Online property.</summary>
-    public bool? Online => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Online);
+    public bool? Online => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Online);
     ///<summary>
     /// Name: Host. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Host => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Host);
+    public IEnumerable<TSqlObject> Host => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Host);
     ///<summary>
     /// Name: Columns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Columns);
     ///<summary>
     /// Name: DataCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> DataCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.DataCompressionOptions);
+    public IEnumerable<TSqlObject> DataCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.DataCompressionOptions);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.Filegroup);
     ///<summary>
     /// Name: FileStreamFilegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamFilegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.FileStreamFilegroup);
+    public IEnumerable<TSqlObject> FileStreamFilegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.FileStreamFilegroup);
     ///<summary>
     /// Name: FileStreamPartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamPartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.FileStreamPartitionScheme);
+    public IEnumerable<TSqlObject> FileStreamPartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.FileStreamPartitionScheme);
     ///<summary>
     /// Name: PartitionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.PartitionColumn);
+    public IEnumerable<TSqlObject> PartitionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.PartitionColumn);
     ///<summary>
     /// Name: PartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.PartitionScheme);
+    public IEnumerable<TSqlObject> PartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.PartitionScheme);
     ///<summary>
     /// Name: XmlCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> XmlCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.XmlCompressionOptions);
+    public IEnumerable<TSqlObject> XmlCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UniqueConstraint.XmlCompressionOptions);
 }
 
 public static class UniqueConstraintExtensions

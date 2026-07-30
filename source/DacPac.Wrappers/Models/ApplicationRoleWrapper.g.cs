@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ApplicationRole object.</summary>
 public readonly struct ApplicationRoleWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ApplicationRoleWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ApplicationRoleWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Password property.</summary>
-    public string? Password => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ApplicationRole.Password);
+    public string? Password => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ApplicationRole.Password);
     ///<summary>
     /// Name: DefaultSchema. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DefaultSchema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ApplicationRole.DefaultSchema);
+    public IEnumerable<TSqlObject> DefaultSchema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ApplicationRole.DefaultSchema);
 }
 
 public static class ApplicationRoleExtensions

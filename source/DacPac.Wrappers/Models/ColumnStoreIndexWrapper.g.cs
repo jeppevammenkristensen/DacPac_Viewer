@@ -6,54 +6,54 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ColumnStoreIndex object.</summary>
 public readonly struct ColumnStoreIndexWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ColumnStoreIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ColumnStoreIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.Disabled);
     /// <summary>Gets the Clustered property.</summary>
-    public bool Clustered => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.Clustered);
+    public bool Clustered => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.Clustered);
     /// <summary>Gets the FilterPredicate property.</summary>
-    public string? FilterPredicate => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.FilterPredicate);
+    public string? FilterPredicate => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.FilterPredicate);
     /// <summary>Gets the CompressionDelay property.</summary>
-    public int CompressionDelay => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.CompressionDelay);
+    public int CompressionDelay => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.CompressionDelay);
     ///<summary>
     /// Name: Columns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.Columns);
     ///<summary>
     /// Name: BodyDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BodyDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.BodyDependencies);
+    public IEnumerable<TSqlObject> BodyDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.BodyDependencies);
     ///<summary>
     /// Name: DataCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> DataCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.DataCompressionOptions);
+    public IEnumerable<TSqlObject> DataCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.DataCompressionOptions);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.Filegroup);
     ///<summary>
     /// Name: IndexedObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> IndexedObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.IndexedObject);
+    public IEnumerable<TSqlObject> IndexedObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.IndexedObject);
     ///<summary>
     /// Name: OrderedColumns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> OrderedColumns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.OrderedColumns);
+    public IEnumerable<TSqlObject> OrderedColumns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.OrderedColumns);
     ///<summary>
     /// Name: PartitionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.PartitionColumn);
+    public IEnumerable<TSqlObject> PartitionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.PartitionColumn);
     ///<summary>
     /// Name: PartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.PartitionScheme);
+    public IEnumerable<TSqlObject> PartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.PartitionScheme);
     ///<summary>
     /// Name: XmlCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> XmlCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.XmlCompressionOptions);
+    public IEnumerable<TSqlObject> XmlCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnStoreIndex.XmlCompressionOptions);
 }
 
 public static class ColumnStoreIndexExtensions

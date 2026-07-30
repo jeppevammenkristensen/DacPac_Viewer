@@ -6,62 +6,62 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx XmlIndex object.</summary>
 public readonly struct XmlIndexWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public XmlIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public XmlIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AllowPageLocks property.</summary>
-    public bool AllowPageLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.AllowPageLocks);
+    public bool AllowPageLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.AllowPageLocks);
     /// <summary>Gets the AllowRowLocks property.</summary>
-    public bool AllowRowLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.AllowRowLocks);
+    public bool AllowRowLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.AllowRowLocks);
     /// <summary>Gets the IgnoreDuplicateKey property.</summary>
-    public bool IgnoreDuplicateKey => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.IgnoreDuplicateKey);
+    public bool IgnoreDuplicateKey => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.IgnoreDuplicateKey);
     /// <summary>Gets the RecomputeStatistics property.</summary>
-    public bool RecomputeStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.RecomputeStatistics);
+    public bool RecomputeStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.RecomputeStatistics);
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.Disabled);
     /// <summary>Gets the WithPadIndex property.</summary>
-    public bool WithPadIndex => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.WithPadIndex);
+    public bool WithPadIndex => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.WithPadIndex);
     /// <summary>Gets the SecondaryXmlIndexType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SecondaryXmlIndexType SecondaryXmlIndexType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SecondaryXmlIndexType>(Microsoft.SqlServer.Dac.Model.XmlIndex.SecondaryXmlIndexType);
+    public global::Microsoft.SqlServer.Dac.Model.SecondaryXmlIndexType SecondaryXmlIndexType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SecondaryXmlIndexType>(Microsoft.SqlServer.Dac.Model.XmlIndex.SecondaryXmlIndexType);
     /// <summary>Gets the DoIncrementalStatistics property.</summary>
-    public bool DoIncrementalStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.DoIncrementalStatistics);
+    public bool DoIncrementalStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.DoIncrementalStatistics);
     /// <summary>Gets the FillFactor property.</summary>
-    public int? FillFactor => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.XmlIndex.FillFactor);
+    public int? FillFactor => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.XmlIndex.FillFactor);
     /// <summary>Gets the IsPrimary property.</summary>
-    public bool IsPrimary => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.IsPrimary);
+    public bool IsPrimary => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.XmlIndex.IsPrimary);
     ///<summary>
     /// Name: PrimaryXmlIndex. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PrimaryXmlIndex => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.PrimaryXmlIndex);
+    public IEnumerable<TSqlObject> PrimaryXmlIndex => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.PrimaryXmlIndex);
     ///<summary>
     /// Name: Column. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Column => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.Column);
+    public IEnumerable<TSqlObject> Column => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.Column);
     ///<summary>
     /// Name: DataCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> DataCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.DataCompressionOptions);
+    public IEnumerable<TSqlObject> DataCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.DataCompressionOptions);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.Filegroup);
     ///<summary>
     /// Name: IndexedObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> IndexedObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.IndexedObject);
+    public IEnumerable<TSqlObject> IndexedObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.IndexedObject);
     ///<summary>
     /// Name: PartitionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.PartitionColumn);
+    public IEnumerable<TSqlObject> PartitionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.PartitionColumn);
     ///<summary>
     /// Name: PartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.PartitionScheme);
+    public IEnumerable<TSqlObject> PartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.PartitionScheme);
     ///<summary>
     /// Name: XmlCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> XmlCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.XmlCompressionOptions);
+    public IEnumerable<TSqlObject> XmlCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlIndex.XmlCompressionOptions);
 }
 
 public static class XmlIndexExtensions
