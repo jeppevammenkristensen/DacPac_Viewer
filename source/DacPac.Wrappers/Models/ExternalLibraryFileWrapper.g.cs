@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalLibraryFile object.</summary>
 public readonly struct ExternalLibraryFileWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalLibraryFileWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalLibraryFileWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Content property.</summary>
-    public string? Content => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.ExternalLibraryFile.Content);
+    public string? Content => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.ExternalLibraryFile.Content);
     /// <summary>Gets the Platform property.</summary>
-    public string? Platform => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLibraryFile.Platform);
+    public string? Platform => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLibraryFile.Platform);
     /// <summary>Gets the Path property.</summary>
-    public string? Path => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLibraryFile.Path);
+    public string? Path => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLibraryFile.Path);
 }
 
 public static class ExternalLibraryFileExtensions

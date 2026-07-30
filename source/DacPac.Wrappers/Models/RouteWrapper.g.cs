@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Route object.</summary>
 public readonly struct RouteWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public RouteWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public RouteWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the BrokerInstance property.</summary>
-    public string? BrokerInstance => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Route.BrokerInstance);
+    public string? BrokerInstance => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Route.BrokerInstance);
     /// <summary>Gets the ServiceName property.</summary>
-    public string? ServiceName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Route.ServiceName);
+    public string? ServiceName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Route.ServiceName);
     /// <summary>Gets the Address property.</summary>
-    public string? Address => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Route.Address);
+    public string? Address => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Route.Address);
     /// <summary>Gets the Lifetime property.</summary>
-    public int? Lifetime => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Route.Lifetime);
+    public int? Lifetime => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Route.Lifetime);
     /// <summary>Gets the MirrorAddress property.</summary>
-    public string? MirrorAddress => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Route.MirrorAddress);
+    public string? MirrorAddress => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Route.MirrorAddress);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Route.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Route.Authorizer);
 }
 
 public static class RouteExtensions

@@ -6,26 +6,26 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx WorkloadClassifier object.</summary>
 public readonly struct WorkloadClassifierWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public WorkloadClassifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public WorkloadClassifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the EndTime property.</summary>
-    public string? EndTime => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.EndTime);
+    public string? EndTime => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.EndTime);
     /// <summary>Gets the Importance property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Degree Importance => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.Importance);
+    public global::Microsoft.SqlServer.Dac.Model.Degree Importance => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.Importance);
     /// <summary>Gets the MemberName property.</summary>
-    public string? MemberName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.MemberName);
+    public string? MemberName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.MemberName);
     /// <summary>Gets the StartTime property.</summary>
-    public string? StartTime => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.StartTime);
+    public string? StartTime => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.StartTime);
     /// <summary>Gets the WlmContext property.</summary>
-    public string? WlmContext => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.WlmContext);
+    public string? WlmContext => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.WlmContext);
     /// <summary>Gets the WlmLabel property.</summary>
-    public string? WlmLabel => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.WlmLabel);
+    public string? WlmLabel => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.WlmLabel);
     ///<summary>
     /// Name: WorkloadGroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> WorkloadGroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.WorkloadGroup);
+    public IEnumerable<TSqlObject> WorkloadGroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.WorkloadClassifier.WorkloadGroup);
 }
 
 public static class WorkloadClassifierExtensions

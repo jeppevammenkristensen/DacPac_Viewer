@@ -6,38 +6,38 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Permission object.</summary>
 public readonly struct PermissionWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public PermissionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public PermissionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the WithAllPrivileges property.</summary>
-    public bool WithAllPrivileges => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Permission.WithAllPrivileges);
+    public bool WithAllPrivileges => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Permission.WithAllPrivileges);
     /// <summary>Gets the WithGrantOption property.</summary>
-    public bool WithGrantOption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Permission.WithGrantOption);
+    public bool WithGrantOption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Permission.WithGrantOption);
     /// <summary>Gets the PermissionType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.PermissionType PermissionType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.PermissionType>(Microsoft.SqlServer.Dac.Model.Permission.PermissionType);
+    public global::Microsoft.SqlServer.Dac.Model.PermissionType PermissionType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.PermissionType>(Microsoft.SqlServer.Dac.Model.Permission.PermissionType);
     /// <summary>Gets the PermissionAction property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.PermissionAction PermissionAction => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.PermissionAction>(Microsoft.SqlServer.Dac.Model.Permission.PermissionAction);
+    public global::Microsoft.SqlServer.Dac.Model.PermissionAction PermissionAction => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.PermissionAction>(Microsoft.SqlServer.Dac.Model.Permission.PermissionAction);
     ///<summary>
     /// Name: ExcludedColumns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExcludedColumns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.ExcludedColumns);
+    public IEnumerable<TSqlObject> ExcludedColumns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.ExcludedColumns);
     ///<summary>
     /// Name: Grantee. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Grantee => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.Grantee);
+    public IEnumerable<TSqlObject> Grantee => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.Grantee);
     ///<summary>
     /// Name: Grantor. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Grantor => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.Grantor);
+    public IEnumerable<TSqlObject> Grantor => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.Grantor);
     ///<summary>
     /// Name: RevokedGrantOptionColumns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> RevokedGrantOptionColumns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.RevokedGrantOptionColumns);
+    public IEnumerable<TSqlObject> RevokedGrantOptionColumns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.RevokedGrantOptionColumns);
     ///<summary>
     /// Name: SecuredObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> SecuredObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.SecuredObject);
+    public IEnumerable<TSqlObject> SecuredObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Permission.SecuredObject);
 }
 
 public static class PermissionExtensions

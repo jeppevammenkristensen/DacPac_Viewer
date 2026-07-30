@@ -6,88 +6,88 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Index object.</summary>
 public readonly struct IndexWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public IndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public IndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AllowPageLocks property.</summary>
-    public bool AllowPageLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.AllowPageLocks);
+    public bool AllowPageLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.AllowPageLocks);
     /// <summary>Gets the AllowRowLocks property.</summary>
-    public bool AllowRowLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.AllowRowLocks);
+    public bool AllowRowLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.AllowRowLocks);
     /// <summary>Gets the IgnoreDuplicateKey property.</summary>
-    public bool IgnoreDuplicateKey => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.IgnoreDuplicateKey);
+    public bool IgnoreDuplicateKey => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.IgnoreDuplicateKey);
     /// <summary>Gets the RecomputeStatistics property.</summary>
-    public bool RecomputeStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.RecomputeStatistics);
+    public bool RecomputeStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.RecomputeStatistics);
     /// <summary>Gets the IncrementalStatistics property.</summary>
-    public bool IncrementalStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.IncrementalStatistics);
+    public bool IncrementalStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.IncrementalStatistics);
     /// <summary>Gets the Clustered property.</summary>
-    public bool Clustered => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.Clustered);
+    public bool Clustered => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.Clustered);
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.Disabled);
     /// <summary>Gets the FileStreamNull property.</summary>
-    public bool? FileStreamNull => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Index.FileStreamNull);
+    public bool? FileStreamNull => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Index.FileStreamNull);
     /// <summary>Gets the WithPadIndex property.</summary>
-    public bool WithPadIndex => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.WithPadIndex);
+    public bool WithPadIndex => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.WithPadIndex);
     /// <summary>Gets the Online property.</summary>
-    public bool? Online => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Index.Online);
+    public bool? Online => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Index.Online);
     /// <summary>Gets the Unique property.</summary>
-    public bool Unique => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.Unique);
+    public bool Unique => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.Unique);
     /// <summary>Gets the FilterPredicate property.</summary>
-    public string? FilterPredicate => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.Index.FilterPredicate);
+    public string? FilterPredicate => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.Index.FilterPredicate);
     /// <summary>Gets the Hash property.</summary>
-    public bool Hash => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.Hash);
+    public bool Hash => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.Hash);
     /// <summary>Gets the OptimizeForSequentialKey property.</summary>
-    public bool OptimizeForSequentialKey => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.OptimizeForSequentialKey);
+    public bool OptimizeForSequentialKey => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.OptimizeForSequentialKey);
     /// <summary>Gets the AutoCreated property.</summary>
-    public bool AutoCreated => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.AutoCreated);
+    public bool AutoCreated => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Index.AutoCreated);
     /// <summary>Gets the BucketCount property.</summary>
-    public int? BucketCount => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Index.BucketCount);
+    public int? BucketCount => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Index.BucketCount);
     /// <summary>Gets the FillFactor property.</summary>
-    public int? FillFactor => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Index.FillFactor);
+    public int? FillFactor => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Index.FillFactor);
     ///<summary>
     /// Name: Columns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.Columns);
     ///<summary>
     /// Name: BodyDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BodyDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.BodyDependencies);
+    public IEnumerable<TSqlObject> BodyDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.BodyDependencies);
     ///<summary>
     /// Name: DataCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> DataCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.DataCompressionOptions);
+    public IEnumerable<TSqlObject> DataCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.DataCompressionOptions);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.Filegroup);
     ///<summary>
     /// Name: FileStreamFilegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamFilegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.FileStreamFilegroup);
+    public IEnumerable<TSqlObject> FileStreamFilegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.FileStreamFilegroup);
     ///<summary>
     /// Name: FileStreamPartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamPartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.FileStreamPartitionScheme);
+    public IEnumerable<TSqlObject> FileStreamPartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.FileStreamPartitionScheme);
     ///<summary>
     /// Name: IncludedColumns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> IncludedColumns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.IncludedColumns);
+    public IEnumerable<TSqlObject> IncludedColumns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.IncludedColumns);
     ///<summary>
     /// Name: IndexedObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> IndexedObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.IndexedObject);
+    public IEnumerable<TSqlObject> IndexedObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.IndexedObject);
     ///<summary>
     /// Name: PartitionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.PartitionColumn);
+    public IEnumerable<TSqlObject> PartitionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.PartitionColumn);
     ///<summary>
     /// Name: PartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.PartitionScheme);
+    public IEnumerable<TSqlObject> PartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.PartitionScheme);
     ///<summary>
     /// Name: XmlCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> XmlCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.XmlCompressionOptions);
+    public IEnumerable<TSqlObject> XmlCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Index.XmlCompressionOptions);
 }
 
 public static class IndexExtensions

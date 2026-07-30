@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx XmlSchemaCollection object.</summary>
 public readonly struct XmlSchemaCollectionWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public XmlSchemaCollectionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public XmlSchemaCollectionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Expression property.</summary>
-    public string? Expression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.XmlSchemaCollection.Expression);
+    public string? Expression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.XmlSchemaCollection.Expression);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlSchemaCollection.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.XmlSchemaCollection.Schema);
 }
 
 public static class XmlSchemaCollectionExtensions

@@ -6,38 +6,38 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Aggregate object.</summary>
 public readonly struct AggregateWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public AggregateWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public AggregateWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the InvariantToDuplicates property.</summary>
-    public bool? InvariantToDuplicates => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Aggregate.InvariantToDuplicates);
+    public bool? InvariantToDuplicates => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Aggregate.InvariantToDuplicates);
     /// <summary>Gets the InvariantToNulls property.</summary>
-    public bool? InvariantToNulls => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Aggregate.InvariantToNulls);
+    public bool? InvariantToNulls => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Aggregate.InvariantToNulls);
     /// <summary>Gets the NullIfEmpty property.</summary>
-    public bool? NullIfEmpty => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Aggregate.NullIfEmpty);
+    public bool? NullIfEmpty => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Aggregate.NullIfEmpty);
     /// <summary>Gets the ClassName property.</summary>
-    public string? ClassName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Aggregate.ClassName);
+    public string? ClassName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Aggregate.ClassName);
     /// <summary>Gets the Format property.</summary>
-    public int Format => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Aggregate.Format);
+    public int Format => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Aggregate.Format);
     /// <summary>Gets the MaxByteSize property.</summary>
-    public int? MaxByteSize => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Aggregate.MaxByteSize);
+    public int? MaxByteSize => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Aggregate.MaxByteSize);
     ///<summary>
     /// Name: ReturnType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ReturnType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Aggregate.ReturnType);
+    public IEnumerable<TSqlObject> ReturnType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Aggregate.ReturnType);
     ///<summary>
     /// Name: Assembly. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Assembly => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Aggregate.Assembly);
+    public IEnumerable<TSqlObject> Assembly => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Aggregate.Assembly);
     ///<summary>
     /// Name: Parameters. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Parameters => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Aggregate.Parameters);
+    public IEnumerable<TSqlObject> Parameters => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Aggregate.Parameters);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Aggregate.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Aggregate.Schema);
 }
 
 public static class AggregateExtensions

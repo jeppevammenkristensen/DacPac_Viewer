@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ResourceGovernor object.</summary>
 public readonly struct ResourceGovernorWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ResourceGovernorWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ResourceGovernorWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Enabled property.</summary>
-    public bool? Enabled => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ResourceGovernor.Enabled);
+    public bool? Enabled => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ResourceGovernor.Enabled);
     ///<summary>
     /// Name: ClassifierFunction. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ClassifierFunction => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ResourceGovernor.ClassifierFunction);
+    public IEnumerable<TSqlObject> ClassifierFunction => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ResourceGovernor.ClassifierFunction);
 }
 
 public static class ResourceGovernorExtensions

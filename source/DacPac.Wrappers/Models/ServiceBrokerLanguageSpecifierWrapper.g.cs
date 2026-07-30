@@ -6,28 +6,28 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ServiceBrokerLanguageSpecifier object.</summary>
 public readonly struct ServiceBrokerLanguageSpecifierWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ServiceBrokerLanguageSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ServiceBrokerLanguageSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the WindowsAuthenticationMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.AuthenticationModes WindowsAuthenticationMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.AuthenticationModes>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.WindowsAuthenticationMode);
+    public global::Microsoft.SqlServer.Dac.Model.AuthenticationModes WindowsAuthenticationMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.AuthenticationModes>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.WindowsAuthenticationMode);
     /// <summary>Gets the UseCertificateFirst property.</summary>
-    public bool UseCertificateFirst => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.UseCertificateFirst);
+    public bool UseCertificateFirst => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.UseCertificateFirst);
     /// <summary>Gets the MessageForwardingEnabled property.</summary>
-    public bool MessageForwardingEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.MessageForwardingEnabled);
+    public bool MessageForwardingEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.MessageForwardingEnabled);
     /// <summary>Gets the EncryptionAlgorithmPart1 property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm EncryptionAlgorithmPart1 => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.EncryptionAlgorithmPart1);
+    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm EncryptionAlgorithmPart1 => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.EncryptionAlgorithmPart1);
     /// <summary>Gets the EncryptionAlgorithmPart2 property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm EncryptionAlgorithmPart2 => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.EncryptionAlgorithmPart2);
+    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm EncryptionAlgorithmPart2 => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.EncryptionAlgorithmPart2);
     /// <summary>Gets the EncryptionMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.EncryptionMode EncryptionMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.EncryptionMode>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.EncryptionMode);
+    public global::Microsoft.SqlServer.Dac.Model.EncryptionMode EncryptionMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.EncryptionMode>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.EncryptionMode);
     /// <summary>Gets the MessageForwardSize property.</summary>
-    public int MessageForwardSize => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.MessageForwardSize);
+    public int MessageForwardSize => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.MessageForwardSize);
     ///<summary>
     /// Name: AuthenticationCertificate. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> AuthenticationCertificate => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.AuthenticationCertificate);
+    public IEnumerable<TSqlObject> AuthenticationCertificate => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ServiceBrokerLanguageSpecifier.AuthenticationCertificate);
 }
 
 public static class ServiceBrokerLanguageSpecifierExtensions

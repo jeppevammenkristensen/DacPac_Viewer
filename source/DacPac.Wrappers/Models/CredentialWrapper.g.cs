@@ -6,18 +6,18 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Credential object.</summary>
 public readonly struct CredentialWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public CredentialWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public CredentialWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Identity property.</summary>
-    public string? Identity => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Credential.Identity);
+    public string? Identity => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Credential.Identity);
     /// <summary>Gets the Secret property.</summary>
-    public string? Secret => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Credential.Secret);
+    public string? Secret => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Credential.Secret);
     ///<summary>
     /// Name: CryptographicProvider. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> CryptographicProvider => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Credential.CryptographicProvider);
+    public IEnumerable<TSqlObject> CryptographicProvider => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Credential.CryptographicProvider);
 }
 
 public static class CredentialExtensions

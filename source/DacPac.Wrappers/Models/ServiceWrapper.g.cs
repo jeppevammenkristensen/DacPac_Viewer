@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Service object.</summary>
 public readonly struct ServiceWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ServiceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ServiceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the UseDefaultContract property.</summary>
-    public bool UseDefaultContract => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Service.UseDefaultContract);
+    public bool UseDefaultContract => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Service.UseDefaultContract);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Service.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Service.Authorizer);
     ///<summary>
     /// Name: Contracts. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Contracts => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Service.Contracts);
+    public IEnumerable<TSqlObject> Contracts => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Service.Contracts);
     ///<summary>
     /// Name: Queue. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Queue => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Service.Queue);
+    public IEnumerable<TSqlObject> Queue => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Service.Queue);
 }
 
 public static class ServiceExtensions

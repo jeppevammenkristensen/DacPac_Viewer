@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx PartitionSpecification object.</summary>
 public readonly struct PartitionSpecificationWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public PartitionSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public PartitionSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Range property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.PartitionRange Range => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.PartitionRange>(Microsoft.SqlServer.Dac.Model.PartitionSpecification.Range);
+    public global::Microsoft.SqlServer.Dac.Model.PartitionRange Range => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.PartitionRange>(Microsoft.SqlServer.Dac.Model.PartitionSpecification.Range);
     ///<summary>
     /// Name: BoundaryValues. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> BoundaryValues => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.PartitionSpecification.BoundaryValues);
+    public IEnumerable<TSqlObject> BoundaryValues => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.PartitionSpecification.BoundaryValues);
 }
 
 public static class PartitionSpecificationExtensions

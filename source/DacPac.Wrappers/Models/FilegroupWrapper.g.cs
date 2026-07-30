@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Filegroup object.</summary>
 public readonly struct FilegroupWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public FilegroupWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public FilegroupWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ContainsFileStream property.</summary>
-    public bool ContainsFileStream => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Filegroup.ContainsFileStream);
+    public bool ContainsFileStream => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Filegroup.ContainsFileStream);
     /// <summary>Gets the ReadOnly property.</summary>
-    public bool ReadOnly => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Filegroup.ReadOnly);
+    public bool ReadOnly => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Filegroup.ReadOnly);
     /// <summary>Gets the ContainsMemoryOptimizedData property.</summary>
-    public bool ContainsMemoryOptimizedData => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Filegroup.ContainsMemoryOptimizedData);
+    public bool ContainsMemoryOptimizedData => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Filegroup.ContainsMemoryOptimizedData);
 }
 
 public static class FilegroupExtensions

@@ -16,7 +16,7 @@ public class TableToCsharpClassGenerator : CsharpGenerator
     {
         sb.AppendLine($"""
                        /// <summary>
-                       /// Represents a {sqlObject.Name.Parts.Last()} {sqlObject.Name.ToString()}
+                       /// Represents the table {sqlObject.Name.Parts.Last()} {sqlObject.Name.ToString()}
                        /// </summary>
                        """);
         sb.AppendLine($"public class {sqlObject.Name.Parts.Last().ToPascalCase()}");

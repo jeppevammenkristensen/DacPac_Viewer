@@ -6,12 +6,12 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalStreamingJob object.</summary>
 public readonly struct ExternalStreamingJobWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalStreamingJobWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalStreamingJobWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Statement property.</summary>
-    public string? Statement => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalStreamingJob.Statement);
+    public string? Statement => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalStreamingJob.Statement);
 }
 
 public static class ExternalStreamingJobExtensions

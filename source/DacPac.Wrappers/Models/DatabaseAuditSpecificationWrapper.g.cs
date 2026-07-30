@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DatabaseAuditSpecification object.</summary>
 public readonly struct DatabaseAuditSpecificationWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DatabaseAuditSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DatabaseAuditSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the WithState property.</summary>
-    public bool WithState => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseAuditSpecification.WithState);
+    public bool WithState => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseAuditSpecification.WithState);
     ///<summary>
     /// Name: AuditActionGroups. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> AuditActionGroups => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseAuditSpecification.AuditActionGroups);
+    public IEnumerable<TSqlObject> AuditActionGroups => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseAuditSpecification.AuditActionGroups);
     ///<summary>
     /// Name: AuditActions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> AuditActions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseAuditSpecification.AuditActions);
+    public IEnumerable<TSqlObject> AuditActions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseAuditSpecification.AuditActions);
     ///<summary>
     /// Name: ServerAudit. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ServerAudit => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseAuditSpecification.ServerAudit);
+    public IEnumerable<TSqlObject> ServerAudit => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseAuditSpecification.ServerAudit);
 }
 
 public static class DatabaseAuditSpecificationExtensions

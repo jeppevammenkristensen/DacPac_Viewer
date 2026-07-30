@@ -6,38 +6,38 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Parameter object.</summary>
 public readonly struct ParameterWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ParameterWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ParameterWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the DefaultExpression property.</summary>
-    public string? DefaultExpression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.Parameter.DefaultExpression);
+    public string? DefaultExpression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.Parameter.DefaultExpression);
     /// <summary>Gets the ReadOnly property.</summary>
-    public bool ReadOnly => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.ReadOnly);
+    public bool ReadOnly => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.ReadOnly);
     /// <summary>Gets the Varying property.</summary>
-    public bool Varying => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.Varying);
+    public bool Varying => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.Varying);
     /// <summary>Gets the Scale property.</summary>
-    public int Scale => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Parameter.Scale);
+    public int Scale => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Parameter.Scale);
     /// <summary>Gets the Precision property.</summary>
-    public int Precision => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Parameter.Precision);
+    public int Precision => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Parameter.Precision);
     /// <summary>Gets the Length property.</summary>
-    public int Length => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Parameter.Length);
+    public int Length => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Parameter.Length);
     /// <summary>Gets the IsMax property.</summary>
-    public bool IsMax => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.IsMax);
+    public bool IsMax => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.IsMax);
     /// <summary>Gets the XmlStyle property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.XmlStyle XmlStyle => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.XmlStyle>(Microsoft.SqlServer.Dac.Model.Parameter.XmlStyle);
+    public global::Microsoft.SqlServer.Dac.Model.XmlStyle XmlStyle => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.XmlStyle>(Microsoft.SqlServer.Dac.Model.Parameter.XmlStyle);
     /// <summary>Gets the IsNullable property.</summary>
-    public bool IsNullable => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.IsNullable);
+    public bool IsNullable => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.IsNullable);
     /// <summary>Gets the IsOutput property.</summary>
-    public bool IsOutput => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.IsOutput);
+    public bool IsOutput => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Parameter.IsOutput);
     ///<summary>
     /// Name: XmlSchemaCollection. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> XmlSchemaCollection => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Parameter.XmlSchemaCollection);
+    public IEnumerable<TSqlObject> XmlSchemaCollection => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Parameter.XmlSchemaCollection);
     ///<summary>
     /// Name: DataType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DataType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Parameter.DataType);
+    public IEnumerable<TSqlObject> DataType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Parameter.DataType);
 }
 
 public static class ParameterExtensions

@@ -6,176 +6,176 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DatabaseOptions object.</summary>
 public readonly struct DatabaseOptionsWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DatabaseOptionsWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DatabaseOptionsWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the CompatibilityLevel property.</summary>
-    public int CompatibilityLevel => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.CompatibilityLevel);
+    public int CompatibilityLevel => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.CompatibilityLevel);
     /// <summary>Gets the AcceleratedDatabaseRecovery property.</summary>
-    public bool? AcceleratedDatabaseRecovery => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AcceleratedDatabaseRecovery);
+    public bool? AcceleratedDatabaseRecovery => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AcceleratedDatabaseRecovery);
     /// <summary>Gets the AllowSnapshotIsolation property.</summary>
-    public bool AllowSnapshotIsolation => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AllowSnapshotIsolation);
+    public bool AllowSnapshotIsolation => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AllowSnapshotIsolation);
     /// <summary>Gets the AnsiNullDefaultOn property.</summary>
-    public bool AnsiNullDefaultOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AnsiNullDefaultOn);
+    public bool AnsiNullDefaultOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AnsiNullDefaultOn);
     /// <summary>Gets the AnsiNullsOn property.</summary>
-    public bool AnsiNullsOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AnsiNullsOn);
+    public bool AnsiNullsOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AnsiNullsOn);
     /// <summary>Gets the AnsiPaddingOn property.</summary>
-    public bool AnsiPaddingOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AnsiPaddingOn);
+    public bool AnsiPaddingOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AnsiPaddingOn);
     /// <summary>Gets the AnsiWarningsOn property.</summary>
-    public bool AnsiWarningsOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AnsiWarningsOn);
+    public bool AnsiWarningsOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AnsiWarningsOn);
     /// <summary>Gets the ArithAbortOn property.</summary>
-    public bool ArithAbortOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ArithAbortOn);
+    public bool ArithAbortOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ArithAbortOn);
     /// <summary>Gets the AutoClose property.</summary>
-    public bool AutoClose => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoClose);
+    public bool AutoClose => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoClose);
     /// <summary>Gets the AutoCreateStatistics property.</summary>
-    public bool AutoCreateStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoCreateStatistics);
+    public bool AutoCreateStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoCreateStatistics);
     /// <summary>Gets the AutoCreateStatisticsIncremental property.</summary>
-    public bool AutoCreateStatisticsIncremental => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoCreateStatisticsIncremental);
+    public bool AutoCreateStatisticsIncremental => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoCreateStatisticsIncremental);
     /// <summary>Gets the AutoShrink property.</summary>
-    public bool AutoShrink => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoShrink);
+    public bool AutoShrink => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoShrink);
     /// <summary>Gets the AutoUpdateStatisticsAsync property.</summary>
-    public bool AutoUpdateStatisticsAsync => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoUpdateStatisticsAsync);
+    public bool AutoUpdateStatisticsAsync => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoUpdateStatisticsAsync);
     /// <summary>Gets the AutoUpdateStatistics property.</summary>
-    public bool AutoUpdateStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoUpdateStatistics);
+    public bool AutoUpdateStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutoUpdateStatistics);
     /// <summary>Gets the OptimizedLocking property.</summary>
-    public bool? OptimizedLocking => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.OptimizedLocking);
+    public bool? OptimizedLocking => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.OptimizedLocking);
     /// <summary>Gets the AutomaticIndexCompaction property.</summary>
-    public bool? AutomaticIndexCompaction => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutomaticIndexCompaction);
+    public bool? AutomaticIndexCompaction => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.AutomaticIndexCompaction);
     /// <summary>Gets the HonorBrokerPriority property.</summary>
-    public bool HonorBrokerPriority => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.HonorBrokerPriority);
+    public bool HonorBrokerPriority => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.HonorBrokerPriority);
     /// <summary>Gets the ChangeTrackingAutoCleanup property.</summary>
-    public bool ChangeTrackingAutoCleanup => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ChangeTrackingAutoCleanup);
+    public bool ChangeTrackingAutoCleanup => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ChangeTrackingAutoCleanup);
     /// <summary>Gets the ChangeTrackingEnabled property.</summary>
-    public bool ChangeTrackingEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ChangeTrackingEnabled);
+    public bool ChangeTrackingEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ChangeTrackingEnabled);
     /// <summary>Gets the ConcatNullYieldsNull property.</summary>
-    public bool ConcatNullYieldsNull => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ConcatNullYieldsNull);
+    public bool ConcatNullYieldsNull => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ConcatNullYieldsNull);
     /// <summary>Gets the CursorCloseOnCommit property.</summary>
-    public bool CursorCloseOnCommit => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.CursorCloseOnCommit);
+    public bool CursorCloseOnCommit => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.CursorCloseOnCommit);
     /// <summary>Gets the CursorDefaultGlobalScope property.</summary>
-    public bool CursorDefaultGlobalScope => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.CursorDefaultGlobalScope);
+    public bool CursorDefaultGlobalScope => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.CursorDefaultGlobalScope);
     /// <summary>Gets the DateCorrelationOptimizationOn property.</summary>
-    public bool DateCorrelationOptimizationOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DateCorrelationOptimizationOn);
+    public bool DateCorrelationOptimizationOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DateCorrelationOptimizationOn);
     /// <summary>Gets the DBChainingOn property.</summary>
-    public bool DBChainingOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DBChainingOn);
+    public bool DBChainingOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DBChainingOn);
     /// <summary>Gets the WithEncryption property.</summary>
-    public bool WithEncryption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.WithEncryption);
+    public bool WithEncryption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.WithEncryption);
     /// <summary>Gets the FullTextEnabled property.</summary>
-    public bool FullTextEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.FullTextEnabled);
+    public bool FullTextEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.FullTextEnabled);
     /// <summary>Gets the NestedTriggersOn property.</summary>
-    public bool NestedTriggersOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.NestedTriggersOn);
+    public bool NestedTriggersOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.NestedTriggersOn);
     /// <summary>Gets the NumericRoundAbortOn property.</summary>
-    public bool NumericRoundAbortOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.NumericRoundAbortOn);
+    public bool NumericRoundAbortOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.NumericRoundAbortOn);
     /// <summary>Gets the DatabaseStateOffline property.</summary>
-    public bool DatabaseStateOffline => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DatabaseStateOffline);
+    public bool DatabaseStateOffline => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DatabaseStateOffline);
     /// <summary>Gets the QuotedIdentifierOn property.</summary>
-    public bool QuotedIdentifierOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QuotedIdentifierOn);
+    public bool QuotedIdentifierOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QuotedIdentifierOn);
     /// <summary>Gets the TransactionIsolationReadCommittedSnapshot property.</summary>
-    public bool TransactionIsolationReadCommittedSnapshot => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TransactionIsolationReadCommittedSnapshot);
+    public bool TransactionIsolationReadCommittedSnapshot => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TransactionIsolationReadCommittedSnapshot);
     /// <summary>Gets the ReadOnly property.</summary>
-    public bool ReadOnly => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ReadOnly);
+    public bool ReadOnly => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ReadOnly);
     /// <summary>Gets the RecursiveTriggersOn property.</summary>
-    public bool RecursiveTriggersOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.RecursiveTriggersOn);
+    public bool RecursiveTriggersOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.RecursiveTriggersOn);
     /// <summary>Gets the SupplementalLoggingOn property.</summary>
-    public bool SupplementalLoggingOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.SupplementalLoggingOn);
+    public bool SupplementalLoggingOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.SupplementalLoggingOn);
     /// <summary>Gets the TornPageProtectionOn property.</summary>
-    public bool TornPageProtectionOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TornPageProtectionOn);
+    public bool TornPageProtectionOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TornPageProtectionOn);
     /// <summary>Gets the TransformNoiseWords property.</summary>
-    public bool TransformNoiseWords => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TransformNoiseWords);
+    public bool TransformNoiseWords => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TransformNoiseWords);
     /// <summary>Gets the Trustworthy property.</summary>
-    public bool Trustworthy => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.Trustworthy);
+    public bool Trustworthy => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.Trustworthy);
     /// <summary>Gets the VardecimalStorageFormatOn property.</summary>
-    public bool VardecimalStorageFormatOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.VardecimalStorageFormatOn);
+    public bool VardecimalStorageFormatOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.VardecimalStorageFormatOn);
     /// <summary>Gets the UserAccessOption property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.UserAccessOption UserAccessOption => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.UserAccessOption>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.UserAccessOption);
+    public global::Microsoft.SqlServer.Dac.Model.UserAccessOption UserAccessOption => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.UserAccessOption>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.UserAccessOption);
     /// <summary>Gets the DelayedDurabilityMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.DelayedDurabilityMode DelayedDurabilityMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.DelayedDurabilityMode>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DelayedDurabilityMode);
+    public global::Microsoft.SqlServer.Dac.Model.DelayedDurabilityMode DelayedDurabilityMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.DelayedDurabilityMode>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DelayedDurabilityMode);
     /// <summary>Gets the MemoryOptimizedElevateToSnapshot property.</summary>
-    public bool MemoryOptimizedElevateToSnapshot => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.MemoryOptimizedElevateToSnapshot);
+    public bool MemoryOptimizedElevateToSnapshot => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.MemoryOptimizedElevateToSnapshot);
     /// <summary>Gets the DataRetentionEnabled property.</summary>
-    public bool? DataRetentionEnabled => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DataRetentionEnabled);
+    public bool? DataRetentionEnabled => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DataRetentionEnabled);
     /// <summary>Gets the CatalogCollation property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.CatalogCollation? CatalogCollation => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.CatalogCollation?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.CatalogCollation);
+    public global::Microsoft.SqlServer.Dac.Model.CatalogCollation? CatalogCollation => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.CatalogCollation?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.CatalogCollation);
     /// <summary>Gets the ChangeTrackingRetentionPeriod property.</summary>
-    public int ChangeTrackingRetentionPeriod => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ChangeTrackingRetentionPeriod);
+    public int ChangeTrackingRetentionPeriod => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ChangeTrackingRetentionPeriod);
     /// <summary>Gets the ChangeTrackingRetentionUnit property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.TimeUnit ChangeTrackingRetentionUnit => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.TimeUnit>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ChangeTrackingRetentionUnit);
+    public global::Microsoft.SqlServer.Dac.Model.TimeUnit ChangeTrackingRetentionUnit => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.TimeUnit>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ChangeTrackingRetentionUnit);
     /// <summary>Gets the Collation property.</summary>
-    public string? Collation => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.Collation);
+    public string? Collation => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.Collation);
     /// <summary>Gets the Containment property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Containment Containment => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Containment>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.Containment);
+    public global::Microsoft.SqlServer.Dac.Model.Containment Containment => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Containment>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.Containment);
     /// <summary>Gets the DefaultFullTextLanguage property.</summary>
-    public string? DefaultFullTextLanguage => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DefaultFullTextLanguage);
+    public string? DefaultFullTextLanguage => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DefaultFullTextLanguage);
     /// <summary>Gets the DefaultLanguage property.</summary>
-    public string? DefaultLanguage => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DefaultLanguage);
+    public string? DefaultLanguage => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DefaultLanguage);
     /// <summary>Gets the DWCompatibilityLevel property.</summary>
-    public int DWCompatibilityLevel => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DWCompatibilityLevel);
+    public int DWCompatibilityLevel => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DWCompatibilityLevel);
     /// <summary>Gets the FileStreamDirectoryName property.</summary>
-    public string? FileStreamDirectoryName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.FileStreamDirectoryName);
+    public string? FileStreamDirectoryName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.FileStreamDirectoryName);
     /// <summary>Gets the IsLedgerOn property.</summary>
-    public bool IsLedgerOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.IsLedgerOn);
+    public bool IsLedgerOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.IsLedgerOn);
     /// <summary>Gets the LegacyCardinalityEstimation property.</summary>
-    public bool LegacyCardinalityEstimation => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.LegacyCardinalityEstimation);
+    public bool LegacyCardinalityEstimation => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.LegacyCardinalityEstimation);
     /// <summary>Gets the LegacyCardinalityEstimationForSecondary property.</summary>
-    public bool? LegacyCardinalityEstimationForSecondary => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.LegacyCardinalityEstimationForSecondary);
+    public bool? LegacyCardinalityEstimationForSecondary => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.LegacyCardinalityEstimationForSecondary);
     /// <summary>Gets the MaxDop property.</summary>
-    public int MaxDop => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.MaxDop);
+    public int MaxDop => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.MaxDop);
     /// <summary>Gets the MaxDopForSecondary property.</summary>
-    public int? MaxDopForSecondary => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.MaxDopForSecondary);
+    public int? MaxDopForSecondary => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.MaxDopForSecondary);
     /// <summary>Gets the NonTransactedFileStreamAccess property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.NonTransactedFileStreamAccess NonTransactedFileStreamAccess => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.NonTransactedFileStreamAccess>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.NonTransactedFileStreamAccess);
+    public global::Microsoft.SqlServer.Dac.Model.NonTransactedFileStreamAccess NonTransactedFileStreamAccess => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.NonTransactedFileStreamAccess>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.NonTransactedFileStreamAccess);
     /// <summary>Gets the PageVerifyMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.PageVerifyMode PageVerifyMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.PageVerifyMode>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.PageVerifyMode);
+    public global::Microsoft.SqlServer.Dac.Model.PageVerifyMode PageVerifyMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.PageVerifyMode>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.PageVerifyMode);
     /// <summary>Gets the ParameterizationOption property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ParameterizationOption ParameterizationOption => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ParameterizationOption>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ParameterizationOption);
+    public global::Microsoft.SqlServer.Dac.Model.ParameterizationOption ParameterizationOption => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ParameterizationOption>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ParameterizationOption);
     /// <summary>Gets the ParameterSniffing property.</summary>
-    public bool ParameterSniffing => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ParameterSniffing);
+    public bool ParameterSniffing => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ParameterSniffing);
     /// <summary>Gets the ParameterSniffingForSecondary property.</summary>
-    public bool? ParameterSniffingForSecondary => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ParameterSniffingForSecondary);
+    public bool? ParameterSniffingForSecondary => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ParameterSniffingForSecondary);
     /// <summary>Gets the QueryOptimizerHotfixes property.</summary>
-    public bool QueryOptimizerHotfixes => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryOptimizerHotfixes);
+    public bool QueryOptimizerHotfixes => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryOptimizerHotfixes);
     /// <summary>Gets the QueryOptimizerHotfixesForSecondary property.</summary>
-    public bool? QueryOptimizerHotfixesForSecondary => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryOptimizerHotfixesForSecondary);
+    public bool? QueryOptimizerHotfixesForSecondary => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryOptimizerHotfixesForSecondary);
     /// <summary>Gets the QueryStoreCaptureMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.QueryStoreCaptureMode QueryStoreCaptureMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.QueryStoreCaptureMode>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreCaptureMode);
+    public global::Microsoft.SqlServer.Dac.Model.QueryStoreCaptureMode QueryStoreCaptureMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.QueryStoreCaptureMode>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreCaptureMode);
     /// <summary>Gets the QueryStoreDesiredState property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.QueryStoreDesiredState QueryStoreDesiredState => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.QueryStoreDesiredState>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreDesiredState);
+    public global::Microsoft.SqlServer.Dac.Model.QueryStoreDesiredState QueryStoreDesiredState => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.QueryStoreDesiredState>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreDesiredState);
     /// <summary>Gets the QueryStoreFlushInterval property.</summary>
-    public int QueryStoreFlushInterval => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreFlushInterval);
+    public int QueryStoreFlushInterval => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreFlushInterval);
     /// <summary>Gets the QueryStoreIntervalLength property.</summary>
-    public int QueryStoreIntervalLength => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreIntervalLength);
+    public int QueryStoreIntervalLength => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreIntervalLength);
     /// <summary>Gets the QueryStoreMaxPlansPerQuery property.</summary>
-    public int QueryStoreMaxPlansPerQuery => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreMaxPlansPerQuery);
+    public int QueryStoreMaxPlansPerQuery => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreMaxPlansPerQuery);
     /// <summary>Gets the QueryStoreMaxStorageSize property.</summary>
-    public int QueryStoreMaxStorageSize => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreMaxStorageSize);
+    public int QueryStoreMaxStorageSize => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreMaxStorageSize);
     /// <summary>Gets the QueryStoreStaleQueryThreshold property.</summary>
-    public int QueryStoreStaleQueryThreshold => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreStaleQueryThreshold);
+    public int QueryStoreStaleQueryThreshold => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.QueryStoreStaleQueryThreshold);
     /// <summary>Gets the RecoveryMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.RecoveryMode RecoveryMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.RecoveryMode>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.RecoveryMode);
+    public global::Microsoft.SqlServer.Dac.Model.RecoveryMode RecoveryMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.RecoveryMode>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.RecoveryMode);
     /// <summary>Gets the RemoteDataEnabled property.</summary>
-    public bool RemoteDataEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.RemoteDataEnabled);
+    public bool RemoteDataEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.RemoteDataEnabled);
     /// <summary>Gets the ServiceBrokerOption property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerOption ServiceBrokerOption => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerOption>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ServiceBrokerOption);
+    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerOption ServiceBrokerOption => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerOption>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.ServiceBrokerOption);
     /// <summary>Gets the TargetRecoveryTimePeriod property.</summary>
-    public int TargetRecoveryTimePeriod => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TargetRecoveryTimePeriod);
+    public int TargetRecoveryTimePeriod => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TargetRecoveryTimePeriod);
     /// <summary>Gets the TargetRecoveryTimeUnit property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.TimeUnit TargetRecoveryTimeUnit => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.TimeUnit>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TargetRecoveryTimeUnit);
+    public global::Microsoft.SqlServer.Dac.Model.TimeUnit TargetRecoveryTimeUnit => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.TimeUnit>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TargetRecoveryTimeUnit);
     /// <summary>Gets the TemporalHistoryRetentionEnabled property.</summary>
-    public bool TemporalHistoryRetentionEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TemporalHistoryRetentionEnabled);
+    public bool TemporalHistoryRetentionEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TemporalHistoryRetentionEnabled);
     /// <summary>Gets the TwoDigitYearCutoff property.</summary>
-    public short TwoDigitYearCutoff => ObjectType.GetProperty<short>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TwoDigitYearCutoff);
+    public short TwoDigitYearCutoff => SqlObject.GetProperty<short>(Microsoft.SqlServer.Dac.Model.DatabaseOptions.TwoDigitYearCutoff);
     ///<summary>
     /// Name: DefaultFilegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DefaultFilegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DefaultFilegroup);
+    public IEnumerable<TSqlObject> DefaultFilegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DefaultFilegroup);
     ///<summary>
     /// Name: DefaultFileStreamFilegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DefaultFileStreamFilegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DefaultFileStreamFilegroup);
+    public IEnumerable<TSqlObject> DefaultFileStreamFilegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseOptions.DefaultFileStreamFilegroup);
     ///<summary>
     /// Name: GenericDatabaseScopedConfigurationOptions. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> GenericDatabaseScopedConfigurationOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseOptions.GenericDatabaseScopedConfigurationOptions);
+    public IEnumerable<TSqlObject> GenericDatabaseScopedConfigurationOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseOptions.GenericDatabaseScopedConfigurationOptions);
 }
 
 public static class DatabaseOptionsExtensions

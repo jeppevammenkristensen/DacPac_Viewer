@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExtendedProperty object.</summary>
 public readonly struct ExtendedPropertyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExtendedPropertyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExtendedPropertyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Value property.</summary>
-    public string? Value => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.ExtendedProperty.Value);
+    public string? Value => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.ExtendedProperty.Value);
     ///<summary>
     /// Name: Host. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Host => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProperty.Host);
+    public IEnumerable<TSqlObject> Host => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExtendedProperty.Host);
 }
 
 public static class ExtendedPropertyExtensions

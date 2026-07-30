@@ -6,64 +6,64 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Procedure object.</summary>
 public readonly struct ProcedureWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ProcedureWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ProcedureWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AnsiNullsOn property.</summary>
-    public bool? AnsiNullsOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Procedure.AnsiNullsOn);
+    public bool? AnsiNullsOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Procedure.AnsiNullsOn);
     /// <summary>Gets the ExecuteAsCaller property.</summary>
-    public bool ExecuteAsCaller => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.ExecuteAsCaller);
+    public bool ExecuteAsCaller => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.ExecuteAsCaller);
     /// <summary>Gets the WithEncryption property.</summary>
-    public bool WithEncryption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.WithEncryption);
+    public bool WithEncryption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.WithEncryption);
     /// <summary>Gets the ForReplication property.</summary>
-    public bool ForReplication => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.ForReplication);
+    public bool ForReplication => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.ForReplication);
     /// <summary>Gets the ExecuteAsOwner property.</summary>
-    public bool ExecuteAsOwner => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.ExecuteAsOwner);
+    public bool ExecuteAsOwner => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.ExecuteAsOwner);
     /// <summary>Gets the QuotedIdentifierOn property.</summary>
-    public bool? QuotedIdentifierOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Procedure.QuotedIdentifierOn);
+    public bool? QuotedIdentifierOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Procedure.QuotedIdentifierOn);
     /// <summary>Gets the WithRecompile property.</summary>
-    public bool WithRecompile => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.WithRecompile);
+    public bool WithRecompile => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.WithRecompile);
     /// <summary>Gets the ExecuteAsSelf property.</summary>
-    public bool ExecuteAsSelf => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.ExecuteAsSelf);
+    public bool ExecuteAsSelf => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.ExecuteAsSelf);
     /// <summary>Gets the WithNativeCompilation property.</summary>
-    public bool WithNativeCompilation => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.WithNativeCompilation);
+    public bool WithNativeCompilation => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.WithNativeCompilation);
     /// <summary>Gets the WithSchemaBinding property.</summary>
-    public bool WithSchemaBinding => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.WithSchemaBinding);
+    public bool WithSchemaBinding => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.WithSchemaBinding);
     /// <summary>Gets the ClassName property.</summary>
-    public string? ClassName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Procedure.ClassName);
+    public string? ClassName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Procedure.ClassName);
     /// <summary>Gets the IsReplicated property.</summary>
-    public bool IsReplicated => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.IsReplicated);
+    public bool IsReplicated => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Procedure.IsReplicated);
     /// <summary>Gets the MethodName property.</summary>
-    public string? MethodName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Procedure.MethodName);
+    public string? MethodName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Procedure.MethodName);
     ///<summary>
     /// Name: ParentProcedure. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ParentProcedure => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.ParentProcedure);
+    public IEnumerable<TSqlObject> ParentProcedure => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.ParentProcedure);
     ///<summary>
     /// Name: Assembly. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Assembly => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.Assembly);
+    public IEnumerable<TSqlObject> Assembly => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.Assembly);
     ///<summary>
     /// Name: BodyDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BodyDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.BodyDependencies);
+    public IEnumerable<TSqlObject> BodyDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.BodyDependencies);
     ///<summary>
     /// Name: Login. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Login => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.Login);
+    public IEnumerable<TSqlObject> Login => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.Login);
     ///<summary>
     /// Name: Parameters. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Parameters => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.Parameters);
+    public IEnumerable<TSqlObject> Parameters => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.Parameters);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.Schema);
     ///<summary>
     /// Name: User. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> User => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.User);
+    public IEnumerable<TSqlObject> User => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Procedure.User);
 }
 
 public static class ProcedureExtensions

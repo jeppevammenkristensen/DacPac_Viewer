@@ -6,30 +6,30 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalFileFormat object.</summary>
 public readonly struct ExternalFileFormatWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalFileFormatWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalFileFormatWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the DataCompression property.</summary>
-    public string? DataCompression => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.DataCompression);
+    public string? DataCompression => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.DataCompression);
     /// <summary>Gets the DateFormat property.</summary>
-    public string? DateFormat => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.DateFormat);
+    public string? DateFormat => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.DateFormat);
     /// <summary>Gets the Encoding property.</summary>
-    public string? Encoding => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.Encoding);
+    public string? Encoding => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.Encoding);
     /// <summary>Gets the FieldTerminator property.</summary>
-    public string? FieldTerminator => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.FieldTerminator);
+    public string? FieldTerminator => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.FieldTerminator);
     /// <summary>Gets the FirstRow property.</summary>
-    public int FirstRow => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.FirstRow);
+    public int FirstRow => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.FirstRow);
     /// <summary>Gets the FormatType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.FileFormatType FormatType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.FileFormatType>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.FormatType);
+    public global::Microsoft.SqlServer.Dac.Model.FileFormatType FormatType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.FileFormatType>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.FormatType);
     /// <summary>Gets the ParserVersion property.</summary>
-    public string? ParserVersion => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.ParserVersion);
+    public string? ParserVersion => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.ParserVersion);
     /// <summary>Gets the SerDeMethod property.</summary>
-    public string? SerDeMethod => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.SerDeMethod);
+    public string? SerDeMethod => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.SerDeMethod);
     /// <summary>Gets the StringDelimiter property.</summary>
-    public string? StringDelimiter => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.StringDelimiter);
+    public string? StringDelimiter => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.StringDelimiter);
     /// <summary>Gets the UseTypeDefault property.</summary>
-    public bool UseTypeDefault => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.UseTypeDefault);
+    public bool UseTypeDefault => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExternalFileFormat.UseTypeDefault);
 }
 
 public static class ExternalFileFormatExtensions

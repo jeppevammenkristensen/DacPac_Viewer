@@ -6,18 +6,18 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx RoleMembership object.</summary>
 public readonly struct RoleMembershipWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public RoleMembershipWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public RoleMembershipWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     ///<summary>
     /// Name: Member. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Member => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.RoleMembership.Member);
+    public IEnumerable<TSqlObject> Member => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.RoleMembership.Member);
     ///<summary>
     /// Name: Role. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Role => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.RoleMembership.Role);
+    public IEnumerable<TSqlObject> Role => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.RoleMembership.Role);
 }
 
 public static class RoleMembershipExtensions

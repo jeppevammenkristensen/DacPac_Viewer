@@ -6,44 +6,44 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ServerAudit object.</summary>
 public readonly struct ServerAuditWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ServerAuditWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ServerAuditWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.Disabled);
     /// <summary>Gets the ReserveDiskSpace property.</summary>
-    public bool ReserveDiskSpace => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.ReserveDiskSpace);
+    public bool ReserveDiskSpace => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.ReserveDiskSpace);
     /// <summary>Gets the UnlimitedFileSize property.</summary>
-    public bool UnlimitedFileSize => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.UnlimitedFileSize);
+    public bool UnlimitedFileSize => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.UnlimitedFileSize);
     /// <summary>Gets the UnlimitedMaxRolloverFiles property.</summary>
-    public bool UnlimitedMaxRolloverFiles => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.UnlimitedMaxRolloverFiles);
+    public bool UnlimitedMaxRolloverFiles => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.UnlimitedMaxRolloverFiles);
     /// <summary>Gets the OnFailure property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.FailureAction OnFailure => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.FailureAction>(Microsoft.SqlServer.Dac.Model.ServerAudit.OnFailure);
+    public global::Microsoft.SqlServer.Dac.Model.FailureAction OnFailure => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.FailureAction>(Microsoft.SqlServer.Dac.Model.ServerAudit.OnFailure);
     /// <summary>Gets the PredicateExpression property.</summary>
-    public string? PredicateExpression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.ServerAudit.PredicateExpression);
+    public string? PredicateExpression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.ServerAudit.PredicateExpression);
     /// <summary>Gets the AuditGuid property.</summary>
-    public string? AuditGuid => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerAudit.AuditGuid);
+    public string? AuditGuid => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerAudit.AuditGuid);
     /// <summary>Gets the AuditTarget property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.AuditTarget AuditTarget => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.AuditTarget>(Microsoft.SqlServer.Dac.Model.ServerAudit.AuditTarget);
+    public global::Microsoft.SqlServer.Dac.Model.AuditTarget AuditTarget => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.AuditTarget>(Microsoft.SqlServer.Dac.Model.ServerAudit.AuditTarget);
     /// <summary>Gets the FilePath property.</summary>
-    public string? FilePath => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerAudit.FilePath);
+    public string? FilePath => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerAudit.FilePath);
     /// <summary>Gets the IsOperatorAudit property.</summary>
-    public bool IsOperatorAudit => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.IsOperatorAudit);
+    public bool IsOperatorAudit => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAudit.IsOperatorAudit);
     /// <summary>Gets the MaxFiles property.</summary>
-    public int? MaxFiles => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ServerAudit.MaxFiles);
+    public int? MaxFiles => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ServerAudit.MaxFiles);
     /// <summary>Gets the MaxRolloverFiles property.</summary>
-    public int? MaxRolloverFiles => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ServerAudit.MaxRolloverFiles);
+    public int? MaxRolloverFiles => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ServerAudit.MaxRolloverFiles);
     /// <summary>Gets the MaxSize property.</summary>
-    public int? MaxSize => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ServerAudit.MaxSize);
+    public int? MaxSize => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ServerAudit.MaxSize);
     /// <summary>Gets the MaxSizeUnit property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit MaxSizeUnit => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.ServerAudit.MaxSizeUnit);
+    public global::Microsoft.SqlServer.Dac.Model.MemoryUnit MaxSizeUnit => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.MemoryUnit>(Microsoft.SqlServer.Dac.Model.ServerAudit.MaxSizeUnit);
     /// <summary>Gets the Path property.</summary>
-    public string? Path => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerAudit.Path);
+    public string? Path => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerAudit.Path);
     /// <summary>Gets the QueueDelay property.</summary>
-    public int QueueDelay => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ServerAudit.QueueDelay);
+    public int QueueDelay => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ServerAudit.QueueDelay);
     /// <summary>Gets the RetentionDays property.</summary>
-    public int RetentionDays => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ServerAudit.RetentionDays);
+    public int RetentionDays => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ServerAudit.RetentionDays);
 }
 
 public static class ServerAuditExtensions

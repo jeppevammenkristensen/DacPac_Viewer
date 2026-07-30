@@ -6,30 +6,30 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DataType object.</summary>
 public readonly struct DataTypeWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DataTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DataTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the UddtNullable property.</summary>
-    public bool UddtNullable => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DataType.UddtNullable);
+    public bool UddtNullable => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DataType.UddtNullable);
     /// <summary>Gets the UddtIsMax property.</summary>
-    public bool UddtIsMax => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DataType.UddtIsMax);
+    public bool UddtIsMax => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DataType.UddtIsMax);
     /// <summary>Gets the UddtLength property.</summary>
-    public int UddtLength => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DataType.UddtLength);
+    public int UddtLength => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DataType.UddtLength);
     /// <summary>Gets the UddtPrecision property.</summary>
-    public int UddtPrecision => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DataType.UddtPrecision);
+    public int UddtPrecision => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DataType.UddtPrecision);
     /// <summary>Gets the UddtScale property.</summary>
-    public int UddtScale => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DataType.UddtScale);
+    public int UddtScale => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DataType.UddtScale);
     /// <summary>Gets the SqlDataType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SqlDataType SqlDataType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SqlDataType>(Microsoft.SqlServer.Dac.Model.DataType.SqlDataType);
+    public global::Microsoft.SqlServer.Dac.Model.SqlDataType SqlDataType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SqlDataType>(Microsoft.SqlServer.Dac.Model.DataType.SqlDataType);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DataType.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DataType.Schema);
     ///<summary>
     /// Name: Type. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Type => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DataType.Type);
+    public IEnumerable<TSqlObject> Type => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DataType.Type);
 }
 
 public static class DataTypeExtensions

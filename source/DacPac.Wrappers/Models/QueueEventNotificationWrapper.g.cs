@@ -6,28 +6,28 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx QueueEventNotification object.</summary>
 public readonly struct QueueEventNotificationWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public QueueEventNotificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public QueueEventNotificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the WithFanIn property.</summary>
-    public bool WithFanIn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.QueueEventNotification.WithFanIn);
+    public bool WithFanIn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.QueueEventNotification.WithFanIn);
     /// <summary>Gets the BrokerService property.</summary>
-    public string? BrokerService => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.QueueEventNotification.BrokerService);
+    public string? BrokerService => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.QueueEventNotification.BrokerService);
     /// <summary>Gets the BrokerInstanceSpecifier property.</summary>
-    public string? BrokerInstanceSpecifier => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.QueueEventNotification.BrokerInstanceSpecifier);
+    public string? BrokerInstanceSpecifier => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.QueueEventNotification.BrokerInstanceSpecifier);
     ///<summary>
     /// Name: EventGroup. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> EventGroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.QueueEventNotification.EventGroup);
+    public IEnumerable<TSqlObject> EventGroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.QueueEventNotification.EventGroup);
     ///<summary>
     /// Name: EventType. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> EventType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.QueueEventNotification.EventType);
+    public IEnumerable<TSqlObject> EventType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.QueueEventNotification.EventType);
     ///<summary>
     /// Name: Queue. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Queue => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.QueueEventNotification.Queue);
+    public IEnumerable<TSqlObject> Queue => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.QueueEventNotification.Queue);
 }
 
 public static class QueueEventNotificationExtensions

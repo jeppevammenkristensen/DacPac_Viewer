@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx TableTypePrimaryKeyConstraint object.</summary>
 public readonly struct TableTypePrimaryKeyConstraintWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TableTypePrimaryKeyConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TableTypePrimaryKeyConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the IgnoreDuplicateKey property.</summary>
-    public bool IgnoreDuplicateKey => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.IgnoreDuplicateKey);
+    public bool IgnoreDuplicateKey => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.IgnoreDuplicateKey);
     /// <summary>Gets the Clustered property.</summary>
-    public bool Clustered => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.Clustered);
+    public bool Clustered => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.Clustered);
     /// <summary>Gets the Hash property.</summary>
-    public bool Hash => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.Hash);
+    public bool Hash => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.Hash);
     /// <summary>Gets the BucketCount property.</summary>
-    public int? BucketCount => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.BucketCount);
+    public int? BucketCount => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.BucketCount);
     ///<summary>
     /// Name: Columns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypePrimaryKeyConstraint.Columns);
 }
 
 public static class TableTypePrimaryKeyConstraintExtensions

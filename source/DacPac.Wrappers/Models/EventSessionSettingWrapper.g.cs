@@ -6,14 +6,14 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx EventSessionSetting object.</summary>
 public readonly struct EventSessionSettingWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public EventSessionSettingWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public EventSessionSettingWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the SettingValue property.</summary>
-    public string? SettingValue => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.EventSessionSetting.SettingValue);
+    public string? SettingValue => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.EventSessionSetting.SettingValue);
     /// <summary>Gets the SettingName property.</summary>
-    public string? SettingName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionSetting.SettingName);
+    public string? SettingName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionSetting.SettingName);
 }
 
 public static class EventSessionSettingExtensions

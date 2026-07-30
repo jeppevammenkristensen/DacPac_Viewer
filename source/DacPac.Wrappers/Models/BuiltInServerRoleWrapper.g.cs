@@ -6,10 +6,10 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx BuiltInServerRole object.</summary>
 public readonly struct BuiltInServerRoleWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public BuiltInServerRoleWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public BuiltInServerRoleWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
 }
 
 public static class BuiltInServerRoleExtensions

@@ -6,70 +6,70 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DmlTrigger object.</summary>
 public readonly struct DmlTriggerWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DmlTriggerWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DmlTriggerWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AnsiNullsOn property.</summary>
-    public bool? AnsiNullsOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DmlTrigger.AnsiNullsOn);
+    public bool? AnsiNullsOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DmlTrigger.AnsiNullsOn);
     /// <summary>Gets the ExecuteAsCaller property.</summary>
-    public bool ExecuteAsCaller => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.ExecuteAsCaller);
+    public bool ExecuteAsCaller => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.ExecuteAsCaller);
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.Disabled);
     /// <summary>Gets the WithEncryption property.</summary>
-    public bool WithEncryption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.WithEncryption);
+    public bool WithEncryption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.WithEncryption);
     /// <summary>Gets the NotForReplication property.</summary>
-    public bool NotForReplication => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.NotForReplication);
+    public bool NotForReplication => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.NotForReplication);
     /// <summary>Gets the ExecuteAsOwner property.</summary>
-    public bool ExecuteAsOwner => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.ExecuteAsOwner);
+    public bool ExecuteAsOwner => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.ExecuteAsOwner);
     /// <summary>Gets the QuotedIdentifierOn property.</summary>
-    public bool? QuotedIdentifierOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DmlTrigger.QuotedIdentifierOn);
+    public bool? QuotedIdentifierOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DmlTrigger.QuotedIdentifierOn);
     /// <summary>Gets the ExecuteAsSelf property.</summary>
-    public bool ExecuteAsSelf => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.ExecuteAsSelf);
+    public bool ExecuteAsSelf => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.ExecuteAsSelf);
     /// <summary>Gets the WithAppend property.</summary>
-    public bool WithAppend => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.WithAppend);
+    public bool WithAppend => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.WithAppend);
     /// <summary>Gets the TriggerType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.TriggerType TriggerType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.TriggerType>(Microsoft.SqlServer.Dac.Model.DmlTrigger.TriggerType);
+    public global::Microsoft.SqlServer.Dac.Model.TriggerType TriggerType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.TriggerType>(Microsoft.SqlServer.Dac.Model.DmlTrigger.TriggerType);
     /// <summary>Gets the ClassName property.</summary>
-    public string? ClassName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DmlTrigger.ClassName);
+    public string? ClassName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DmlTrigger.ClassName);
     /// <summary>Gets the DeleteOrderRestriction property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.OrderRestriction DeleteOrderRestriction => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.OrderRestriction>(Microsoft.SqlServer.Dac.Model.DmlTrigger.DeleteOrderRestriction);
+    public global::Microsoft.SqlServer.Dac.Model.OrderRestriction DeleteOrderRestriction => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.OrderRestriction>(Microsoft.SqlServer.Dac.Model.DmlTrigger.DeleteOrderRestriction);
     /// <summary>Gets the InsertOrderRestriction property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.OrderRestriction InsertOrderRestriction => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.OrderRestriction>(Microsoft.SqlServer.Dac.Model.DmlTrigger.InsertOrderRestriction);
+    public global::Microsoft.SqlServer.Dac.Model.OrderRestriction InsertOrderRestriction => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.OrderRestriction>(Microsoft.SqlServer.Dac.Model.DmlTrigger.InsertOrderRestriction);
     /// <summary>Gets the IsDeleteTrigger property.</summary>
-    public bool IsDeleteTrigger => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsDeleteTrigger);
+    public bool IsDeleteTrigger => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsDeleteTrigger);
     /// <summary>Gets the IsInsertTrigger property.</summary>
-    public bool IsInsertTrigger => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsInsertTrigger);
+    public bool IsInsertTrigger => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsInsertTrigger);
     /// <summary>Gets the IsNativeCompiled property.</summary>
-    public bool IsNativeCompiled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsNativeCompiled);
+    public bool IsNativeCompiled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsNativeCompiled);
     /// <summary>Gets the IsSchemaBound property.</summary>
-    public bool IsSchemaBound => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsSchemaBound);
+    public bool IsSchemaBound => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsSchemaBound);
     /// <summary>Gets the IsUpdateTrigger property.</summary>
-    public bool IsUpdateTrigger => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsUpdateTrigger);
+    public bool IsUpdateTrigger => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DmlTrigger.IsUpdateTrigger);
     /// <summary>Gets the MethodName property.</summary>
-    public string? MethodName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DmlTrigger.MethodName);
+    public string? MethodName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DmlTrigger.MethodName);
     /// <summary>Gets the UpdateOrderRestriction property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.OrderRestriction UpdateOrderRestriction => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.OrderRestriction>(Microsoft.SqlServer.Dac.Model.DmlTrigger.UpdateOrderRestriction);
+    public global::Microsoft.SqlServer.Dac.Model.OrderRestriction UpdateOrderRestriction => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.OrderRestriction>(Microsoft.SqlServer.Dac.Model.DmlTrigger.UpdateOrderRestriction);
     ///<summary>
     /// Name: TriggerObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> TriggerObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.TriggerObject);
+    public IEnumerable<TSqlObject> TriggerObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.TriggerObject);
     ///<summary>
     /// Name: Assembly. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Assembly => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.Assembly);
+    public IEnumerable<TSqlObject> Assembly => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.Assembly);
     ///<summary>
     /// Name: BodyDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BodyDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.BodyDependencies);
+    public IEnumerable<TSqlObject> BodyDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.BodyDependencies);
     ///<summary>
     /// Name: Login. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Login => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.Login);
+    public IEnumerable<TSqlObject> Login => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.Login);
     ///<summary>
     /// Name: User. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> User => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.User);
+    public IEnumerable<TSqlObject> User => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DmlTrigger.User);
 }
 
 public static class DmlTriggerExtensions

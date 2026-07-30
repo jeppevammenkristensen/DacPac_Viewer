@@ -6,58 +6,58 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Queue object.</summary>
 public readonly struct QueueWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public QueueWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public QueueWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ActivationStatusOn property.</summary>
-    public bool? ActivationStatusOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Queue.ActivationStatusOn);
+    public bool? ActivationStatusOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.Queue.ActivationStatusOn);
     /// <summary>Gets the ActivationExecuteAsCaller property.</summary>
-    public bool ActivationExecuteAsCaller => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.ActivationExecuteAsCaller);
+    public bool ActivationExecuteAsCaller => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.ActivationExecuteAsCaller);
     /// <summary>Gets the ActivationExecuteAsOwner property.</summary>
-    public bool ActivationExecuteAsOwner => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.ActivationExecuteAsOwner);
+    public bool ActivationExecuteAsOwner => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.ActivationExecuteAsOwner);
     /// <summary>Gets the PoisonMessageHandlingStatusOn property.</summary>
-    public bool PoisonMessageHandlingStatusOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.PoisonMessageHandlingStatusOn);
+    public bool PoisonMessageHandlingStatusOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.PoisonMessageHandlingStatusOn);
     /// <summary>Gets the RetentionOn property.</summary>
-    public bool RetentionOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.RetentionOn);
+    public bool RetentionOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.RetentionOn);
     /// <summary>Gets the ActivationExecuteAsSelf property.</summary>
-    public bool ActivationExecuteAsSelf => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.ActivationExecuteAsSelf);
+    public bool ActivationExecuteAsSelf => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.ActivationExecuteAsSelf);
     /// <summary>Gets the StatusOn property.</summary>
-    public bool StatusOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.StatusOn);
+    public bool StatusOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Queue.StatusOn);
     /// <summary>Gets the ActivationMaxQueueReaders property.</summary>
-    public int? ActivationMaxQueueReaders => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Queue.ActivationMaxQueueReaders);
+    public int? ActivationMaxQueueReaders => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.Queue.ActivationMaxQueueReaders);
     ///<summary>
     /// Name: ActivationProcedure. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ActivationProcedure => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.ActivationProcedure);
+    public IEnumerable<TSqlObject> ActivationProcedure => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.ActivationProcedure);
     ///<summary>
     /// Name: Columns. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.Columns);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.Filegroup);
     ///<summary>
     /// Name: Login. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Login => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.Login);
+    public IEnumerable<TSqlObject> Login => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.Login);
     ///<summary>
     /// Name: PartitionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.PartitionColumn);
+    public IEnumerable<TSqlObject> PartitionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.PartitionColumn);
     ///<summary>
     /// Name: PartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.PartitionScheme);
+    public IEnumerable<TSqlObject> PartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.PartitionScheme);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.Schema);
     ///<summary>
     /// Name: User. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> User => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.User);
+    public IEnumerable<TSqlObject> User => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Queue.User);
 }
 
 public static class QueueExtensions

@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx EventSessionTarget object.</summary>
 public readonly struct EventSessionTargetWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public EventSessionTargetWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public EventSessionTargetWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the EventModuleGuid property.</summary>
-    public string? EventModuleGuid => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionTarget.EventModuleGuid);
+    public string? EventModuleGuid => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionTarget.EventModuleGuid);
     /// <summary>Gets the EventPackageName property.</summary>
-    public string? EventPackageName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionTarget.EventPackageName);
+    public string? EventPackageName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionTarget.EventPackageName);
     /// <summary>Gets the TargetName property.</summary>
-    public string? TargetName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionTarget.TargetName);
+    public string? TargetName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.EventSessionTarget.TargetName);
     ///<summary>
     /// Name: ParameterSettings. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> ParameterSettings => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.EventSessionTarget.ParameterSettings);
+    public IEnumerable<TSqlObject> ParameterSettings => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.EventSessionTarget.ParameterSettings);
 }
 
 public static class EventSessionTargetExtensions

@@ -6,14 +6,14 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx EventTypeSpecifier object.</summary>
 public readonly struct EventTypeSpecifierWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public EventTypeSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public EventTypeSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the EventType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.EventType EventType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.EventType>(Microsoft.SqlServer.Dac.Model.EventTypeSpecifier.EventType);
+    public global::Microsoft.SqlServer.Dac.Model.EventType EventType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.EventType>(Microsoft.SqlServer.Dac.Model.EventTypeSpecifier.EventType);
     /// <summary>Gets the Order property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.OrderRestriction Order => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.OrderRestriction>(Microsoft.SqlServer.Dac.Model.EventTypeSpecifier.Order);
+    public global::Microsoft.SqlServer.Dac.Model.OrderRestriction Order => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.OrderRestriction>(Microsoft.SqlServer.Dac.Model.EventTypeSpecifier.Order);
 }
 
 public static class EventTypeSpecifierExtensions

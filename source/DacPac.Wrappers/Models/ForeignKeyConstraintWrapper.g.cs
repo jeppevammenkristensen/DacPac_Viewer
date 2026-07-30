@@ -6,34 +6,34 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ForeignKeyConstraint object.</summary>
 public readonly struct ForeignKeyConstraintWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ForeignKeyConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ForeignKeyConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.Disabled);
     /// <summary>Gets the NotForReplication property.</summary>
-    public bool NotForReplication => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.NotForReplication);
+    public bool NotForReplication => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.NotForReplication);
     /// <summary>Gets the DeleteAction property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ForeignKeyAction DeleteAction => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ForeignKeyAction>(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.DeleteAction);
+    public global::Microsoft.SqlServer.Dac.Model.ForeignKeyAction DeleteAction => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ForeignKeyAction>(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.DeleteAction);
     /// <summary>Gets the UpdateAction property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ForeignKeyAction UpdateAction => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ForeignKeyAction>(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.UpdateAction);
+    public global::Microsoft.SqlServer.Dac.Model.ForeignKeyAction UpdateAction => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ForeignKeyAction>(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.UpdateAction);
     ///<summary>
     /// Name: Host. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Host => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.Host);
+    public IEnumerable<TSqlObject> Host => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.Host);
     ///<summary>
     /// Name: Columns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.Columns);
     ///<summary>
     /// Name: ForeignColumns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ForeignColumns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.ForeignColumns);
+    public IEnumerable<TSqlObject> ForeignColumns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.ForeignColumns);
     ///<summary>
     /// Name: ForeignTable. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ForeignTable => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.ForeignTable);
+    public IEnumerable<TSqlObject> ForeignTable => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ForeignKeyConstraint.ForeignTable);
 }
 
 public static class ForeignKeyConstraintExtensions

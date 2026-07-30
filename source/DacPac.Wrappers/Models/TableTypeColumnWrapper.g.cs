@@ -6,50 +6,50 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx TableTypeColumn object.</summary>
 public readonly struct TableTypeColumnWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TableTypeColumnWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TableTypeColumnWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Collation property.</summary>
-    public string? Collation => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Collation);
+    public string? Collation => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Collation);
     /// <summary>Gets the IdentityIncrement property.</summary>
-    public string? IdentityIncrement => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IdentityIncrement);
+    public string? IdentityIncrement => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IdentityIncrement);
     /// <summary>Gets the IdentitySeed property.</summary>
-    public string? IdentitySeed => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IdentitySeed);
+    public string? IdentitySeed => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IdentitySeed);
     /// <summary>Gets the IsIdentity property.</summary>
-    public bool IsIdentity => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IsIdentity);
+    public bool IsIdentity => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IsIdentity);
     /// <summary>Gets the Nullable property.</summary>
-    public bool Nullable => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Nullable);
+    public bool Nullable => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Nullable);
     /// <summary>Gets the IsRowGuidCol property.</summary>
-    public bool IsRowGuidCol => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IsRowGuidCol);
+    public bool IsRowGuidCol => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IsRowGuidCol);
     /// <summary>Gets the Expression property.</summary>
-    public string? Expression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Expression);
+    public string? Expression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Expression);
     /// <summary>Gets the Persisted property.</summary>
-    public bool Persisted => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Persisted);
+    public bool Persisted => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Persisted);
     /// <summary>Gets the PersistedNullable property.</summary>
-    public bool? PersistedNullable => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.PersistedNullable);
+    public bool? PersistedNullable => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.PersistedNullable);
     /// <summary>Gets the Scale property.</summary>
-    public int Scale => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Scale);
+    public int Scale => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Scale);
     /// <summary>Gets the Precision property.</summary>
-    public int Precision => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Precision);
+    public int Precision => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Precision);
     /// <summary>Gets the Length property.</summary>
-    public int Length => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Length);
+    public int Length => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.Length);
     /// <summary>Gets the IsMax property.</summary>
-    public bool IsMax => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IsMax);
+    public bool IsMax => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.IsMax);
     /// <summary>Gets the XmlStyle property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.XmlStyle XmlStyle => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.XmlStyle>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.XmlStyle);
+    public global::Microsoft.SqlServer.Dac.Model.XmlStyle XmlStyle => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.XmlStyle>(Microsoft.SqlServer.Dac.Model.TableTypeColumn.XmlStyle);
     ///<summary>
     /// Name: ExpressionDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExpressionDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeColumn.ExpressionDependencies);
+    public IEnumerable<TSqlObject> ExpressionDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeColumn.ExpressionDependencies);
     ///<summary>
     /// Name: XmlSchemaCollection. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> XmlSchemaCollection => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeColumn.XmlSchemaCollection);
+    public IEnumerable<TSqlObject> XmlSchemaCollection => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeColumn.XmlSchemaCollection);
     ///<summary>
     /// Name: DataType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DataType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeColumn.DataType);
+    public IEnumerable<TSqlObject> DataType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeColumn.DataType);
 }
 
 public static class TableTypeColumnExtensions

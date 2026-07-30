@@ -6,18 +6,18 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx PromotedNodePathForXQueryType object.</summary>
 public readonly struct PromotedNodePathForXQueryTypeWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public PromotedNodePathForXQueryTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public PromotedNodePathForXQueryTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the IsSingleton property.</summary>
-    public bool IsSingleton => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForXQueryType.IsSingleton);
+    public bool IsSingleton => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForXQueryType.IsSingleton);
     /// <summary>Gets the MaxLength property.</summary>
-    public int? MaxLength => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForXQueryType.MaxLength);
+    public int? MaxLength => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForXQueryType.MaxLength);
     /// <summary>Gets the NodePath property.</summary>
-    public string? NodePath => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForXQueryType.NodePath);
+    public string? NodePath => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForXQueryType.NodePath);
     /// <summary>Gets the Type property.</summary>
-    public string? Type => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForXQueryType.Type);
+    public string? Type => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForXQueryType.Type);
 }
 
 public static class PromotedNodePathForXQueryTypeExtensions

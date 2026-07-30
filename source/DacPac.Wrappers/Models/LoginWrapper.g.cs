@@ -6,46 +6,46 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Login object.</summary>
 public readonly struct LoginWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public LoginWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public LoginWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the CheckExpiration property.</summary>
-    public bool CheckExpiration => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.CheckExpiration);
+    public bool CheckExpiration => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.CheckExpiration);
     /// <summary>Gets the CheckPolicy property.</summary>
-    public bool CheckPolicy => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.CheckPolicy);
+    public bool CheckPolicy => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.CheckPolicy);
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.Disabled);
     /// <summary>Gets the MappedToWindowsLogin property.</summary>
-    public bool MappedToWindowsLogin => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.MappedToWindowsLogin);
+    public bool MappedToWindowsLogin => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.MappedToWindowsLogin);
     /// <summary>Gets the PasswordHashed property.</summary>
-    public bool PasswordHashed => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.PasswordHashed);
+    public bool PasswordHashed => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.PasswordHashed);
     /// <summary>Gets the PasswordMustChange property.</summary>
-    public bool PasswordMustChange => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.PasswordMustChange);
+    public bool PasswordMustChange => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.PasswordMustChange);
     /// <summary>Gets the DefaultDatabase property.</summary>
-    public string? DefaultDatabase => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Login.DefaultDatabase);
+    public string? DefaultDatabase => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Login.DefaultDatabase);
     /// <summary>Gets the DefaultLanguage property.</summary>
-    public string? DefaultLanguage => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Login.DefaultLanguage);
+    public string? DefaultLanguage => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Login.DefaultLanguage);
     /// <summary>Gets the EncryptionOption property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.LoginEncryptionOption EncryptionOption => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.LoginEncryptionOption>(Microsoft.SqlServer.Dac.Model.Login.EncryptionOption);
+    public global::Microsoft.SqlServer.Dac.Model.LoginEncryptionOption EncryptionOption => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.LoginEncryptionOption>(Microsoft.SqlServer.Dac.Model.Login.EncryptionOption);
     /// <summary>Gets the IsMappedToExternalLogin property.</summary>
-    public bool IsMappedToExternalLogin => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.IsMappedToExternalLogin);
+    public bool IsMappedToExternalLogin => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Login.IsMappedToExternalLogin);
     /// <summary>Gets the Password property.</summary>
-    public string? Password => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Login.Password);
+    public string? Password => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Login.Password);
     /// <summary>Gets the Sid property.</summary>
-    public string? Sid => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Login.Sid);
+    public string? Sid => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Login.Sid);
     ///<summary>
     /// Name: AsymmetricKey. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> AsymmetricKey => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Login.AsymmetricKey);
+    public IEnumerable<TSqlObject> AsymmetricKey => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Login.AsymmetricKey);
     ///<summary>
     /// Name: Certificate. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Certificate => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Login.Certificate);
+    public IEnumerable<TSqlObject> Certificate => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Login.Certificate);
     ///<summary>
     /// Name: Credential. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Credential => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Login.Credential);
+    public IEnumerable<TSqlObject> Credential => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Login.Credential);
 }
 
 public static class LoginExtensions

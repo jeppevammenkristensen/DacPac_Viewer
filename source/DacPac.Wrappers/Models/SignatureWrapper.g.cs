@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Signature object.</summary>
 public readonly struct SignatureWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SignatureWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SignatureWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the IsCounterSignature property.</summary>
-    public bool IsCounterSignature => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Signature.IsCounterSignature);
+    public bool IsCounterSignature => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Signature.IsCounterSignature);
     ///<summary>
     /// Name: EncryptionMechanism. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> EncryptionMechanism => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Signature.EncryptionMechanism);
+    public IEnumerable<TSqlObject> EncryptionMechanism => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Signature.EncryptionMechanism);
     ///<summary>
     /// Name: SignedObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> SignedObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Signature.SignedObject);
+    public IEnumerable<TSqlObject> SignedObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Signature.SignedObject);
 }
 
 public static class SignatureExtensions

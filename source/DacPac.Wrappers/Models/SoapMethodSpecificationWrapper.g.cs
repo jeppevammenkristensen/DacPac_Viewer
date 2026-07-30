@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SoapMethodSpecification object.</summary>
 public readonly struct SoapMethodSpecificationWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SoapMethodSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SoapMethodSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the SchemaType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SoapSchema SchemaType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SoapSchema>(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.SchemaType);
+    public global::Microsoft.SqlServer.Dac.Model.SoapSchema SchemaType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SoapSchema>(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.SchemaType);
     /// <summary>Gets the Format property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SoapFormat Format => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SoapFormat>(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.Format);
+    public global::Microsoft.SqlServer.Dac.Model.SoapFormat Format => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SoapFormat>(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.Format);
     /// <summary>Gets the WebMethodAlias property.</summary>
-    public string? WebMethodAlias => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.WebMethodAlias);
+    public string? WebMethodAlias => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.WebMethodAlias);
     /// <summary>Gets the WebMethodNamespace property.</summary>
-    public string? WebMethodNamespace => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.WebMethodNamespace);
+    public string? WebMethodNamespace => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.WebMethodNamespace);
     ///<summary>
     /// Name: RelatedMethod. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> RelatedMethod => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.RelatedMethod);
+    public IEnumerable<TSqlObject> RelatedMethod => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SoapMethodSpecification.RelatedMethod);
 }
 
 public static class SoapMethodSpecificationExtensions

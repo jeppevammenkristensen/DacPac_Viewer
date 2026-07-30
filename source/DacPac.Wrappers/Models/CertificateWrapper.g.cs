@@ -6,40 +6,40 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Certificate object.</summary>
 public readonly struct CertificateWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public CertificateWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public CertificateWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ActiveForBeginDialog property.</summary>
-    public bool ActiveForBeginDialog => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Certificate.ActiveForBeginDialog);
+    public bool ActiveForBeginDialog => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Certificate.ActiveForBeginDialog);
     /// <summary>Gets the EncryptedWithPassword property.</summary>
-    public bool EncryptedWithPassword => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Certificate.EncryptedWithPassword);
+    public bool EncryptedWithPassword => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Certificate.EncryptedWithPassword);
     /// <summary>Gets the EncryptionPassword property.</summary>
-    public string? EncryptionPassword => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.EncryptionPassword);
+    public string? EncryptionPassword => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.EncryptionPassword);
     /// <summary>Gets the ExpiryDate property.</summary>
-    public string? ExpiryDate => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.ExpiryDate);
+    public string? ExpiryDate => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.ExpiryDate);
     /// <summary>Gets the StartDate property.</summary>
-    public string? StartDate => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.StartDate);
+    public string? StartDate => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.StartDate);
     /// <summary>Gets the Subject property.</summary>
-    public string? Subject => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.Subject);
+    public string? Subject => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.Subject);
     /// <summary>Gets the PrivateKeyFilePath property.</summary>
-    public string? PrivateKeyFilePath => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.PrivateKeyFilePath);
+    public string? PrivateKeyFilePath => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.PrivateKeyFilePath);
     /// <summary>Gets the ExistingKeysFilePath property.</summary>
-    public string? ExistingKeysFilePath => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.ExistingKeysFilePath);
+    public string? ExistingKeysFilePath => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.ExistingKeysFilePath);
     /// <summary>Gets the IsExistingKeyFileExecutable property.</summary>
-    public bool IsExistingKeyFileExecutable => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Certificate.IsExistingKeyFileExecutable);
+    public bool IsExistingKeyFileExecutable => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Certificate.IsExistingKeyFileExecutable);
     /// <summary>Gets the PrivateKeyDecryptionPassword property.</summary>
-    public string? PrivateKeyDecryptionPassword => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.PrivateKeyDecryptionPassword);
+    public string? PrivateKeyDecryptionPassword => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.PrivateKeyDecryptionPassword);
     /// <summary>Gets the PrivateKeyEncryptionPassword property.</summary>
-    public string? PrivateKeyEncryptionPassword => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.PrivateKeyEncryptionPassword);
+    public string? PrivateKeyEncryptionPassword => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Certificate.PrivateKeyEncryptionPassword);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Certificate.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Certificate.Authorizer);
     ///<summary>
     /// Name: ExistingKeysAssembly. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExistingKeysAssembly => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Certificate.ExistingKeysAssembly);
+    public IEnumerable<TSqlObject> ExistingKeysAssembly => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Certificate.ExistingKeysAssembly);
 }
 
 public static class CertificateExtensions

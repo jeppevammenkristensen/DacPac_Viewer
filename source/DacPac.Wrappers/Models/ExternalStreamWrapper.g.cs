@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalStream object.</summary>
 public readonly struct ExternalStreamWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalStreamWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalStreamWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the InputOptions property.</summary>
-    public string? InputOptions => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalStream.InputOptions);
+    public string? InputOptions => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalStream.InputOptions);
     /// <summary>Gets the Location property.</summary>
-    public string? Location => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalStream.Location);
+    public string? Location => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalStream.Location);
     /// <summary>Gets the OutputOptions property.</summary>
-    public string? OutputOptions => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalStream.OutputOptions);
+    public string? OutputOptions => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalStream.OutputOptions);
     ///<summary>
     /// Name: DataSourceName. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DataSourceName => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalStream.DataSourceName);
+    public IEnumerable<TSqlObject> DataSourceName => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalStream.DataSourceName);
     ///<summary>
     /// Name: FileFormatName. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileFormatName => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalStream.FileFormatName);
+    public IEnumerable<TSqlObject> FileFormatName => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalStream.FileFormatName);
 }
 
 public static class ExternalStreamExtensions

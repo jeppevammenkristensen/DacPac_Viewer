@@ -6,68 +6,68 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SpatialIndex object.</summary>
 public readonly struct SpatialIndexWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SpatialIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SpatialIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AllowPageLocks property.</summary>
-    public bool AllowPageLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.AllowPageLocks);
+    public bool AllowPageLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.AllowPageLocks);
     /// <summary>Gets the AllowRowLocks property.</summary>
-    public bool AllowRowLocks => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.AllowRowLocks);
+    public bool AllowRowLocks => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.AllowRowLocks);
     /// <summary>Gets the IgnoreDuplicateKey property.</summary>
-    public bool IgnoreDuplicateKey => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.IgnoreDuplicateKey);
+    public bool IgnoreDuplicateKey => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.IgnoreDuplicateKey);
     /// <summary>Gets the RecomputeStatistics property.</summary>
-    public bool RecomputeStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.RecomputeStatistics);
+    public bool RecomputeStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.RecomputeStatistics);
     /// <summary>Gets the GridLevel1Density property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Degree GridLevel1Density => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.SpatialIndex.GridLevel1Density);
+    public global::Microsoft.SqlServer.Dac.Model.Degree GridLevel1Density => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.SpatialIndex.GridLevel1Density);
     /// <summary>Gets the GridLevel2Density property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Degree GridLevel2Density => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.SpatialIndex.GridLevel2Density);
+    public global::Microsoft.SqlServer.Dac.Model.Degree GridLevel2Density => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.SpatialIndex.GridLevel2Density);
     /// <summary>Gets the GridLevel3Density property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Degree GridLevel3Density => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.SpatialIndex.GridLevel3Density);
+    public global::Microsoft.SqlServer.Dac.Model.Degree GridLevel3Density => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.SpatialIndex.GridLevel3Density);
     /// <summary>Gets the GridLevel4Density property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Degree GridLevel4Density => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.SpatialIndex.GridLevel4Density);
+    public global::Microsoft.SqlServer.Dac.Model.Degree GridLevel4Density => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.SpatialIndex.GridLevel4Density);
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.Disabled);
     /// <summary>Gets the WithPadIndex property.</summary>
-    public bool WithPadIndex => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.WithPadIndex);
+    public bool WithPadIndex => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.WithPadIndex);
     /// <summary>Gets the CellsPerObject property.</summary>
-    public int? CellsPerObject => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.CellsPerObject);
+    public int? CellsPerObject => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.CellsPerObject);
     /// <summary>Gets the DataCompression property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.CompressionLevel DataCompression => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.CompressionLevel>(Microsoft.SqlServer.Dac.Model.SpatialIndex.DataCompression);
+    public global::Microsoft.SqlServer.Dac.Model.CompressionLevel DataCompression => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.CompressionLevel>(Microsoft.SqlServer.Dac.Model.SpatialIndex.DataCompression);
     /// <summary>Gets the DoIncrementalStatistics property.</summary>
-    public bool DoIncrementalStatistics => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.DoIncrementalStatistics);
+    public bool DoIncrementalStatistics => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SpatialIndex.DoIncrementalStatistics);
     /// <summary>Gets the FillFactor property.</summary>
-    public int FillFactor => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.SpatialIndex.FillFactor);
+    public int FillFactor => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.SpatialIndex.FillFactor);
     /// <summary>Gets the Tessellation property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Tessellation Tessellation => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Tessellation>(Microsoft.SqlServer.Dac.Model.SpatialIndex.Tessellation);
+    public global::Microsoft.SqlServer.Dac.Model.Tessellation Tessellation => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Tessellation>(Microsoft.SqlServer.Dac.Model.SpatialIndex.Tessellation);
     /// <summary>Gets the XMax property.</summary>
-    public double? XMax => ObjectType.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.XMax);
+    public double? XMax => SqlObject.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.XMax);
     /// <summary>Gets the XMin property.</summary>
-    public double? XMin => ObjectType.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.XMin);
+    public double? XMin => SqlObject.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.XMin);
     /// <summary>Gets the YMax property.</summary>
-    public double? YMax => ObjectType.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.YMax);
+    public double? YMax => SqlObject.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.YMax);
     /// <summary>Gets the YMin property.</summary>
-    public double? YMin => ObjectType.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.YMin);
+    public double? YMin => SqlObject.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.SpatialIndex.YMin);
     ///<summary>
     /// Name: Column. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Column => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.Column);
+    public IEnumerable<TSqlObject> Column => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.Column);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.Filegroup);
     ///<summary>
     /// Name: IndexedObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> IndexedObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.IndexedObject);
+    public IEnumerable<TSqlObject> IndexedObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.IndexedObject);
     ///<summary>
     /// Name: PartitionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.PartitionColumn);
+    public IEnumerable<TSqlObject> PartitionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.PartitionColumn);
     ///<summary>
     /// Name: PartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.PartitionScheme);
+    public IEnumerable<TSqlObject> PartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SpatialIndex.PartitionScheme);
 }
 
 public static class SpatialIndexExtensions

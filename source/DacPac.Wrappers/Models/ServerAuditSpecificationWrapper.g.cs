@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ServerAuditSpecification object.</summary>
 public readonly struct ServerAuditSpecificationWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ServerAuditSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ServerAuditSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the StateOn property.</summary>
-    public bool StateOn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAuditSpecification.StateOn);
+    public bool StateOn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerAuditSpecification.StateOn);
     ///<summary>
     /// Name: AuditActionGroups. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> AuditActionGroups => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ServerAuditSpecification.AuditActionGroups);
+    public IEnumerable<TSqlObject> AuditActionGroups => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ServerAuditSpecification.AuditActionGroups);
     ///<summary>
     /// Name: ServerAudit. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ServerAudit => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ServerAuditSpecification.ServerAudit);
+    public IEnumerable<TSqlObject> ServerAudit => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ServerAuditSpecification.ServerAudit);
 }
 
 public static class ServerAuditSpecificationExtensions

@@ -6,12 +6,12 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx EventGroup object.</summary>
 public readonly struct EventGroupWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public EventGroupWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public EventGroupWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Group property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.EventGroupType Group => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.EventGroupType>(Microsoft.SqlServer.Dac.Model.EventGroup.Group);
+    public global::Microsoft.SqlServer.Dac.Model.EventGroupType Group => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.EventGroupType>(Microsoft.SqlServer.Dac.Model.EventGroup.Group);
 }
 
 public static class EventGroupExtensions

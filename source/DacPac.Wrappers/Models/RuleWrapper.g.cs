@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Rule object.</summary>
 public readonly struct RuleWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public RuleWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public RuleWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Expression property.</summary>
-    public string? Expression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.Rule.Expression);
+    public string? Expression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.Rule.Expression);
     /// <summary>Gets the ShouldGenerateCreateRuleStatement property.</summary>
-    public bool ShouldGenerateCreateRuleStatement => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Rule.ShouldGenerateCreateRuleStatement);
+    public bool ShouldGenerateCreateRuleStatement => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Rule.ShouldGenerateCreateRuleStatement);
     ///<summary>
     /// Name: BoundObjects. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BoundObjects => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Rule.BoundObjects);
+    public IEnumerable<TSqlObject> BoundObjects => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Rule.BoundObjects);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Rule.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Rule.Schema);
 }
 
 public static class RuleExtensions
