@@ -6,84 +6,84 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx TableValuedFunction object.</summary>
 public readonly struct TableValuedFunctionWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TableValuedFunctionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TableValuedFunctionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ReturnsNullOnNullInput property.</summary>
-    public bool ReturnsNullOnNullInput => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ReturnsNullOnNullInput);
+    public bool ReturnsNullOnNullInput => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ReturnsNullOnNullInput);
     /// <summary>Gets the AnsiNullsOn property.</summary>
-    public bool? AnsiNullsOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.AnsiNullsOn);
+    public bool? AnsiNullsOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.AnsiNullsOn);
     /// <summary>Gets the CalledOnNullInput property.</summary>
-    public bool CalledOnNullInput => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.CalledOnNullInput);
+    public bool CalledOnNullInput => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.CalledOnNullInput);
     /// <summary>Gets the ExecuteAsCaller property.</summary>
-    public bool ExecuteAsCaller => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ExecuteAsCaller);
+    public bool ExecuteAsCaller => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ExecuteAsCaller);
     /// <summary>Gets the WithEncryption property.</summary>
-    public bool WithEncryption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.WithEncryption);
+    public bool WithEncryption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.WithEncryption);
     /// <summary>Gets the ExecuteAsOwner property.</summary>
-    public bool ExecuteAsOwner => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ExecuteAsOwner);
+    public bool ExecuteAsOwner => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ExecuteAsOwner);
     /// <summary>Gets the QuotedIdentifierOn property.</summary>
-    public bool? QuotedIdentifierOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.QuotedIdentifierOn);
+    public bool? QuotedIdentifierOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.QuotedIdentifierOn);
     /// <summary>Gets the WithSchemaBinding property.</summary>
-    public bool WithSchemaBinding => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.WithSchemaBinding);
+    public bool WithSchemaBinding => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.WithSchemaBinding);
     /// <summary>Gets the ExecuteAsSelf property.</summary>
-    public bool ExecuteAsSelf => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ExecuteAsSelf);
+    public bool ExecuteAsSelf => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ExecuteAsSelf);
     /// <summary>Gets the ReturnTableVariableName property.</summary>
-    public string? ReturnTableVariableName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ReturnTableVariableName);
+    public string? ReturnTableVariableName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ReturnTableVariableName);
     /// <summary>Gets the ClassName property.</summary>
-    public string? ClassName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ClassName);
+    public string? ClassName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ClassName);
     /// <summary>Gets the DataAccess property.</summary>
-    public int? DataAccess => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.DataAccess);
+    public int? DataAccess => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.DataAccess);
     /// <summary>Gets the FillRowMethodName property.</summary>
-    public string? FillRowMethodName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.FillRowMethodName);
+    public string? FillRowMethodName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.FillRowMethodName);
     /// <summary>Gets the Deterministic property.</summary>
-    public bool? Deterministic => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Deterministic);
+    public bool? Deterministic => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Deterministic);
     /// <summary>Gets the Precise property.</summary>
-    public bool? Precise => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Precise);
+    public bool? Precise => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Precise);
     /// <summary>Gets the MethodName property.</summary>
-    public string? MethodName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.MethodName);
+    public string? MethodName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.MethodName);
     /// <summary>Gets the SystemDataAccess property.</summary>
-    public int? SystemDataAccess => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.SystemDataAccess);
+    public int? SystemDataAccess => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.SystemDataAccess);
     /// <summary>Gets the IsNativeCompiled property.</summary>
-    public bool IsNativeCompiled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.IsNativeCompiled);
+    public bool IsNativeCompiled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.IsNativeCompiled);
     /// <summary>Gets the IsReplicated property.</summary>
-    public bool IsReplicated => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.IsReplicated);
+    public bool IsReplicated => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableValuedFunction.IsReplicated);
     ///<summary>
     /// Name: Assembly. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Assembly => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Assembly);
+    public IEnumerable<TSqlObject> Assembly => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Assembly);
     ///<summary>
     /// Name: TableOption. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> TableOption => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.TableOption);
+    public IEnumerable<TSqlObject> TableOption => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.TableOption);
     ///<summary>
     /// Name: ReturnType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ReturnType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ReturnType);
+    public IEnumerable<TSqlObject> ReturnType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.ReturnType);
     ///<summary>
     /// Name: BodyDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BodyDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.BodyDependencies);
+    public IEnumerable<TSqlObject> BodyDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.BodyDependencies);
     ///<summary>
     /// Name: Columns. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Columns);
     ///<summary>
     /// Name: Login. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Login => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Login);
+    public IEnumerable<TSqlObject> Login => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Login);
     ///<summary>
     /// Name: Parameters. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Parameters => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Parameters);
+    public IEnumerable<TSqlObject> Parameters => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Parameters);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.Schema);
     ///<summary>
     /// Name: User. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> User => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.User);
+    public IEnumerable<TSqlObject> User => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableValuedFunction.User);
 }
 
 public static class TableValuedFunctionExtensions

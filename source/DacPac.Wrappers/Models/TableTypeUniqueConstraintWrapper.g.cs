@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx TableTypeUniqueConstraint object.</summary>
 public readonly struct TableTypeUniqueConstraintWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TableTypeUniqueConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TableTypeUniqueConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the IgnoreDuplicateKey property.</summary>
-    public bool IgnoreDuplicateKey => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.IgnoreDuplicateKey);
+    public bool IgnoreDuplicateKey => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.IgnoreDuplicateKey);
     /// <summary>Gets the Clustered property.</summary>
-    public bool Clustered => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.Clustered);
+    public bool Clustered => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.Clustered);
     /// <summary>Gets the Hash property.</summary>
-    public bool Hash => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.Hash);
+    public bool Hash => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.Hash);
     /// <summary>Gets the BucketCount property.</summary>
-    public int? BucketCount => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.BucketCount);
+    public int? BucketCount => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.BucketCount);
     ///<summary>
     /// Name: Columns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeUniqueConstraint.Columns);
 }
 
 public static class TableTypeUniqueConstraintExtensions

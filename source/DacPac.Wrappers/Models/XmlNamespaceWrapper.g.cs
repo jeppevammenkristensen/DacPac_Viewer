@@ -6,14 +6,14 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx XmlNamespace object.</summary>
 public readonly struct XmlNamespaceWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public XmlNamespaceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public XmlNamespaceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the NamespaceUri property.</summary>
-    public string? NamespaceUri => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.XmlNamespace.NamespaceUri);
+    public string? NamespaceUri => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.XmlNamespace.NamespaceUri);
     /// <summary>Gets the Prefix property.</summary>
-    public string? Prefix => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.XmlNamespace.Prefix);
+    public string? Prefix => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.XmlNamespace.Prefix);
 }
 
 public static class XmlNamespaceExtensions

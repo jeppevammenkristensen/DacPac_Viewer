@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SecurityPredicate object.</summary>
 public readonly struct SecurityPredicateWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SecurityPredicateWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SecurityPredicateWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the BodyScript property.</summary>
-    public string? BodyScript => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.SecurityPredicate.BodyScript);
+    public string? BodyScript => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.SecurityPredicate.BodyScript);
     /// <summary>Gets the Operation property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SecurityPredicateOperation Operation => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SecurityPredicateOperation>(Microsoft.SqlServer.Dac.Model.SecurityPredicate.Operation);
+    public global::Microsoft.SqlServer.Dac.Model.SecurityPredicateOperation Operation => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SecurityPredicateOperation>(Microsoft.SqlServer.Dac.Model.SecurityPredicate.Operation);
     /// <summary>Gets the PredicateType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SecurityPredicateType PredicateType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SecurityPredicateType>(Microsoft.SqlServer.Dac.Model.SecurityPredicate.PredicateType);
+    public global::Microsoft.SqlServer.Dac.Model.SecurityPredicateType PredicateType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SecurityPredicateType>(Microsoft.SqlServer.Dac.Model.SecurityPredicate.PredicateType);
     ///<summary>
     /// Name: BodyDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BodyDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SecurityPredicate.BodyDependencies);
+    public IEnumerable<TSqlObject> BodyDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SecurityPredicate.BodyDependencies);
     ///<summary>
     /// Name: TargetObject. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> TargetObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SecurityPredicate.TargetObject);
+    public IEnumerable<TSqlObject> TargetObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SecurityPredicate.TargetObject);
 }
 
 public static class SecurityPredicateExtensions

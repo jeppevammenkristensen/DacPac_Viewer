@@ -6,86 +6,86 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalTable object.</summary>
 public readonly struct ExternalTableWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalTableWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalTableWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the DistributionPolicyType property.</summary>
-    public int DistributionPolicyType => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ExternalTable.DistributionPolicyType);
+    public int DistributionPolicyType => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ExternalTable.DistributionPolicyType);
     /// <summary>Gets the ExternalObjectName property.</summary>
-    public string? ExternalObjectName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.ExternalObjectName);
+    public string? ExternalObjectName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.ExternalObjectName);
     /// <summary>Gets the ExternalSchemaName property.</summary>
-    public string? ExternalSchemaName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.ExternalSchemaName);
+    public string? ExternalSchemaName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.ExternalSchemaName);
     /// <summary>Gets the IsAnsiNullsOn property.</summary>
-    public bool? IsAnsiNullsOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ExternalTable.IsAnsiNullsOn);
+    public bool? IsAnsiNullsOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ExternalTable.IsAnsiNullsOn);
     /// <summary>Gets the IsFileStreamNull property.</summary>
-    public bool? IsFileStreamNull => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ExternalTable.IsFileStreamNull);
+    public bool? IsFileStreamNull => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ExternalTable.IsFileStreamNull);
     /// <summary>Gets the IsQuotedIdentifierOn property.</summary>
-    public bool? IsQuotedIdentifierOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ExternalTable.IsQuotedIdentifierOn);
+    public bool? IsQuotedIdentifierOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ExternalTable.IsQuotedIdentifierOn);
     /// <summary>Gets the IsTableLockOnBulkLoad property.</summary>
-    public bool IsTableLockOnBulkLoad => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExternalTable.IsTableLockOnBulkLoad);
+    public bool IsTableLockOnBulkLoad => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ExternalTable.IsTableLockOnBulkLoad);
     /// <summary>Gets the Location property.</summary>
-    public string? Location => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.Location);
+    public string? Location => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.Location);
     /// <summary>Gets the LockEscalation property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod LockEscalation => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod>(Microsoft.SqlServer.Dac.Model.ExternalTable.LockEscalation);
+    public global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod LockEscalation => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod>(Microsoft.SqlServer.Dac.Model.ExternalTable.LockEscalation);
     /// <summary>Gets the RejectedRowLocation property.</summary>
-    public string? RejectedRowLocation => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.RejectedRowLocation);
+    public string? RejectedRowLocation => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.RejectedRowLocation);
     /// <summary>Gets the RejectSampleValue property.</summary>
-    public double? RejectSampleValue => ObjectType.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.ExternalTable.RejectSampleValue);
+    public double? RejectSampleValue => SqlObject.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.ExternalTable.RejectSampleValue);
     /// <summary>Gets the RejectType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.RejectType? RejectType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.RejectType?>(Microsoft.SqlServer.Dac.Model.ExternalTable.RejectType);
+    public global::Microsoft.SqlServer.Dac.Model.RejectType? RejectType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.RejectType?>(Microsoft.SqlServer.Dac.Model.ExternalTable.RejectType);
     /// <summary>Gets the RejectValue property.</summary>
-    public double? RejectValue => ObjectType.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.ExternalTable.RejectValue);
+    public double? RejectValue => SqlObject.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.ExternalTable.RejectValue);
     /// <summary>Gets the TableOptions property.</summary>
-    public string? TableOptions => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.TableOptions);
+    public string? TableOptions => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalTable.TableOptions);
     ///<summary>
     /// Name: Columns. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.Columns);
     ///<summary>
     /// Name: DataCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> DataCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.DataCompressionOptions);
+    public IEnumerable<TSqlObject> DataCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.DataCompressionOptions);
     ///<summary>
     /// Name: DataSourceName. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DataSourceName => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.DataSourceName);
+    public IEnumerable<TSqlObject> DataSourceName => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.DataSourceName);
     ///<summary>
     /// Name: FileFormatName. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileFormatName => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.FileFormatName);
+    public IEnumerable<TSqlObject> FileFormatName => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.FileFormatName);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.Filegroup);
     ///<summary>
     /// Name: FileStreamFilegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamFilegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.FileStreamFilegroup);
+    public IEnumerable<TSqlObject> FileStreamFilegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.FileStreamFilegroup);
     ///<summary>
     /// Name: FileStreamPartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamPartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.FileStreamPartitionScheme);
+    public IEnumerable<TSqlObject> FileStreamPartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.FileStreamPartitionScheme);
     ///<summary>
     /// Name: PartitionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.PartitionColumn);
+    public IEnumerable<TSqlObject> PartitionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.PartitionColumn);
     ///<summary>
     /// Name: PartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.PartitionScheme);
+    public IEnumerable<TSqlObject> PartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.PartitionScheme);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.Schema);
     ///<summary>
     /// Name: ShardingColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ShardingColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.ShardingColumn);
+    public IEnumerable<TSqlObject> ShardingColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.ShardingColumn);
     ///<summary>
     /// Name: XmlCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> XmlCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.XmlCompressionOptions);
+    public IEnumerable<TSqlObject> XmlCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalTable.XmlCompressionOptions);
 }
 
 public static class ExternalTableExtensions

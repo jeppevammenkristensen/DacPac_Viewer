@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalLanguage object.</summary>
 public readonly struct ExternalLanguageWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalLanguageWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalLanguageWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the LanguageName property.</summary>
-    public string? LanguageName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguage.LanguageName);
+    public string? LanguageName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguage.LanguageName);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalLanguage.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalLanguage.Authorizer);
     ///<summary>
     /// Name: ExternalLanguageFiles. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> ExternalLanguageFiles => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalLanguage.ExternalLanguageFiles);
+    public IEnumerable<TSqlObject> ExternalLanguageFiles => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ExternalLanguage.ExternalLanguageFiles);
 }
 
 public static class ExternalLanguageExtensions

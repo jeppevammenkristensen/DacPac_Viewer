@@ -6,18 +6,18 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ClrTypeMethodParameter object.</summary>
 public readonly struct ClrTypeMethodParameterWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ClrTypeMethodParameterWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ClrTypeMethodParameterWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Name property.</summary>
-    public string? Name => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ClrTypeMethodParameter.Name);
+    public string? Name => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ClrTypeMethodParameter.Name);
     /// <summary>Gets the IsOutput property.</summary>
-    public bool IsOutput => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ClrTypeMethodParameter.IsOutput);
+    public bool IsOutput => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ClrTypeMethodParameter.IsOutput);
     ///<summary>
     /// Name: DataType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DataType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTypeMethodParameter.DataType);
+    public IEnumerable<TSqlObject> DataType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTypeMethodParameter.DataType);
 }
 
 public static class ClrTypeMethodParameterExtensions

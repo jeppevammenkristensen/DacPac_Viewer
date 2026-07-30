@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx RemoteServiceBinding object.</summary>
 public readonly struct RemoteServiceBindingWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public RemoteServiceBindingWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public RemoteServiceBindingWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Anonymous property.</summary>
-    public bool Anonymous => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.RemoteServiceBinding.Anonymous);
+    public bool Anonymous => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.RemoteServiceBinding.Anonymous);
     /// <summary>Gets the Service property.</summary>
-    public string? Service => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.RemoteServiceBinding.Service);
+    public string? Service => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.RemoteServiceBinding.Service);
     ///<summary>
     /// Name: User. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> User => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.RemoteServiceBinding.User);
+    public IEnumerable<TSqlObject> User => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.RemoteServiceBinding.User);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.RemoteServiceBinding.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.RemoteServiceBinding.Authorizer);
 }
 
 public static class RemoteServiceBindingExtensions

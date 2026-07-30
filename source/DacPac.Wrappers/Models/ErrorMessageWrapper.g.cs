@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ErrorMessage object.</summary>
 public readonly struct ErrorMessageWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ErrorMessageWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ErrorMessageWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the WithLog property.</summary>
-    public bool WithLog => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ErrorMessage.WithLog);
+    public bool WithLog => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ErrorMessage.WithLog);
     /// <summary>Gets the Language property.</summary>
-    public string? Language => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ErrorMessage.Language);
+    public string? Language => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ErrorMessage.Language);
     /// <summary>Gets the MessageNumber property.</summary>
-    public int MessageNumber => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ErrorMessage.MessageNumber);
+    public int MessageNumber => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ErrorMessage.MessageNumber);
     /// <summary>Gets the MessageText property.</summary>
-    public string? MessageText => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ErrorMessage.MessageText);
+    public string? MessageText => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ErrorMessage.MessageText);
     /// <summary>Gets the Severity property.</summary>
-    public int Severity => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ErrorMessage.Severity);
+    public int Severity => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.ErrorMessage.Severity);
 }
 
 public static class ErrorMessageExtensions

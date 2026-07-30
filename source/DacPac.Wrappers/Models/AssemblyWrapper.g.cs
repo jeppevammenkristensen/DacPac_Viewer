@@ -6,26 +6,26 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Assembly object.</summary>
 public readonly struct AssemblyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public AssemblyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public AssemblyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Visible property.</summary>
-    public bool Visible => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Assembly.Visible);
+    public bool Visible => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Assembly.Visible);
     /// <summary>Gets the PermissionSet property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.AssemblyPermissionSet PermissionSet => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.AssemblyPermissionSet>(Microsoft.SqlServer.Dac.Model.Assembly.PermissionSet);
+    public global::Microsoft.SqlServer.Dac.Model.AssemblyPermissionSet PermissionSet => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.AssemblyPermissionSet>(Microsoft.SqlServer.Dac.Model.Assembly.PermissionSet);
     ///<summary>
     /// Name: AssemblySources. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> AssemblySources => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Assembly.AssemblySources);
+    public IEnumerable<TSqlObject> AssemblySources => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Assembly.AssemblySources);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Assembly.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Assembly.Authorizer);
     ///<summary>
     /// Name: ReferencedAssemblies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ReferencedAssemblies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Assembly.ReferencedAssemblies);
+    public IEnumerable<TSqlObject> ReferencedAssemblies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Assembly.ReferencedAssemblies);
 }
 
 public static class AssemblyExtensions

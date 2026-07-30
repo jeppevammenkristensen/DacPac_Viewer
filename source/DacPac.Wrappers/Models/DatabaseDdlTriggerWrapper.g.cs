@@ -6,54 +6,54 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DatabaseDdlTrigger object.</summary>
 public readonly struct DatabaseDdlTriggerWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DatabaseDdlTriggerWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DatabaseDdlTriggerWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AnsiNullsOn property.</summary>
-    public bool? AnsiNullsOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.AnsiNullsOn);
+    public bool? AnsiNullsOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.AnsiNullsOn);
     /// <summary>Gets the ExecuteAsCaller property.</summary>
-    public bool ExecuteAsCaller => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.ExecuteAsCaller);
+    public bool ExecuteAsCaller => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.ExecuteAsCaller);
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.Disabled);
     /// <summary>Gets the WithEncryption property.</summary>
-    public bool WithEncryption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.WithEncryption);
+    public bool WithEncryption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.WithEncryption);
     /// <summary>Gets the ExecuteAsOwner property.</summary>
-    public bool ExecuteAsOwner => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.ExecuteAsOwner);
+    public bool ExecuteAsOwner => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.ExecuteAsOwner);
     /// <summary>Gets the QuotedIdentifierOn property.</summary>
-    public bool? QuotedIdentifierOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.QuotedIdentifierOn);
+    public bool? QuotedIdentifierOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.QuotedIdentifierOn);
     /// <summary>Gets the ExecuteAsSelf property.</summary>
-    public bool ExecuteAsSelf => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.ExecuteAsSelf);
+    public bool ExecuteAsSelf => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.ExecuteAsSelf);
     /// <summary>Gets the TriggerType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.TriggerType TriggerType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.TriggerType>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.TriggerType);
+    public global::Microsoft.SqlServer.Dac.Model.TriggerType TriggerType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.TriggerType>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.TriggerType);
     /// <summary>Gets the ClassName property.</summary>
-    public string? ClassName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.ClassName);
+    public string? ClassName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.ClassName);
     /// <summary>Gets the MethodName property.</summary>
-    public string? MethodName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.MethodName);
+    public string? MethodName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.MethodName);
     ///<summary>
     /// Name: Assembly. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Assembly => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.Assembly);
+    public IEnumerable<TSqlObject> Assembly => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.Assembly);
     ///<summary>
     /// Name: BodyDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BodyDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.BodyDependencies);
+    public IEnumerable<TSqlObject> BodyDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.BodyDependencies);
     ///<summary>
     /// Name: EventGroup. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> EventGroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.EventGroup);
+    public IEnumerable<TSqlObject> EventGroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.EventGroup);
     ///<summary>
     /// Name: EventType. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> EventType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.EventType);
+    public IEnumerable<TSqlObject> EventType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.EventType);
     ///<summary>
     /// Name: Login. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Login => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.Login);
+    public IEnumerable<TSqlObject> Login => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.Login);
     ///<summary>
     /// Name: User. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> User => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.User);
+    public IEnumerable<TSqlObject> User => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseDdlTrigger.User);
 }
 
 public static class DatabaseDdlTriggerExtensions

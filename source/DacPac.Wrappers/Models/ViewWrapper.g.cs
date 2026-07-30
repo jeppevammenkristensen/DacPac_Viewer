@@ -6,58 +6,58 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx View object.</summary>
 public readonly struct ViewWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ViewWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ViewWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AnsiNullsOn property.</summary>
-    public bool? AnsiNullsOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.View.AnsiNullsOn);
+    public bool? AnsiNullsOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.View.AnsiNullsOn);
     /// <summary>Gets the WithEncryption property.</summary>
-    public bool WithEncryption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.WithEncryption);
+    public bool WithEncryption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.WithEncryption);
     /// <summary>Gets the WithViewMetadata property.</summary>
-    public bool WithViewMetadata => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.WithViewMetadata);
+    public bool WithViewMetadata => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.WithViewMetadata);
     /// <summary>Gets the QuotedIdentifierOn property.</summary>
-    public bool? QuotedIdentifierOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.View.QuotedIdentifierOn);
+    public bool? QuotedIdentifierOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.View.QuotedIdentifierOn);
     /// <summary>Gets the Replicated property.</summary>
-    public bool Replicated => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.Replicated);
+    public bool Replicated => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.Replicated);
     /// <summary>Gets the WithSchemaBinding property.</summary>
-    public bool WithSchemaBinding => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.WithSchemaBinding);
+    public bool WithSchemaBinding => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.WithSchemaBinding);
     /// <summary>Gets the WithCheckOption property.</summary>
-    public bool WithCheckOption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.WithCheckOption);
+    public bool WithCheckOption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.WithCheckOption);
     /// <summary>Gets the SelectStatement property.</summary>
-    public string? SelectStatement => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.View.SelectStatement);
+    public string? SelectStatement => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.View.SelectStatement);
     /// <summary>Gets the DistributionPolicyType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.TableDistributionPolicyType DistributionPolicyType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.TableDistributionPolicyType>(Microsoft.SqlServer.Dac.Model.View.DistributionPolicyType);
+    public global::Microsoft.SqlServer.Dac.Model.TableDistributionPolicyType DistributionPolicyType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.TableDistributionPolicyType>(Microsoft.SqlServer.Dac.Model.View.DistributionPolicyType);
     /// <summary>Gets the ForAppend property.</summary>
-    public bool ForAppend => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.ForAppend);
+    public bool ForAppend => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.ForAppend);
     /// <summary>Gets the IsDroppedLedgerView property.</summary>
-    public bool IsDroppedLedgerView => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.IsDroppedLedgerView);
+    public bool IsDroppedLedgerView => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.View.IsDroppedLedgerView);
     /// <summary>Gets the LedgerViewType property.</summary>
-    public int LedgerViewType => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.View.LedgerViewType);
+    public int LedgerViewType => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.View.LedgerViewType);
     ///<summary>
     /// Name: BodyDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BodyDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.View.BodyDependencies);
+    public IEnumerable<TSqlObject> BodyDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.View.BodyDependencies);
     ///<summary>
     /// Name: DistributionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DistributionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.View.DistributionColumn);
+    public IEnumerable<TSqlObject> DistributionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.View.DistributionColumn);
     ///<summary>
     /// Name: Columns. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.View.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.View.Columns);
     ///<summary>
     /// Name: DatabaseScopedCredentialName. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DatabaseScopedCredentialName => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.View.DatabaseScopedCredentialName);
+    public IEnumerable<TSqlObject> DatabaseScopedCredentialName => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.View.DatabaseScopedCredentialName);
     ///<summary>
     /// Name: ExternalDataSourceName. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExternalDataSourceName => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.View.ExternalDataSourceName);
+    public IEnumerable<TSqlObject> ExternalDataSourceName => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.View.ExternalDataSourceName);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.View.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.View.Schema);
 }
 
 public static class ViewExtensions

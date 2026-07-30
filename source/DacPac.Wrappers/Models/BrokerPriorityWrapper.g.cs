@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx BrokerPriority object.</summary>
 public readonly struct BrokerPriorityWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public BrokerPriorityWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public BrokerPriorityWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the RemoteServiceName property.</summary>
-    public string? RemoteServiceName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.BrokerPriority.RemoteServiceName);
+    public string? RemoteServiceName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.BrokerPriority.RemoteServiceName);
     /// <summary>Gets the PriorityLevel property.</summary>
-    public int PriorityLevel => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.BrokerPriority.PriorityLevel);
+    public int PriorityLevel => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.BrokerPriority.PriorityLevel);
     ///<summary>
     /// Name: ContractName. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ContractName => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.BrokerPriority.ContractName);
+    public IEnumerable<TSqlObject> ContractName => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.BrokerPriority.ContractName);
     ///<summary>
     /// Name: LocalServiceName. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> LocalServiceName => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.BrokerPriority.LocalServiceName);
+    public IEnumerable<TSqlObject> LocalServiceName => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.BrokerPriority.LocalServiceName);
 }
 
 public static class BrokerPriorityExtensions

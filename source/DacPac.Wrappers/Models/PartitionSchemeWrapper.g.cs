@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx PartitionScheme object.</summary>
 public readonly struct PartitionSchemeWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public PartitionSchemeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public PartitionSchemeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AllToOneFilegroup property.</summary>
-    public bool AllToOneFilegroup => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.PartitionScheme.AllToOneFilegroup);
+    public bool AllToOneFilegroup => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.PartitionScheme.AllToOneFilegroup);
     ///<summary>
     /// Name: Filegroups. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroups => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.PartitionScheme.Filegroups);
+    public IEnumerable<TSqlObject> Filegroups => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.PartitionScheme.Filegroups);
     ///<summary>
     /// Name: PartitionFunction. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionFunction => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.PartitionScheme.PartitionFunction);
+    public IEnumerable<TSqlObject> PartitionFunction => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.PartitionScheme.PartitionFunction);
 }
 
 public static class PartitionSchemeExtensions

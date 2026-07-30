@@ -6,36 +6,36 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Statistics object.</summary>
 public readonly struct StatisticsWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public StatisticsWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public StatisticsWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the StatsStream property.</summary>
-    public string? StatsStream => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Statistics.StatsStream);
+    public string? StatsStream => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.Statistics.StatsStream);
     /// <summary>Gets the FilterPredicate property.</summary>
-    public string? FilterPredicate => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.Statistics.FilterPredicate);
+    public string? FilterPredicate => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.Statistics.FilterPredicate);
     /// <summary>Gets the AutoDrop property.</summary>
-    public bool AutoDrop => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Statistics.AutoDrop);
+    public bool AutoDrop => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Statistics.AutoDrop);
     /// <summary>Gets the Incremental property.</summary>
-    public bool Incremental => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Statistics.Incremental);
+    public bool Incremental => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Statistics.Incremental);
     /// <summary>Gets the NoRecompute property.</summary>
-    public bool NoRecompute => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Statistics.NoRecompute);
+    public bool NoRecompute => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.Statistics.NoRecompute);
     /// <summary>Gets the SampleSize property.</summary>
-    public int SampleSize => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Statistics.SampleSize);
+    public int SampleSize => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.Statistics.SampleSize);
     /// <summary>Gets the SamplingStyle property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SamplingStyle SamplingStyle => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SamplingStyle>(Microsoft.SqlServer.Dac.Model.Statistics.SamplingStyle);
+    public global::Microsoft.SqlServer.Dac.Model.SamplingStyle SamplingStyle => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SamplingStyle>(Microsoft.SqlServer.Dac.Model.Statistics.SamplingStyle);
     ///<summary>
     /// Name: OnObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> OnObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Statistics.OnObject);
+    public IEnumerable<TSqlObject> OnObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Statistics.OnObject);
     ///<summary>
     /// Name: Columns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Statistics.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Statistics.Columns);
     ///<summary>
     /// Name: ExpressionDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExpressionDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Statistics.ExpressionDependencies);
+    public IEnumerable<TSqlObject> ExpressionDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Statistics.ExpressionDependencies);
 }
 
 public static class StatisticsExtensions

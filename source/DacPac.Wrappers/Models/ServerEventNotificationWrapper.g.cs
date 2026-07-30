@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ServerEventNotification object.</summary>
 public readonly struct ServerEventNotificationWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ServerEventNotificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ServerEventNotificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the WithFanIn property.</summary>
-    public bool WithFanIn => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerEventNotification.WithFanIn);
+    public bool WithFanIn => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ServerEventNotification.WithFanIn);
     /// <summary>Gets the BrokerService property.</summary>
-    public string? BrokerService => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerEventNotification.BrokerService);
+    public string? BrokerService => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerEventNotification.BrokerService);
     /// <summary>Gets the BrokerInstanceSpecifier property.</summary>
-    public string? BrokerInstanceSpecifier => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerEventNotification.BrokerInstanceSpecifier);
+    public string? BrokerInstanceSpecifier => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ServerEventNotification.BrokerInstanceSpecifier);
     ///<summary>
     /// Name: EventGroup. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> EventGroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ServerEventNotification.EventGroup);
+    public IEnumerable<TSqlObject> EventGroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ServerEventNotification.EventGroup);
     ///<summary>
     /// Name: EventType. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> EventType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ServerEventNotification.EventType);
+    public IEnumerable<TSqlObject> EventType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ServerEventNotification.EventType);
 }
 
 public static class ServerEventNotificationExtensions

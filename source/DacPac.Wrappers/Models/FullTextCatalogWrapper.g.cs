@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx FullTextCatalog object.</summary>
 public readonly struct FullTextCatalogWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public FullTextCatalogWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public FullTextCatalogWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AccentSensitivity property.</summary>
-    public bool? AccentSensitivity => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.FullTextCatalog.AccentSensitivity);
+    public bool? AccentSensitivity => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.FullTextCatalog.AccentSensitivity);
     /// <summary>Gets the IsDefault property.</summary>
-    public bool IsDefault => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextCatalog.IsDefault);
+    public bool IsDefault => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextCatalog.IsDefault);
     /// <summary>Gets the Path property.</summary>
-    public string? Path => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.FullTextCatalog.Path);
+    public string? Path => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.FullTextCatalog.Path);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextCatalog.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextCatalog.Authorizer);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextCatalog.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextCatalog.Filegroup);
 }
 
 public static class FullTextCatalogExtensions

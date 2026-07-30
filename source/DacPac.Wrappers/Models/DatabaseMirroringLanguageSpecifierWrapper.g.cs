@@ -6,26 +6,26 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DatabaseMirroringLanguageSpecifier object.</summary>
 public readonly struct DatabaseMirroringLanguageSpecifierWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DatabaseMirroringLanguageSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DatabaseMirroringLanguageSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the WindowsAuthenticationMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.AuthenticationModes WindowsAuthenticationMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.AuthenticationModes>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.WindowsAuthenticationMode);
+    public global::Microsoft.SqlServer.Dac.Model.AuthenticationModes WindowsAuthenticationMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.AuthenticationModes>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.WindowsAuthenticationMode);
     /// <summary>Gets the UseCertificateFirst property.</summary>
-    public bool UseCertificateFirst => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.UseCertificateFirst);
+    public bool UseCertificateFirst => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.UseCertificateFirst);
     /// <summary>Gets the EncryptionAlgorithmPart1 property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm EncryptionAlgorithmPart1 => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.EncryptionAlgorithmPart1);
+    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm EncryptionAlgorithmPart1 => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.EncryptionAlgorithmPart1);
     /// <summary>Gets the EncryptionAlgorithmPart2 property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm EncryptionAlgorithmPart2 => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.EncryptionAlgorithmPart2);
+    public global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm EncryptionAlgorithmPart2 => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ServiceBrokerEncryptionAlgorithm>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.EncryptionAlgorithmPart2);
     /// <summary>Gets the EncryptionMode property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.EncryptionMode EncryptionMode => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.EncryptionMode>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.EncryptionMode);
+    public global::Microsoft.SqlServer.Dac.Model.EncryptionMode EncryptionMode => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.EncryptionMode>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.EncryptionMode);
     /// <summary>Gets the RoleType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.DatabaseMirroringRole RoleType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.DatabaseMirroringRole>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.RoleType);
+    public global::Microsoft.SqlServer.Dac.Model.DatabaseMirroringRole RoleType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.DatabaseMirroringRole>(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.RoleType);
     ///<summary>
     /// Name: AuthenticationCertificate. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> AuthenticationCertificate => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.AuthenticationCertificate);
+    public IEnumerable<TSqlObject> AuthenticationCertificate => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseMirroringLanguageSpecifier.AuthenticationCertificate);
 }
 
 public static class DatabaseMirroringLanguageSpecifierExtensions

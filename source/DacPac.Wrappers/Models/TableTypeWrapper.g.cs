@@ -6,28 +6,28 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx TableType object.</summary>
 public readonly struct TableTypeWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TableTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TableTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the MemoryOptimized property.</summary>
-    public bool MemoryOptimized => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableType.MemoryOptimized);
+    public bool MemoryOptimized => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableType.MemoryOptimized);
     ///<summary>
     /// Name: Columns. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Columns);
     ///<summary>
     /// Name: Constraints. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Constraints => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Constraints);
+    public IEnumerable<TSqlObject> Constraints => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Constraints);
     ///<summary>
     /// Name: Indexes. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Indexes => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Indexes);
+    public IEnumerable<TSqlObject> Indexes => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Indexes);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Schema);
 }
 
 public static class TableTypeExtensions

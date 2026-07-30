@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx CheckConstraint object.</summary>
 public readonly struct CheckConstraintWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public CheckConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public CheckConstraintWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Expression property.</summary>
-    public string? Expression => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.CheckConstraint.Expression);
+    public string? Expression => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.CheckConstraint.Expression);
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.CheckConstraint.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.CheckConstraint.Disabled);
     /// <summary>Gets the NotForReplication property.</summary>
-    public bool NotForReplication => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.CheckConstraint.NotForReplication);
+    public bool NotForReplication => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.CheckConstraint.NotForReplication);
     ///<summary>
     /// Name: ExpressionDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ExpressionDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.CheckConstraint.ExpressionDependencies);
+    public IEnumerable<TSqlObject> ExpressionDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.CheckConstraint.ExpressionDependencies);
     ///<summary>
     /// Name: Host. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Host => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.CheckConstraint.Host);
+    public IEnumerable<TSqlObject> Host => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.CheckConstraint.Host);
 }
 
 public static class CheckConstraintExtensions

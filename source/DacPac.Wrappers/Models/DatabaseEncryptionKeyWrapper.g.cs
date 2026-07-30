@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DatabaseEncryptionKey object.</summary>
 public readonly struct DatabaseEncryptionKeyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DatabaseEncryptionKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DatabaseEncryptionKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Algorithm property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SymmetricKeyAlgorithm Algorithm => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SymmetricKeyAlgorithm>(Microsoft.SqlServer.Dac.Model.DatabaseEncryptionKey.Algorithm);
+    public global::Microsoft.SqlServer.Dac.Model.SymmetricKeyAlgorithm Algorithm => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SymmetricKeyAlgorithm>(Microsoft.SqlServer.Dac.Model.DatabaseEncryptionKey.Algorithm);
     ///<summary>
     /// Name: Certificate. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Certificate => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseEncryptionKey.Certificate);
+    public IEnumerable<TSqlObject> Certificate => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseEncryptionKey.Certificate);
     ///<summary>
     /// Name: AsymmetricKey. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> AsymmetricKey => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseEncryptionKey.AsymmetricKey);
+    public IEnumerable<TSqlObject> AsymmetricKey => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.DatabaseEncryptionKey.AsymmetricKey);
 }
 
 public static class DatabaseEncryptionKeyExtensions

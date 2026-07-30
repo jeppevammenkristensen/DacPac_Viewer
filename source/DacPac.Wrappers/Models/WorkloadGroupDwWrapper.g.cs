@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx WorkloadGroupDw object.</summary>
 public readonly struct WorkloadGroupDwWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public WorkloadGroupDwWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public WorkloadGroupDwWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the CapPercentageResource property.</summary>
-    public int CapPercentageResource => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.CapPercentageResource);
+    public int CapPercentageResource => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.CapPercentageResource);
     /// <summary>Gets the Importance property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Degree Importance => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.Importance);
+    public global::Microsoft.SqlServer.Dac.Model.Degree Importance => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Degree>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.Importance);
     /// <summary>Gets the MinPercentageResource property.</summary>
-    public int MinPercentageResource => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.MinPercentageResource);
+    public int MinPercentageResource => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.MinPercentageResource);
     /// <summary>Gets the QueryExecutionTimeoutSec property.</summary>
-    public int QueryExecutionTimeoutSec => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.QueryExecutionTimeoutSec);
+    public int QueryExecutionTimeoutSec => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.QueryExecutionTimeoutSec);
     /// <summary>Gets the RequestMaxResourceGrantPercent property.</summary>
-    public double? RequestMaxResourceGrantPercent => ObjectType.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.RequestMaxResourceGrantPercent);
+    public double? RequestMaxResourceGrantPercent => SqlObject.GetProperty<double?>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.RequestMaxResourceGrantPercent);
     /// <summary>Gets the RequestMinResourceGrantPercent property.</summary>
-    public double RequestMinResourceGrantPercent => ObjectType.GetProperty<double>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.RequestMinResourceGrantPercent);
+    public double RequestMinResourceGrantPercent => SqlObject.GetProperty<double>(Microsoft.SqlServer.Dac.Model.WorkloadGroupDw.RequestMinResourceGrantPercent);
 }
 
 public static class WorkloadGroupDwExtensions

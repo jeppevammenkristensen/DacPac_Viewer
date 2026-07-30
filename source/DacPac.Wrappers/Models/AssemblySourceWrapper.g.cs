@@ -6,12 +6,12 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx AssemblySource object.</summary>
 public readonly struct AssemblySourceWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public AssemblySourceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public AssemblySourceWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Source property.</summary>
-    public string? Source => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.AssemblySource.Source);
+    public string? Source => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.AssemblySource.Source);
 }
 
 public static class AssemblySourceExtensions

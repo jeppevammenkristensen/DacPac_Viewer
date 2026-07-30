@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SearchProperty object.</summary>
 public readonly struct SearchPropertyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SearchPropertyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SearchPropertyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Description property.</summary>
-    public string? Description => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SearchProperty.Description);
+    public string? Description => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SearchProperty.Description);
     /// <summary>Gets the Identifier property.</summary>
-    public int Identifier => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.SearchProperty.Identifier);
+    public int Identifier => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.SearchProperty.Identifier);
     /// <summary>Gets the PropertySetGuid property.</summary>
-    public string? PropertySetGuid => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SearchProperty.PropertySetGuid);
+    public string? PropertySetGuid => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SearchProperty.PropertySetGuid);
     ///<summary>
     /// Name: SearchPropertyList. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> SearchPropertyList => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SearchProperty.SearchPropertyList);
+    public IEnumerable<TSqlObject> SearchPropertyList => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SearchProperty.SearchPropertyList);
 }
 
 public static class SearchPropertyExtensions

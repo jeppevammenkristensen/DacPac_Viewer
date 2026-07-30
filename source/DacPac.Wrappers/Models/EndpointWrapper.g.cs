@@ -6,28 +6,28 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Endpoint object.</summary>
 public readonly struct EndpointWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public EndpointWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public EndpointWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Payload property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Payload Payload => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Payload>(Microsoft.SqlServer.Dac.Model.Endpoint.Payload);
+    public global::Microsoft.SqlServer.Dac.Model.Payload Payload => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Payload>(Microsoft.SqlServer.Dac.Model.Endpoint.Payload);
     /// <summary>Gets the Protocol property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.Protocol Protocol => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.Protocol>(Microsoft.SqlServer.Dac.Model.Endpoint.Protocol);
+    public global::Microsoft.SqlServer.Dac.Model.Protocol Protocol => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.Protocol>(Microsoft.SqlServer.Dac.Model.Endpoint.Protocol);
     /// <summary>Gets the State property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.State State => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.State>(Microsoft.SqlServer.Dac.Model.Endpoint.State);
+    public global::Microsoft.SqlServer.Dac.Model.State State => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.State>(Microsoft.SqlServer.Dac.Model.Endpoint.State);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Endpoint.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Endpoint.Authorizer);
     ///<summary>
     /// Name: PayloadSpecifier. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> PayloadSpecifier => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Endpoint.PayloadSpecifier);
+    public IEnumerable<TSqlObject> PayloadSpecifier => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Endpoint.PayloadSpecifier);
     ///<summary>
     /// Name: ProtocolSpecifier. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> ProtocolSpecifier => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Endpoint.ProtocolSpecifier);
+    public IEnumerable<TSqlObject> ProtocolSpecifier => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Endpoint.ProtocolSpecifier);
 }
 
 public static class EndpointExtensions

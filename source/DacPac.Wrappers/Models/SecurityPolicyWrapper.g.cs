@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SecurityPolicy object.</summary>
 public readonly struct SecurityPolicyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SecurityPolicyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SecurityPolicyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Enabled property.</summary>
-    public bool Enabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SecurityPolicy.Enabled);
+    public bool Enabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SecurityPolicy.Enabled);
     /// <summary>Gets the IsSchemaBound property.</summary>
-    public bool IsSchemaBound => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SecurityPolicy.IsSchemaBound);
+    public bool IsSchemaBound => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SecurityPolicy.IsSchemaBound);
     /// <summary>Gets the NotForReplication property.</summary>
-    public bool NotForReplication => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SecurityPolicy.NotForReplication);
+    public bool NotForReplication => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SecurityPolicy.NotForReplication);
     ///<summary>
     /// Name: Predicates. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Predicates => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SecurityPolicy.Predicates);
+    public IEnumerable<TSqlObject> Predicates => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SecurityPolicy.Predicates);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SecurityPolicy.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SecurityPolicy.Schema);
 }
 
 public static class SecurityPolicyExtensions

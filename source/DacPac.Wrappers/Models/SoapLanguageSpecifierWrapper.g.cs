@@ -6,42 +6,42 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SoapLanguageSpecifier object.</summary>
 public readonly struct SoapLanguageSpecifierWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SoapLanguageSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SoapLanguageSpecifierWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the BatchesEnabled property.</summary>
-    public bool BatchesEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.BatchesEnabled);
+    public bool BatchesEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.BatchesEnabled);
     /// <summary>Gets the SessionsEnabled property.</summary>
-    public bool SessionsEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.SessionsEnabled);
+    public bool SessionsEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.SessionsEnabled);
     /// <summary>Gets the SessionTimeoutNever property.</summary>
-    public bool SessionTimeoutNever => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.SessionTimeoutNever);
+    public bool SessionTimeoutNever => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.SessionTimeoutNever);
     /// <summary>Gets the CharacterSet property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.CharacterSet CharacterSet => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.CharacterSet>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.CharacterSet);
+    public global::Microsoft.SqlServer.Dac.Model.CharacterSet CharacterSet => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.CharacterSet>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.CharacterSet);
     /// <summary>Gets the DatabaseName property.</summary>
-    public string? DatabaseName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.DatabaseName);
+    public string? DatabaseName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.DatabaseName);
     /// <summary>Gets the HeaderLimit property.</summary>
-    public int HeaderLimit => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.HeaderLimit);
+    public int HeaderLimit => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.HeaderLimit);
     /// <summary>Gets the IsDefaultDatabase property.</summary>
-    public bool IsDefaultDatabase => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.IsDefaultDatabase);
+    public bool IsDefaultDatabase => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.IsDefaultDatabase);
     /// <summary>Gets the IsDefaultNamespace property.</summary>
-    public bool IsDefaultNamespace => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.IsDefaultNamespace);
+    public bool IsDefaultNamespace => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.IsDefaultNamespace);
     /// <summary>Gets the IsDefaultWsdlSpName property.</summary>
-    public bool IsDefaultWsdlSpName => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.IsDefaultWsdlSpName);
+    public bool IsDefaultWsdlSpName => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.IsDefaultWsdlSpName);
     /// <summary>Gets the LoginType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SoapLoginType LoginType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SoapLoginType>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.LoginType);
+    public global::Microsoft.SqlServer.Dac.Model.SoapLoginType LoginType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SoapLoginType>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.LoginType);
     /// <summary>Gets the Namespace property.</summary>
-    public string? Namespace => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.Namespace);
+    public string? Namespace => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.Namespace);
     /// <summary>Gets the SchemaType property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SoapSchema SchemaType => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SoapSchema>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.SchemaType);
+    public global::Microsoft.SqlServer.Dac.Model.SoapSchema SchemaType => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SoapSchema>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.SchemaType);
     /// <summary>Gets the SessionTimeout property.</summary>
-    public int SessionTimeout => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.SessionTimeout);
+    public int SessionTimeout => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.SessionTimeout);
     /// <summary>Gets the WsdlSpName property.</summary>
-    public string? WsdlSpName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.WsdlSpName);
+    public string? WsdlSpName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.WsdlSpName);
     ///<summary>
     /// Name: WebMethods. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> WebMethods => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.WebMethods);
+    public IEnumerable<TSqlObject> WebMethods => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SoapLanguageSpecifier.WebMethods);
 }
 
 public static class SoapLanguageSpecifierExtensions

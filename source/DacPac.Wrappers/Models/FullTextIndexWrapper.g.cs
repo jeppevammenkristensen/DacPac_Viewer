@@ -6,48 +6,48 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx FullTextIndex object.</summary>
 public readonly struct FullTextIndexWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public FullTextIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public FullTextIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ChangeTracking property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.ChangeTrackingOption ChangeTracking => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.ChangeTrackingOption>(Microsoft.SqlServer.Dac.Model.FullTextIndex.ChangeTracking);
+    public global::Microsoft.SqlServer.Dac.Model.ChangeTrackingOption ChangeTracking => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.ChangeTrackingOption>(Microsoft.SqlServer.Dac.Model.FullTextIndex.ChangeTracking);
     /// <summary>Gets the UseSystemStopList property.</summary>
-    public bool UseSystemStopList => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndex.UseSystemStopList);
+    public bool UseSystemStopList => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndex.UseSystemStopList);
     /// <summary>Gets the Disabled property.</summary>
-    public bool Disabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndex.Disabled);
+    public bool Disabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndex.Disabled);
     /// <summary>Gets the Replicated property.</summary>
-    public bool Replicated => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndex.Replicated);
+    public bool Replicated => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndex.Replicated);
     /// <summary>Gets the StopListOff property.</summary>
-    public bool StopListOff => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndex.StopListOff);
+    public bool StopListOff => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FullTextIndex.StopListOff);
     ///<summary>
     /// Name: UniqueIndexName. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> UniqueIndexName => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.UniqueIndexName);
+    public IEnumerable<TSqlObject> UniqueIndexName => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.UniqueIndexName);
     ///<summary>
     /// Name: Catalog. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Catalog => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.Catalog);
+    public IEnumerable<TSqlObject> Catalog => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.Catalog);
     ///<summary>
     /// Name: Columns. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.Columns);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.Filegroup);
     ///<summary>
     /// Name: IndexedObject. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> IndexedObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.IndexedObject);
+    public IEnumerable<TSqlObject> IndexedObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.IndexedObject);
     ///<summary>
     /// Name: SearchPropertyList. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> SearchPropertyList => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.SearchPropertyList);
+    public IEnumerable<TSqlObject> SearchPropertyList => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.SearchPropertyList);
     ///<summary>
     /// Name: StopList. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> StopList => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.StopList);
+    public IEnumerable<TSqlObject> StopList => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FullTextIndex.StopList);
 }
 
 public static class FullTextIndexExtensions

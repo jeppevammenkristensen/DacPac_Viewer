@@ -6,26 +6,26 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx PromotedNodePathForSqlType object.</summary>
 public readonly struct PromotedNodePathForSqlTypeWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public PromotedNodePathForSqlTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public PromotedNodePathForSqlTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Scale property.</summary>
-    public int Scale => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.Scale);
+    public int Scale => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.Scale);
     /// <summary>Gets the Precision property.</summary>
-    public int Precision => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.Precision);
+    public int Precision => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.Precision);
     /// <summary>Gets the Length property.</summary>
-    public int Length => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.Length);
+    public int Length => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.Length);
     /// <summary>Gets the IsMax property.</summary>
-    public bool IsMax => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.IsMax);
+    public bool IsMax => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.IsMax);
     /// <summary>Gets the IsSingleton property.</summary>
-    public bool IsSingleton => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.IsSingleton);
+    public bool IsSingleton => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.IsSingleton);
     /// <summary>Gets the NodePath property.</summary>
-    public string? NodePath => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.NodePath);
+    public string? NodePath => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.NodePath);
     ///<summary>
     /// Name: DataType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> DataType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.DataType);
+    public IEnumerable<TSqlObject> DataType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.PromotedNodePathForSqlType.DataType);
 }
 
 public static class PromotedNodePathForSqlTypeExtensions

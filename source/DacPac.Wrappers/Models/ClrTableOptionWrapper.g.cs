@@ -6,16 +6,16 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ClrTableOption object.</summary>
 public readonly struct ClrTableOptionWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ClrTableOptionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ClrTableOptionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ClassName property.</summary>
-    public string? ClassName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ClrTableOption.ClassName);
+    public string? ClassName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ClrTableOption.ClassName);
     ///<summary>
     /// Name: OrderColumns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> OrderColumns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTableOption.OrderColumns);
+    public IEnumerable<TSqlObject> OrderColumns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ClrTableOption.OrderColumns);
 }
 
 public static class ClrTableOptionExtensions

@@ -6,12 +6,12 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx MasterKey object.</summary>
 public readonly struct MasterKeyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public MasterKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public MasterKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Password property.</summary>
-    public string? Password => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.MasterKey.Password);
+    public string? Password => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.MasterKey.Password);
 }
 
 public static class MasterKeyExtensions

@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx TableTypeIndex object.</summary>
 public readonly struct TableTypeIndexWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public TableTypeIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public TableTypeIndexWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Hash property.</summary>
-    public bool Hash => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeIndex.Hash);
+    public bool Hash => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeIndex.Hash);
     /// <summary>Gets the BucketCount property.</summary>
-    public int? BucketCount => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableTypeIndex.BucketCount);
+    public int? BucketCount => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.TableTypeIndex.BucketCount);
     /// <summary>Gets the IsDisabled property.</summary>
-    public bool IsDisabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeIndex.IsDisabled);
+    public bool IsDisabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeIndex.IsDisabled);
     /// <summary>Gets the IsUnique property.</summary>
-    public bool IsUnique => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeIndex.IsUnique);
+    public bool IsUnique => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.TableTypeIndex.IsUnique);
     ///<summary>
     /// Name: Columns. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeIndex.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeIndex.Columns);
 }
 
 public static class TableTypeIndexExtensions

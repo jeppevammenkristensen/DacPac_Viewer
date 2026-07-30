@@ -6,22 +6,22 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ExternalLanguageFile object.</summary>
 public readonly struct ExternalLanguageFileWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ExternalLanguageFileWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ExternalLanguageFileWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Content property.</summary>
-    public string? Content => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.Content);
+    public string? Content => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.Content);
     /// <summary>Gets the FileName property.</summary>
-    public string? FileName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.FileName);
+    public string? FileName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.FileName);
     /// <summary>Gets the Path property.</summary>
-    public string? Path => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.Path);
+    public string? Path => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.Path);
     /// <summary>Gets the Parameters property.</summary>
-    public string? Parameters => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.Parameters);
+    public string? Parameters => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.Parameters);
     /// <summary>Gets the Platform property.</summary>
-    public string? Platform => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.Platform);
+    public string? Platform => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.Platform);
     /// <summary>Gets the EnvironmentVariables property.</summary>
-    public string? EnvironmentVariables => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.EnvironmentVariables);
+    public string? EnvironmentVariables => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ExternalLanguageFile.EnvironmentVariables);
 }
 
 public static class ExternalLanguageFileExtensions

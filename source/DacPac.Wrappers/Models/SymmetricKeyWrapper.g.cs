@@ -6,44 +6,44 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx SymmetricKey object.</summary>
 public readonly struct SymmetricKeyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SymmetricKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SymmetricKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Algorithm property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SymmetricKeyAlgorithm Algorithm => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SymmetricKeyAlgorithm>(Microsoft.SqlServer.Dac.Model.SymmetricKey.Algorithm);
+    public global::Microsoft.SqlServer.Dac.Model.SymmetricKeyAlgorithm Algorithm => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SymmetricKeyAlgorithm>(Microsoft.SqlServer.Dac.Model.SymmetricKey.Algorithm);
     /// <summary>Gets the CreationDisposition property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SymmetricKeyCreationDisposition CreationDisposition => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SymmetricKeyCreationDisposition>(Microsoft.SqlServer.Dac.Model.SymmetricKey.CreationDisposition);
+    public global::Microsoft.SqlServer.Dac.Model.SymmetricKeyCreationDisposition CreationDisposition => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SymmetricKeyCreationDisposition>(Microsoft.SqlServer.Dac.Model.SymmetricKey.CreationDisposition);
     /// <summary>Gets the IdentityValue property.</summary>
-    public string? IdentityValue => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SymmetricKey.IdentityValue);
+    public string? IdentityValue => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SymmetricKey.IdentityValue);
     /// <summary>Gets the KeySource property.</summary>
-    public string? KeySource => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SymmetricKey.KeySource);
+    public string? KeySource => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SymmetricKey.KeySource);
     /// <summary>Gets the ProviderKeyName property.</summary>
-    public string? ProviderKeyName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SymmetricKey.ProviderKeyName);
+    public string? ProviderKeyName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.SymmetricKey.ProviderKeyName);
     ///<summary>
     /// Name: AsymmetricKeys. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> AsymmetricKeys => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.AsymmetricKeys);
+    public IEnumerable<TSqlObject> AsymmetricKeys => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.AsymmetricKeys);
     ///<summary>
     /// Name: Certificates. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Certificates => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.Certificates);
+    public IEnumerable<TSqlObject> Certificates => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.Certificates);
     ///<summary>
     /// Name: Passwords. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Passwords => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.Passwords);
+    public IEnumerable<TSqlObject> Passwords => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.Passwords);
     ///<summary>
     /// Name: SymmetricKeys. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> SymmetricKeys => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.SymmetricKeys);
+    public IEnumerable<TSqlObject> SymmetricKeys => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.SymmetricKeys);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.Authorizer);
     ///<summary>
     /// Name: Provider. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Provider => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.Provider);
+    public IEnumerable<TSqlObject> Provider => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.SymmetricKey.Provider);
 }
 
 public static class SymmetricKeyExtensions

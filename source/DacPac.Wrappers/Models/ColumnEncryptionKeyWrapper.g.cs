@@ -6,14 +6,14 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ColumnEncryptionKey object.</summary>
 public readonly struct ColumnEncryptionKeyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ColumnEncryptionKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ColumnEncryptionKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     ///<summary>
     /// Name: ColumnEncryptionKeyValue. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> ColumnEncryptionKeyValue => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnEncryptionKey.ColumnEncryptionKeyValue);
+    public IEnumerable<TSqlObject> ColumnEncryptionKeyValue => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ColumnEncryptionKey.ColumnEncryptionKeyValue);
 }
 
 public static class ColumnEncryptionKeyExtensions

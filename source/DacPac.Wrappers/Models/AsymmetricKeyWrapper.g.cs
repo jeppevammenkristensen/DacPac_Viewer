@@ -6,36 +6,36 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx AsymmetricKey object.</summary>
 public readonly struct AsymmetricKeyWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public AsymmetricKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public AsymmetricKeyWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Password property.</summary>
-    public string? Password => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Password);
+    public string? Password => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Password);
     /// <summary>Gets the EncryptedWithPassword property.</summary>
-    public bool EncryptedWithPassword => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.EncryptedWithPassword);
+    public bool EncryptedWithPassword => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.EncryptedWithPassword);
     /// <summary>Gets the Algorithm property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.AsymmetricKeyAlgorithm Algorithm => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.AsymmetricKeyAlgorithm>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Algorithm);
+    public global::Microsoft.SqlServer.Dac.Model.AsymmetricKeyAlgorithm Algorithm => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.AsymmetricKeyAlgorithm>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Algorithm);
     /// <summary>Gets the CreationDisposition property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.SymmetricKeyCreationDisposition CreationDisposition => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.SymmetricKeyCreationDisposition>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.CreationDisposition);
+    public global::Microsoft.SqlServer.Dac.Model.SymmetricKeyCreationDisposition CreationDisposition => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.SymmetricKeyCreationDisposition>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.CreationDisposition);
     /// <summary>Gets the ExecutableFile property.</summary>
-    public string? ExecutableFile => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.ExecutableFile);
+    public string? ExecutableFile => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.ExecutableFile);
     /// <summary>Gets the File property.</summary>
-    public string? File => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.File);
+    public string? File => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.File);
     /// <summary>Gets the ProviderKeyName property.</summary>
-    public string? ProviderKeyName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.ProviderKeyName);
+    public string? ProviderKeyName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.AsymmetricKey.ProviderKeyName);
     ///<summary>
     /// Name: Assembly. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Assembly => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Assembly);
+    public IEnumerable<TSqlObject> Assembly => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Assembly);
     ///<summary>
     /// Name: Authorizer. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Authorizer => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Authorizer);
+    public IEnumerable<TSqlObject> Authorizer => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Authorizer);
     ///<summary>
     /// Name: Provider. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Provider => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Provider);
+    public IEnumerable<TSqlObject> Provider => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.AsymmetricKey.Provider);
 }
 
 public static class AsymmetricKeyExtensions

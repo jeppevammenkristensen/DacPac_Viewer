@@ -6,38 +6,38 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx UserDefinedType object.</summary>
 public readonly struct UserDefinedTypeWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public UserDefinedTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public UserDefinedTypeWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ByteOrdered property.</summary>
-    public bool? ByteOrdered => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.ByteOrdered);
+    public bool? ByteOrdered => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.ByteOrdered);
     /// <summary>Gets the FixedLength property.</summary>
-    public bool? FixedLength => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.FixedLength);
+    public bool? FixedLength => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.FixedLength);
     /// <summary>Gets the ClassName property.</summary>
-    public string? ClassName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.ClassName);
+    public string? ClassName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.ClassName);
     /// <summary>Gets the Format property.</summary>
-    public int Format => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.UserDefinedType.Format);
+    public int Format => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.UserDefinedType.Format);
     /// <summary>Gets the MaxByteSize property.</summary>
-    public int? MaxByteSize => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.MaxByteSize);
+    public int? MaxByteSize => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.MaxByteSize);
     /// <summary>Gets the ValidationMethodName property.</summary>
-    public string? ValidationMethodName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.ValidationMethodName);
+    public string? ValidationMethodName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.UserDefinedType.ValidationMethodName);
     ///<summary>
     /// Name: Assembly. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Assembly => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UserDefinedType.Assembly);
+    public IEnumerable<TSqlObject> Assembly => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UserDefinedType.Assembly);
     ///<summary>
     /// Name: Methods. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Methods => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UserDefinedType.Methods);
+    public IEnumerable<TSqlObject> Methods => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UserDefinedType.Methods);
     ///<summary>
     /// Name: Properties. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Properties => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UserDefinedType.Properties);
+    public IEnumerable<TSqlObject> Properties => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UserDefinedType.Properties);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.UserDefinedType.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.UserDefinedType.Schema);
 }
 
 public static class UserDefinedTypeExtensions

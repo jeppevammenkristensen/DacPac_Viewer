@@ -6,78 +6,78 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx ScalarFunction object.</summary>
 public readonly struct ScalarFunctionWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public ScalarFunctionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public ScalarFunctionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ReturnsNullOnNullInput property.</summary>
-    public bool ReturnsNullOnNullInput => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ReturnsNullOnNullInput);
+    public bool ReturnsNullOnNullInput => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ReturnsNullOnNullInput);
     /// <summary>Gets the AnsiNullsOn property.</summary>
-    public bool? AnsiNullsOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.AnsiNullsOn);
+    public bool? AnsiNullsOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.AnsiNullsOn);
     /// <summary>Gets the CalledOnNullInput property.</summary>
-    public bool CalledOnNullInput => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.CalledOnNullInput);
+    public bool CalledOnNullInput => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.CalledOnNullInput);
     /// <summary>Gets the ExecuteAsCaller property.</summary>
-    public bool ExecuteAsCaller => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ExecuteAsCaller);
+    public bool ExecuteAsCaller => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ExecuteAsCaller);
     /// <summary>Gets the WithEncryption property.</summary>
-    public bool WithEncryption => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.WithEncryption);
+    public bool WithEncryption => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.WithEncryption);
     /// <summary>Gets the ExecuteAsOwner property.</summary>
-    public bool ExecuteAsOwner => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ExecuteAsOwner);
+    public bool ExecuteAsOwner => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ExecuteAsOwner);
     /// <summary>Gets the QuotedIdentifierOn property.</summary>
-    public bool? QuotedIdentifierOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.QuotedIdentifierOn);
+    public bool? QuotedIdentifierOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.QuotedIdentifierOn);
     /// <summary>Gets the WithSchemaBinding property.</summary>
-    public bool WithSchemaBinding => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.WithSchemaBinding);
+    public bool WithSchemaBinding => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.WithSchemaBinding);
     /// <summary>Gets the ExecuteAsSelf property.</summary>
-    public bool ExecuteAsSelf => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ExecuteAsSelf);
+    public bool ExecuteAsSelf => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ExecuteAsSelf);
     /// <summary>Gets the ClassName property.</summary>
-    public string? ClassName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ClassName);
+    public string? ClassName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.ClassName);
     /// <summary>Gets the DataAccess property.</summary>
-    public int? DataAccess => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.DataAccess);
+    public int? DataAccess => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.DataAccess);
     /// <summary>Gets the FillRowMethodName property.</summary>
-    public string? FillRowMethodName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.FillRowMethodName);
+    public string? FillRowMethodName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.FillRowMethodName);
     /// <summary>Gets the Deterministic property.</summary>
-    public bool? Deterministic => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.Deterministic);
+    public bool? Deterministic => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.Deterministic);
     /// <summary>Gets the Precise property.</summary>
-    public bool? Precise => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.Precise);
+    public bool? Precise => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.Precise);
     /// <summary>Gets the MethodName property.</summary>
-    public string? MethodName => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.MethodName);
+    public string? MethodName => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.MethodName);
     /// <summary>Gets the SystemDataAccess property.</summary>
-    public int? SystemDataAccess => ObjectType.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.SystemDataAccess);
+    public int? SystemDataAccess => SqlObject.GetProperty<int?>(Microsoft.SqlServer.Dac.Model.ScalarFunction.SystemDataAccess);
     /// <summary>Gets the IsInline property.</summary>
-    public bool IsInline => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.IsInline);
+    public bool IsInline => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.IsInline);
     /// <summary>Gets the IsInlineable property.</summary>
-    public bool IsInlineable => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.IsInlineable);
+    public bool IsInlineable => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.IsInlineable);
     /// <summary>Gets the IsNativeCompiled property.</summary>
-    public bool IsNativeCompiled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.IsNativeCompiled);
+    public bool IsNativeCompiled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.IsNativeCompiled);
     /// <summary>Gets the IsReplicated property.</summary>
-    public bool IsReplicated => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.IsReplicated);
+    public bool IsReplicated => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.ScalarFunction.IsReplicated);
     ///<summary>
     /// Name: Assembly. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Assembly => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.Assembly);
+    public IEnumerable<TSqlObject> Assembly => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.Assembly);
     ///<summary>
     /// Name: ReturnType. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ReturnType => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.ReturnType);
+    public IEnumerable<TSqlObject> ReturnType => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.ReturnType);
     ///<summary>
     /// Name: BodyDependencies. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> BodyDependencies => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.BodyDependencies);
+    public IEnumerable<TSqlObject> BodyDependencies => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.BodyDependencies);
     ///<summary>
     /// Name: Login. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Login => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.Login);
+    public IEnumerable<TSqlObject> Login => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.Login);
     ///<summary>
     /// Name: Parameters. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Parameters => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.Parameters);
+    public IEnumerable<TSqlObject> Parameters => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.Parameters);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.Schema);
     ///<summary>
     /// Name: User. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> User => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.User);
+    public IEnumerable<TSqlObject> User => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.ScalarFunction.User);
 }
 
 public static class ScalarFunctionExtensions

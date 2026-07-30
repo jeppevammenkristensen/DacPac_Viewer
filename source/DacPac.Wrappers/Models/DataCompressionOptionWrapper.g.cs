@@ -6,14 +6,14 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DataCompressionOption object.</summary>
 public readonly struct DataCompressionOptionWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DataCompressionOptionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DataCompressionOptionWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the CompressionLevel property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.CompressionLevel CompressionLevel => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.CompressionLevel>(Microsoft.SqlServer.Dac.Model.DataCompressionOption.CompressionLevel);
+    public global::Microsoft.SqlServer.Dac.Model.CompressionLevel CompressionLevel => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.CompressionLevel>(Microsoft.SqlServer.Dac.Model.DataCompressionOption.CompressionLevel);
     /// <summary>Gets the PartitionNumber property.</summary>
-    public int PartitionNumber => ObjectType.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DataCompressionOption.PartitionNumber);
+    public int PartitionNumber => SqlObject.GetProperty<int>(Microsoft.SqlServer.Dac.Model.DataCompressionOption.PartitionNumber);
 }
 
 public static class DataCompressionOptionExtensions

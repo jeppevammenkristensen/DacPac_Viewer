@@ -6,14 +6,14 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx DatabaseCredential object.</summary>
 public readonly struct DatabaseCredentialWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public DatabaseCredentialWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public DatabaseCredentialWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the Identity property.</summary>
-    public string? Identity => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseCredential.Identity);
+    public string? Identity => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseCredential.Identity);
     /// <summary>Gets the Secret property.</summary>
-    public string? Secret => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseCredential.Secret);
+    public string? Secret => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.DatabaseCredential.Secret);
 }
 
 public static class DatabaseCredentialExtensions

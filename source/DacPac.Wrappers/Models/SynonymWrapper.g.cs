@@ -6,20 +6,20 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx Synonym object.</summary>
 public readonly struct SynonymWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public SynonymWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public SynonymWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the ForObjectName property.</summary>
-    public string? ForObjectName => (string? )ObjectType.GetProperty(Microsoft.SqlServer.Dac.Model.Synonym.ForObjectName);
+    public string? ForObjectName => (string? )SqlObject.GetProperty(Microsoft.SqlServer.Dac.Model.Synonym.ForObjectName);
     ///<summary>
     /// Name: ForObject. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> ForObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Synonym.ForObject);
+    public IEnumerable<TSqlObject> ForObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Synonym.ForObject);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.Synonym.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.Synonym.Schema);
 }
 
 public static class SynonymExtensions

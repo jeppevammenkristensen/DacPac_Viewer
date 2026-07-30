@@ -6,62 +6,62 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx FileTable object.</summary>
 public readonly struct FileTableWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public FileTableWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public FileTableWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AnsiNullsOn property.</summary>
-    public bool? AnsiNullsOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.FileTable.AnsiNullsOn);
+    public bool? AnsiNullsOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.FileTable.AnsiNullsOn);
     /// <summary>Gets the FileStreamNull property.</summary>
-    public bool? FileStreamNull => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.FileTable.FileStreamNull);
+    public bool? FileStreamNull => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.FileTable.FileStreamNull);
     /// <summary>Gets the QuotedIdentifierOn property.</summary>
-    public bool? QuotedIdentifierOn => ObjectType.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.FileTable.QuotedIdentifierOn);
+    public bool? QuotedIdentifierOn => SqlObject.GetProperty<bool?>(Microsoft.SqlServer.Dac.Model.FileTable.QuotedIdentifierOn);
     /// <summary>Gets the TableLockOnBulkLoad property.</summary>
-    public bool TableLockOnBulkLoad => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FileTable.TableLockOnBulkLoad);
+    public bool TableLockOnBulkLoad => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FileTable.TableLockOnBulkLoad);
     /// <summary>Gets the FileTableNamespaceEnabled property.</summary>
-    public bool FileTableNamespaceEnabled => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FileTable.FileTableNamespaceEnabled);
+    public bool FileTableNamespaceEnabled => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.FileTable.FileTableNamespaceEnabled);
     /// <summary>Gets the FileTableCollateFilename property.</summary>
-    public string? FileTableCollateFilename => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.FileTable.FileTableCollateFilename);
+    public string? FileTableCollateFilename => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.FileTable.FileTableCollateFilename);
     /// <summary>Gets the FileTableDirectory property.</summary>
-    public string? FileTableDirectory => ObjectType.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.FileTable.FileTableDirectory);
+    public string? FileTableDirectory => SqlObject.GetProperty<string?>(Microsoft.SqlServer.Dac.Model.FileTable.FileTableDirectory);
     /// <summary>Gets the LockEscalation property.</summary>
-    public global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod LockEscalation => ObjectType.GetProperty<global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod>(Microsoft.SqlServer.Dac.Model.FileTable.LockEscalation);
+    public global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod LockEscalation => SqlObject.GetProperty<global::Microsoft.SqlServer.Dac.Model.LockEscalationMethod>(Microsoft.SqlServer.Dac.Model.FileTable.LockEscalation);
     ///<summary>
     /// Name: Columns. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> Columns => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.Columns);
+    public IEnumerable<TSqlObject> Columns => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.Columns);
     ///<summary>
     /// Name: DataCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> DataCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.DataCompressionOptions);
+    public IEnumerable<TSqlObject> DataCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.DataCompressionOptions);
     ///<summary>
     /// Name: Filegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Filegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.Filegroup);
+    public IEnumerable<TSqlObject> Filegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.Filegroup);
     ///<summary>
     /// Name: FileStreamFilegroup. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamFilegroup => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.FileStreamFilegroup);
+    public IEnumerable<TSqlObject> FileStreamFilegroup => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.FileStreamFilegroup);
     ///<summary>
     /// Name: FileStreamPartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> FileStreamPartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.FileStreamPartitionScheme);
+    public IEnumerable<TSqlObject> FileStreamPartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.FileStreamPartitionScheme);
     ///<summary>
     /// Name: PartitionColumn. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionColumn => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.PartitionColumn);
+    public IEnumerable<TSqlObject> PartitionColumn => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.PartitionColumn);
     ///<summary>
     /// Name: PartitionScheme. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> PartitionScheme => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.PartitionScheme);
+    public IEnumerable<TSqlObject> PartitionScheme => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.PartitionScheme);
     ///<summary>
     /// Name: Schema. Relationship: Hierarchical
     ///</summary>
-    public IEnumerable<TSqlObject> Schema => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.Schema);
+    public IEnumerable<TSqlObject> Schema => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.Schema);
     ///<summary>
     /// Name: XmlCompressionOptions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> XmlCompressionOptions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.XmlCompressionOptions);
+    public IEnumerable<TSqlObject> XmlCompressionOptions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.FileTable.XmlCompressionOptions);
 }
 
 public static class FileTableExtensions

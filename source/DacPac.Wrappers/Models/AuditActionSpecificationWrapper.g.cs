@@ -6,24 +6,24 @@ namespace DacPac.Wrappers;
 /// <summary>Provides typed access to a DacFx AuditActionSpecification object.</summary>
 public readonly struct AuditActionSpecificationWrapper
 {
-    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject ObjectType;
+    public readonly Microsoft.SqlServer.Dac.Model.TSqlObject SqlObject;
     /// <summary>Wraps the supplied DacFx object.</summary>
-    public AuditActionSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => ObjectType = @object;
-    public string FullName => ObjectType.Name.ToString();
+    public AuditActionSpecificationWrapper(Microsoft.SqlServer.Dac.Model.TSqlObject @object) => SqlObject = @object;
+    public string FullName => SqlObject.Name.ToString();
     /// <summary>Gets the AuditsDatabase property.</summary>
-    public bool AuditsDatabase => ObjectType.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.AuditActionSpecification.AuditsDatabase);
+    public bool AuditsDatabase => SqlObject.GetProperty<bool>(Microsoft.SqlServer.Dac.Model.AuditActionSpecification.AuditsDatabase);
     ///<summary>
     /// Name: AuditActions. Relationship: Composing
     ///</summary>
-    public IEnumerable<TSqlObject> AuditActions => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.AuditActionSpecification.AuditActions);
+    public IEnumerable<TSqlObject> AuditActions => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.AuditActionSpecification.AuditActions);
     ///<summary>
     /// Name: Principals. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> Principals => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.AuditActionSpecification.Principals);
+    public IEnumerable<TSqlObject> Principals => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.AuditActionSpecification.Principals);
     ///<summary>
     /// Name: SecuredObject. Relationship: Peer
     ///</summary>
-    public IEnumerable<TSqlObject> SecuredObject => ObjectType.GetReferenced(Microsoft.SqlServer.Dac.Model.AuditActionSpecification.SecuredObject);
+    public IEnumerable<TSqlObject> SecuredObject => SqlObject.GetReferenced(Microsoft.SqlServer.Dac.Model.AuditActionSpecification.SecuredObject);
 }
 
 public static class AuditActionSpecificationExtensions
