@@ -1,5 +1,4 @@
 using System.Linq;
-using DacPac.Core;
 using Microsoft.SqlServer.Dac.Model;
 using Xunit;
 

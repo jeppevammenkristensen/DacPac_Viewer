@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 using DacPac.UI.Infrastructure;
 using DacPac.UI.ViewModels.Displays;
 
