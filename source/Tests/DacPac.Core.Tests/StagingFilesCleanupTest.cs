@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
-using DacPac.Core;
 using FileBasedApp.Toolkit;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging.Abstractions;

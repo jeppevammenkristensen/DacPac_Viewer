@@ -1,9 +1,7 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DacPac.Core;
-using DacPac.UI.Infrastructure;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.ViewModels.Displays;
