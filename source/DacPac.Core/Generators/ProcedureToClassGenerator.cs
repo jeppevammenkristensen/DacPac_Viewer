@@ -318,6 +318,11 @@ public class ProcedureToClassGenerator : CsharpGenerator
                 var dotnetType = dataType == null ? null : ExtensionMethods.GetDotNetDataType(dataType, isNullable);
                 if (dotnetType == null)
                 {
+                    if (dataType?.ObjectType == TableType.TypeClass)
+                    {
+                        
+                    }
+                    
                     sb.AppendLine($"// Warning: Unrecognized SQL data type '{dataType}' for parameter '{parameterName}'.");
                     sb.AppendLine($"public object {parameterName.TrimStart('@').ToPascalCase()} {{ get; set; }}");
                 }
