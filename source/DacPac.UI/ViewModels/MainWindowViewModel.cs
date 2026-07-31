@@ -184,7 +184,7 @@ public partial class MainWindowViewModel : ViewModelBase,
         OnActivated(); // hooks up implemented IRecipient
 
         CurrentProgress = 0;
-        var longRunningTask = _locator.GetRequiredService<StartupTask>();// new DummyTask(Messenger);
+        var longRunningTask = _locator.GetRequiredService<StartupTask>();
         await longRunningTask.ExecuteTask(token);
         DockerIsAvailable = longRunningTask.DockerIsAvailable;
         Loaded = true;

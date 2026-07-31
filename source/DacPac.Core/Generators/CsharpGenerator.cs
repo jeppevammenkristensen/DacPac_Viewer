@@ -8,7 +8,25 @@ public static class GeneratorExtensions
     public static string GenerateTypeName(this TSqlObject sqlObject, string postfix)
     {
         var parts = sqlObject.Name.Parts.Where(x => !string.Equals(x, "dbo", StringComparison.OrdinalIgnoreCase));
-        return $"{string.Join("_", parts)}_{postfix}".ToPascalCase();
+        return $"{string.Join("_", parts.Select(x => x.ToPascalCase()))}_{postfix}";
+    }
+}
+
+public class NotFoundGenerator : CsharpGenerator
+{
+    public override string TypeName(TSqlObject sqlObject)
+    {
+        return string.Empty;
+    }
+
+    protected override void DoBuild(TSqlObject sqlObject, StringBuilder sb)
+    {
+        sb.AppendLine($"// No generator found for {sqlObject.Name} of type {sqlObject.ObjectType}");
+    }
+
+    public override bool IsValid(TSqlObject tSqlObject)
+    {
+        return true;
     }
 }
 
@@ -18,6 +36,8 @@ public static class GeneratorExtensions
 public abstract class CsharpGenerator
 {
     public abstract string TypeName(TSqlObject sqlObject);
+    
+    public virtual IEnumerable<TSqlObject> RequiredObjects(TSqlObject sqlObject) => Enumerable.Empty<TSqlObject>();
     
     /// <summary>
     /// Appends generated C# source for a supported DacPac object.
