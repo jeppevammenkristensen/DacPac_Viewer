@@ -56,7 +56,7 @@ public class StringBuilderExtensionsTest
                      /// <summary>
                      /// Describes the generated member. 
                      /// </summary>
-                     <param name="connection">The database connection.</param>
+                     ///<param name="connection">The database connection.</param>
 
                      """.ReplaceLineEndings(Environment.NewLine), result);
     }

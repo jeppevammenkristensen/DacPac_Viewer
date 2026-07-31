@@ -22,7 +22,7 @@ public class SummaryBuilder
 
     public SummaryBuilder WithParameter(string parameter, string text)
     {
-        _stringBuilder.AppendLine($"<param name=\"{parameter}\">{text}</param>");
+        _stringBuilder.AppendLine($"///<param name=\"{parameter}\">{text}</param>");
         return this;
     }
     
