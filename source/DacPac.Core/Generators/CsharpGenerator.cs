@@ -3,11 +3,22 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core.Generators;
 
+public static class GeneratorExtensions
+{
+    public static string GenerateTypeName(this TSqlObject sqlObject, string postfix)
+    {
+        var parts = sqlObject.Name.Parts.Where(x => !string.Equals(x, "dbo", StringComparison.OrdinalIgnoreCase));
+        return $"{string.Join("_", parts)}_{postfix}".ToPascalCase();
+    }
+}
+
 /// <summary>
 /// Defines the common validation and output flow for generators that convert DacPac objects into C# source.
 /// </summary>
 public abstract class CsharpGenerator
 {
+    public abstract string TypeName(TSqlObject sqlObject);
+    
     /// <summary>
     /// Appends generated C# source for a supported DacPac object.
     /// </summary>

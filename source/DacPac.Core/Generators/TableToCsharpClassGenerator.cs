@@ -9,18 +9,18 @@ namespace DacPac.Core.Generators;
 /// </summary>
 public class TableToCsharpClassGenerator : CsharpGenerator
 {
+    public override string TypeName(TSqlObject sqlObject)
+    {
+        return sqlObject.GenerateTypeName("Table");
+    }
+
     /// <summary>
     /// Writes a class and mapped properties for the supplied table.
     /// </summary>
     protected override void DoBuild(TSqlObject sqlObject,StringBuilder sb)
     {
-        sb.AppendLine($"""
-                       /// <summary>
-                       /// Represents the table {sqlObject.Name.Parts.Last()} {sqlObject.Name.ToString()}
-                       /// </summary>
-                       """);
-        sb.AppendLine($"public class {sqlObject.Name.Parts.Last().ToPascalCase()}");
-        sb.AppendLine("{");
+        sb.AppendSummary($"Represents the table {sqlObject.Name.Parts.Last()} {sqlObject.Name}.");
+        sb.AppendClass(TypeName(sqlObject));
         
         BuildProperties(sqlObject, sb);
 
@@ -53,47 +53,35 @@ public class TableToCsharpClassGenerator : CsharpGenerator
         }
     }
 
-    private StringBuilder GeneratePropertyWithSummary(TSqlObject column, StringBuilder sb, List<ForeignKeyConstraintWrapper> hostedForeignKeyConstraints, List<ForeignKeyConstraintWrapper> referencingForeignKeyConstraints)
+    private void GeneratePropertyWithSummary(TSqlObject column, StringBuilder sb, List<ForeignKeyConstraintWrapper> hostedForeignKeyConstraints, List<ForeignKeyConstraintWrapper> referencingForeignKeyConstraints)
     {
         var columnName = column.Name.Parts.Last();
         var dataType = column.GetReferenced(Column.DataType).FirstOrDefault();
         var isNullable = column.GetProperty<bool>(Column.Nullable);
-        var isIdentity = column.GetProperty<bool>(Column.IsIdentity);
-        var max = column.GetProperty<int>(Column.Length);
-        
+        var remarks = string.Join(
+            Environment.NewLine,
+            hostedForeignKeyConstraints
+                .Where(x => x.Columns.Any(y => y.Name.Parts.Last() == columnName))
+                .Select(x => $"Foreign key pointing to {x.ForeignColumns.Select(y => y.Name.ToString()).First()} in {x.ForeignTable.First().Name}")
+                .Concat(referencingForeignKeyConstraints
+                .Where(x => x.ForeignColumns.Any(y => y.Name.Parts.Last() == columnName))
+                .Select(x => $"Key referenced by {x.Columns.Select(y => y.Name.ToString()).First()} in {x.Host.First().Name}")));
 
-        sb.AppendLine($"""
-                       /// <summary>
-                       /// Gets or sets the {columnName} ({dataType?.Name.ToString()}){(isNullable ? " (nullable)" : "")}.
-                       /// </summary>
-                       """);
-        
-        sb.AppendLine("///<remarks>");
-        foreach (var foreignKeyConstraintWrapper in hostedForeignKeyConstraints.Where(x => x.Columns.Any(y => y.Name.Parts.Last() == columnName)))
-        {
-            sb.AppendLine(
-                $"/// Foreign key pointing to {foreignKeyConstraintWrapper.ForeignColumns.Select(x => x.Name.ToString()).First()} in {foreignKeyConstraintWrapper.ForeignTable.First().Name.ToString()}");
-        }
-
-        foreach (var referencingForeignKeyConstraint in referencingForeignKeyConstraints.Where(x => x.ForeignColumns.Any(y => y.Name.Parts.Last() == columnName)))
-        {
-            sb.AppendLine($"/// Key referenced by {referencingForeignKeyConstraint.Columns.Select(x => x.Name.ToString()).First()} in {referencingForeignKeyConstraint.Host.First().Name.ToString()}");
-        }
-        
-        sb.AppendLine("/// </remarks>");
+        sb.AppendSummary(
+            $"Gets or sets the {columnName} ({dataType?.Name}){(isNullable ? " (nullable)" : "")}.",
+            remarks);
         
         var dotnetType = dataType == null ? null : ExtensionMethods.GetDotNetDataType(dataType, isNullable);
         if (dotnetType == null)
         {
             sb.AppendLine($"// Warning: Unrecognized SQL data type '{dataType?.Name.ToString()}' for column '{columnName}'.");
-            sb.AppendLine($"public object {columnName.ToPascalCase()} {{ get; set; }}");
+            sb.AppendProperty("object", columnName.ToPascalCase());
         }
         else
         {
-            sb.AppendLine($"public {dotnetType} {columnName.ToPascalCase()} {{ get; set; }}");
+            sb.AppendProperty(dotnetType.ToString(), columnName.ToPascalCase());
         }
 
-        return sb;
     }
 
     
