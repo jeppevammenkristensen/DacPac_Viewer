@@ -6,6 +6,8 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core;
 
+using SqlObjectWithGenerator = (TSqlObject sqlObject, CsharpGenerator generator);
+
 /// <summary>
 /// Coordinates registered C# generators and normalizes their combined output.
 /// </summary>
@@ -21,6 +23,12 @@ public class Builder
         _generators = generators.ToArray();
     }
 
+
+    private CsharpGenerator? FindGenerator(TSqlObject sqlObject)
+    {
+        return _generators.FirstOrDefault(x => x.IsValid(sqlObject));
+    }
+    
     /// <summary>
     /// Generates normalized C# source for the supplied DacPac objects.
     /// </summary>
@@ -30,24 +38,36 @@ public class Builder
     public string Build(TSqlObject[] sqlObjects)
     {
         var sb = new StringBuilder();
+        sb.AppendLine("using Dapper;");
+
+        Dictionary<string, SqlObjectWithGenerator> mappedGenerators = new();
         
         foreach (var sqlObject in sqlObjects)
         {
-            bool generatorFound = false;
-            
-            foreach (var generator in _generators)
+            if (FindGenerator(sqlObject) is { } generator)
             {
-                if (generator.IsValid(sqlObject))
+                mappedGenerators.Add(sqlObject.Name.ToString(), (sqlObject, generator));
+
+                foreach (var requiredObject in generator.RequiredObjects(sqlObject))
                 {
-                    generator.Build(sqlObject, sb);
-                    generatorFound = true;
+                    if (!mappedGenerators.ContainsKey(requiredObject.Name.ToString()))
+                    {
+                        if (FindGenerator(requiredObject) is { } requiredGenerator)
+                        {
+                            mappedGenerators.Add(requiredObject.Name.ToString(), (requiredObject, requiredGenerator));    
+                        }
+                    }
                 }
             }
-
-            if (!generatorFound)
+            else
             {
-                sb.AppendLine($"// No generator found for {sqlObject.Name} of type {sqlObject.ObjectType}");
+                mappedGenerators.Add(sqlObject.Name.ToString(), (sqlObject, new NotFoundGenerator()));
             }
+        }
+        
+        foreach (var mappedGenerator in mappedGenerators.Values)
+        {
+            mappedGenerator.generator.Build(mappedGenerator.sqlObject,sb);
         }
 
         return SyntaxFactory.ParseCompilationUnit(sb.ToString()).NormalizeWhitespace().ToFullString();
