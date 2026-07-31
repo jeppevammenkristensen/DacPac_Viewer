@@ -117,8 +117,8 @@ public class ProcedureToClassGeneratorTest
 
         Assert.Contains("public System.Collections.Generic.IEnumerable<", output);
         Assert.Contains("Items", output);
-        Assert.Contains("dynamicParameters.Add(\"@Items\", new TableValuedParameter(", output);
-        Assert.Contains(".ToDataTable(Items), \"[dbo].[OrderItemType]\"", output);
+        Assert.Contains("dynamicParameters.Add(\"@Items\",", output);
+        Assert.Contains(".ToDataTable(Items).AsTableValuedParameter(\"[dbo].[OrderItemType]\"", output);
     }
 
     [Fact]

@@ -348,16 +348,25 @@ public class ProcedureToClassGenerator : CsharpGenerator
                        """);
         sb.AppendLine("public class Parameters");
         sb.AppendLine("{");
-        
-        sb.AppendLine("Parameters(");
-        foreach (var parameter in parameters)
+
+
+        var constructorSummary = new SummaryBuilder("Parameters for the stored procedure", sb);
+
+        foreach (GeneratedParameter generatedParameter in parameters)
         {
-            sb.AppendLine($"{Type(parameter)} {parameter.ConstructorName},");
+            constructorSummary.WithParameter(generatedParameter.ConstructorName,
+                $"Parameter {generatedParameter.SqlName}-{generatedParameter.SqlTypeName}");
         }
 
-        if (parameters.Count > 0)
+
+        sb.AppendLine("public Parameters(");
+        foreach (var parameter in parameters.Index())
         {
-            sb.Remove(sb.Length - 1, 1);    
+            if (parameter.Index > 0)
+            {
+                sb.Append(',');
+            }
+            sb.AppendLine($"{Type(parameter.Item)} {parameter.Item.ConstructorName}");
         }
 
         sb.AppendLine(")")
@@ -435,7 +444,7 @@ public class ProcedureToClassGenerator : CsharpGenerator
     {
         if (parameter.IsTableType)
         {
-            return $"new TableValuedParameter({parameter.DotnetType}.ToDataTable({parameter.PropertyName}), \"{parameter.TableTypeName}\"";
+            return $"{parameter.DotnetType}.ToDataTable({parameter.PropertyName}).AsTableValuedParameter(\"{parameter.TableTypeName}\")";
         }
         else
         {

@@ -191,7 +191,8 @@ public partial class LandingPageControlViewModel(
         var rows = items?.OfType<SearchResultRow>().ToArray() ?? [];
         if (rows.Length == 0) return;
 
-        var script = builder.Build(rows.Select(x => x.Source).ToArray());
+        var script = await Task.Run(() => builder.Build([.. rows.Select(x => x.Source)]));
+        
         await clipboard.SetTextAsync(script);
         var generatedCodePage = locator.GetRequiredService<GeneratedCodePageViewModel>();
         generatedCodePage.Load(script, rows.Length);
