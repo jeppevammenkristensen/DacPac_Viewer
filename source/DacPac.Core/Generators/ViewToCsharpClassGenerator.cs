@@ -6,6 +6,11 @@ namespace DacPac.Core.Generators;
 
 public class ViewToCsharpClassGenerator : CsharpGenerator
 {
+    public override string TypeName(TSqlObject sqlObject)
+    {
+        return sqlObject.GenerateTypeName("View");
+    }
+
     protected override void DoBuild(TSqlObject sqlObject, StringBuilder sb)
     {
         sb.AppendLine("/// <summary>");
@@ -24,7 +29,7 @@ public class ViewToCsharpClassGenerator : CsharpGenerator
         sb.AppendLine("/// </code>");
         sb.AppendLine("/// </remarks>");
 
-        sb.AppendLine($"public class {sqlObject.Name.Parts.Last().ToPascalCase()}");
+        sb.AppendLine($"public class {TypeName(sqlObject)}");
         sb.AppendLine("{");
         
         BuildProperties(sqlObject, sb);
