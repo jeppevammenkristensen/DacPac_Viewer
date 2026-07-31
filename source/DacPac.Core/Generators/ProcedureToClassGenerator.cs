@@ -12,6 +12,17 @@ public class ProcedureToClassGenerator : CsharpGenerator
 {
     private readonly TableTypeToClassGenerator _tableTypeToClassGenerator;
 
+    public override IEnumerable<TSqlObject> RequiredObjects(TSqlObject sqlObject)
+    {
+        var tableTypeClass = sqlObject
+            .ToProcedure()
+            .Parameters.Select(x => x.ToParameter())
+            .SelectMany(x => x.DataType)
+            .Where(x => x.ObjectType == TableType.TypeClass);
+
+        return tableTypeClass.DistinctBy(x => x.Name.ToString());
+    }
+
     public ProcedureToClassGenerator(TableTypeToClassGenerator tableTypeToClassGenerator)
     {
         _tableTypeToClassGenerator = tableTypeToClassGenerator;
@@ -340,12 +351,7 @@ public class ProcedureToClassGenerator : CsharpGenerator
         }
 
         var summaryBuilder = new SummaryBuilder($"Represents the parameters for the {sqlObject.Name.Parts.Last()} procedure.", sb);
-
-        sb.AppendLine($"""
-                       /// <summary>
-                       /// Represents the parameters for the {sqlObject.Name.Parts.Last()} procedure.
-                       /// </summary>
-                       """);
+       
         sb.AppendLine("public class Parameters");
         sb.AppendLine("{");
 
@@ -402,10 +408,7 @@ public class ProcedureToClassGenerator : CsharpGenerator
             {
                 builder.WithRemarks("The collection must have at least one element");
             }
-
-            sb.AppendSummary(
-                $"Gets or sets the {parameter.SqlName} ({parameter.SqlTypeName}){(parameter.IsNullable ? " (nullable)" : "")}");
-
+            
             if (parameter.DotnetType == "object")
             {
                 sb.AppendLine(

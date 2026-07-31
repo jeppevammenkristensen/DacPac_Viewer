@@ -64,10 +64,10 @@ public class TableTypeToClassGenerator : CsharpGenerator
         sb.AppendLine("foreach (var item in rows)");
         sb.AppendLine("{");
         sb.AppendLine("table.Rows.Add(");
-        foreach (var column in columns)
+        foreach (var column in columns.Index())
         {
-            var propertyName = column.SqlObject.Name.Parts.Last().ToPascalCase();
-            sb.AppendLine($"(object?)item.{propertyName} ?? System.DBNull.Value");
+            var propertyName = column.Item.SqlObject.Name.Parts.Last().ToPascalCase();
+            sb.AppendLine($"(object?)item.{propertyName} ?? System.DBNull.Value{(column.Index < columns.Count - 1 ? "," : string.Empty)}");
         }
         sb.AppendLine(");");
         sb.AppendLine("}");
