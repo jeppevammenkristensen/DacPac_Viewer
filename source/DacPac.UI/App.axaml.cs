@@ -150,6 +150,8 @@ public class App : Application
         services.AddSingleton<CsharpGenerator, TableToCsharpClassGenerator>();
         services.AddSingleton<CsharpGenerator, ProcedureToClassGenerator>();
         services.AddSingleton<CsharpGenerator, ViewToCsharpClassGenerator>();
+        services.AddSingleton<TableTypeToClassGenerator>();
+        services.AddSingleton<CsharpGenerator>(serviceProvider => serviceProvider.GetRequiredService<TableTypeToClassGenerator>());
 
         services.AddSingleton<Builder>();
     }

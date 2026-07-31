@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Security;
+using DacPac.Wrappers;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core.Generators;
@@ -9,37 +10,39 @@ namespace DacPac.Core.Generators;
 /// </summary>
 public class ProcedureToClassGenerator : CsharpGenerator
 {
+    private readonly TableTypeToClassGenerator _tableTypeToClassGenerator;
+
+    public ProcedureToClassGenerator(TableTypeToClassGenerator tableTypeToClassGenerator)
+    {
+        _tableTypeToClassGenerator = tableTypeToClassGenerator;
+    }
+
     private readonly ProcedureResultSetAnalyzer _resultSetAnalyzer = new();
+
+    public override string TypeName(TSqlObject sqlObject)
+    {
+        return sqlObject.GenerateTypeName("Procedure");
+    }
 
     /// <summary>
     /// Writes the procedure wrapper, inferred result types, query methods, and parameter model.
     /// </summary>
     protected override void DoBuild(TSqlObject sqlObject, StringBuilder sb)
     {
-        sb.AppendLine($"""
-                       /// <summary>
-                       /// Represents a {sqlObject.Name.Parts.Last()} {sqlObject.Name.ToString()}
-                       /// </summary>
-                       """);
-        sb.AppendLine("/// <remarks>");
-        sb.AppendLine("/// <code>");
-        foreach (var line in sqlObject.GetScript().Split('\n'))
-        {
-            sb.AppendLine($"/// {SecurityElement.Escape(line.TrimEnd('\r'))}");
-        }
-
-        sb.AppendLine("/// </code>");
-        sb.AppendLine("/// </remarks>");
-        sb.AppendLine($"public class {sqlObject.Name.Parts.Last().ToPascalCase()}Procedure");
-        sb.AppendLine("{");
+        var remarks =
+            $"<code>{Environment.NewLine}{string.Join(Environment.NewLine, sqlObject.GetScript().Split('\n').Select(line => SecurityElement.Escape(line.TrimEnd('\r'))))}{Environment.NewLine}</code>";
+        sb.AppendSummary($"Represents a {sqlObject.Name.Parts.Last()} {sqlObject.Name}.", remarks);
+        sb.AppendClass(TypeName(sqlObject));
 
         // Infer typed result DTOs before emitting the Dapper methods that consume them.
         var resultSets = _resultSetAnalyzer.Analyze(sqlObject);
         BuildResultClasses(resultSets, sb);
 
         // Parameters are emitted after methods so the generated API reads from operations to configuration.
+        var generatedParameters = GetParameters(sqlObject);
         var parameters = new StringBuilder();
-        var (_, hasParameters) = BuildParametersObject(sqlObject, parameters);
+        BuildParametersObject(sqlObject, generatedParameters, parameters);
+        var hasParameters = generatedParameters.Count > 0;
 
         var procedureName = EscapeCSharpStringLiteral(sqlObject.Name.ToString());
         var parameterDeclaration = hasParameters ? ", Parameters parameters" : string.Empty;
@@ -47,7 +50,8 @@ public class ProcedureToClassGenerator : CsharpGenerator
         sb.AppendLine("// Requires the Dapper NuGet package.");
         sb.AppendLine($"private const string ProcedureName = \"{procedureName}\";");
         sb.AppendLine();
-        sb.AppendLine($"public async Task<int> ExecuteAsync(System.Data.IDbConnection connection{parameterDeclaration})");
+        sb.AppendLine(
+            $"public async Task<int> ExecuteAsync(System.Data.IDbConnection connection{parameterDeclaration})");
         sb.AppendLine("{");
         if (hasParameters)
         {
@@ -60,14 +64,10 @@ public class ProcedureToClassGenerator : CsharpGenerator
         sb.AppendLine($"{(hasParameters ? "dynamicParameters" : "null")},");
         sb.AppendLine("commandType: System.Data.CommandType.StoredProcedure);");
 
-        foreach (var parameter in sqlObject.GetReferenced(Procedure.Parameters).Where(x => x.GetProperty<bool>(Parameter.IsOutput)))
+        foreach (var parameter in generatedParameters.Where(x => x.IsOutput))
         {
-            var parameterName = parameter.Name.Parts.Last();
-            var propertyName = parameterName.TrimStart('@').ToPascalCase();
-            var dataType = parameter.GetReferenced(Parameter.DataType).FirstOrDefault();
-            var dotnetType = dataType?.GetDotNetDataType(parameter.GetProperty<bool>(Parameter.IsNullable));
-
-            sb.AppendLine($"parameters.{propertyName} = dynamicParameters.Get<{dotnetType?.ToString() ?? "object"}>(\"{EscapeCSharpStringLiteral(parameterName)}\");");
+            sb.AppendLine(
+                $"parameters.{parameter.PropertyName} = dynamicParameters.Get<{parameter.DotnetType}>(\"{EscapeCSharpStringLiteral(parameter.SqlName)}\");");
         }
 
         sb.AppendLine("return affectedRows;");
@@ -99,7 +99,8 @@ public class ProcedureToClassGenerator : CsharpGenerator
         return dataType.GetProperty<SqlDataType>(DataType.SqlDataType) switch
         {
             SqlDataType.BigInt => "Int64",
-            SqlDataType.Binary or SqlDataType.Image or SqlDataType.Timestamp or SqlDataType.Rowversion or SqlDataType.VarBinary => "Binary",
+            SqlDataType.Binary or SqlDataType.Image or SqlDataType.Timestamp or SqlDataType.Rowversion
+                or SqlDataType.VarBinary => "Binary",
             SqlDataType.Bit => "Boolean",
             SqlDataType.Char => "AnsiStringFixedLength",
             SqlDataType.Date => "Date",
@@ -129,11 +130,8 @@ public class ProcedureToClassGenerator : CsharpGenerator
         foreach (var resultSet in resultSets)
         {
             var className = GetResultClassName(resultSet, resultSets);
-            sb.AppendLine("/// <summary>");
-            sb.AppendLine($"/// Represents result set {resultSet.Ordinal} returned by the procedure.");
-            sb.AppendLine("/// </summary>");
-            sb.AppendLine($"public sealed class {className}");
-            sb.AppendLine("{");
+            sb.AppendSummary($"Represents result set {resultSet.Ordinal} returned by the procedure.");
+            sb.AppendClass(className, "public sealed");
             foreach (var warning in resultSet.Warnings)
             {
                 sb.AppendLine($"// Warning: {warning}");
@@ -141,8 +139,8 @@ public class ProcedureToClassGenerator : CsharpGenerator
 
             foreach (var column in resultSet.Columns)
             {
-                sb.AppendLine($"/// <summary>Gets or sets the {column.PropertyName} value returned by the procedure.</summary>");
-                sb.AppendLine($"public {column.Type} {column.PropertyName} {{ get; set; }}");
+                sb.AppendSummary($"Gets or sets the {column.PropertyName} value returned by the procedure.");
+                sb.AppendProperty(column.Type, column.PropertyName);
             }
 
             sb.AppendLine("}");
@@ -155,15 +153,12 @@ public class ProcedureToClassGenerator : CsharpGenerator
     /// </summary>
     private static void BuildAllResultsClass(IReadOnlyList<ProcedureResultSet> resultSets, StringBuilder sb)
     {
-        sb.AppendLine("/// <summary>");
-        sb.AppendLine("/// Contains every result set returned by the procedure.");
-        sb.AppendLine("/// </summary>");
-        sb.AppendLine("public sealed class Results");
-        sb.AppendLine("{");
+        sb.AppendSummary("Contains every result set returned by the procedure.");
+        sb.AppendClass("Results", "public sealed");
         foreach (var resultSet in resultSets)
         {
             var resultType = GetResultClassName(resultSet, resultSets);
-            sb.AppendLine($"/// <summary>Gets the rows from result set {resultSet.Ordinal}.</summary>");
+            sb.AppendSummary($"Gets the rows from result set {resultSet.Ordinal}.");
             sb.AppendLine($"public System.Collections.Generic.List<{resultType}> {resultType} {{ get; init; }} = [];");
         }
 
@@ -174,7 +169,8 @@ public class ProcedureToClassGenerator : CsharpGenerator
     /// <summary>
     /// Writes Dapper query methods suited to the number of procedure result sets and generic usage alternatives.
     /// </summary>
-    private static void BuildDapperAlternatives(StringBuilder sb, bool hasParameters, IReadOnlyList<ProcedureResultSet> resultSets)
+    private static void BuildDapperAlternatives(StringBuilder sb, bool hasParameters,
+        IReadOnlyList<ProcedureResultSet> resultSets)
     {
         var parameterDeclaration = hasParameters ? ", Parameters parameters" : string.Empty;
         var parameterArgument = hasParameters ? "parameters.GenerateParameters()" : "null";
@@ -186,49 +182,61 @@ public class ProcedureToClassGenerator : CsharpGenerator
             sb.AppendLine("/// <summary>");
             sb.AppendLine("/// Executes the procedure and returns its rows.");
             sb.AppendLine("/// </summary>");
-            sb.AppendLine($"public async Task<System.Collections.Generic.List<{resultType}>> QueryAsync(System.Data.IDbConnection connection{parameterDeclaration})");
+            sb.AppendLine(
+                $"public async Task<System.Collections.Generic.List<{resultType}>> QueryAsync(System.Data.IDbConnection connection{parameterDeclaration})");
             sb.AppendLine("{");
-            sb.AppendLine($"return new System.Collections.Generic.List<{resultType}>(await Dapper.SqlMapper.QueryAsync<{resultType}>(connection, ProcedureName, {parameterArgument}, commandType: System.Data.CommandType.StoredProcedure));");
+            sb.AppendLine(
+                $"return new System.Collections.Generic.List<{resultType}>(await Dapper.SqlMapper.QueryAsync<{resultType}>(connection, ProcedureName, {parameterArgument}, commandType: System.Data.CommandType.StoredProcedure));");
             sb.AppendLine("}");
         }
         else if (resultSets.Count > 1)
         {
             BuildAllResultsClass(resultSets, sb);
             sb.AppendLine();
-            sb.AppendLine("// Warning: this procedure has multiple or branch-dependent result sets. Use QueryMultipleAsync and read each result type explicitly.");
+            sb.AppendLine(
+                "// Warning: this procedure has multiple or branch-dependent result sets. Use QueryMultipleAsync and read each result type explicitly.");
             sb.AppendLine("/// <summary>");
             sb.AppendLine("/// Executes the procedure and returns the rows from its final result set.");
             sb.AppendLine("/// </summary>");
-            sb.AppendLine($"public async Task<System.Collections.Generic.List<{GetResultClassName(resultSets[^1], resultSets)}>> QueryAsync(System.Data.IDbConnection connection{parameterDeclaration})");
+            sb.AppendLine(
+                $"public async Task<System.Collections.Generic.List<{GetResultClassName(resultSets[^1], resultSets)}>> QueryAsync(System.Data.IDbConnection connection{parameterDeclaration})");
             sb.AppendLine("{");
-            sb.AppendLine($"using var gridReader = await Dapper.SqlMapper.QueryMultipleAsync(connection, ProcedureName, {parameterArgument}, commandType: System.Data.CommandType.StoredProcedure);");
+            sb.AppendLine(
+                $"using var gridReader = await Dapper.SqlMapper.QueryMultipleAsync(connection, ProcedureName, {parameterArgument}, commandType: System.Data.CommandType.StoredProcedure);");
             foreach (var resultSet in resultSets.Take(resultSets.Count - 1))
             {
                 sb.AppendLine($"await gridReader.ReadAsync<{GetResultClassName(resultSet, resultSets)}>();");
             }
-            sb.AppendLine($"return new System.Collections.Generic.List<{GetResultClassName(resultSets[^1], resultSets)}>(await gridReader.ReadAsync<{GetResultClassName(resultSets[^1], resultSets)}>());");
+
+            sb.AppendLine(
+                $"return new System.Collections.Generic.List<{GetResultClassName(resultSets[^1], resultSets)}>(await gridReader.ReadAsync<{GetResultClassName(resultSets[^1], resultSets)}>());");
             sb.AppendLine("}");
             sb.AppendLine();
             sb.AppendLine("/// <summary>");
             sb.AppendLine("/// Executes the procedure and returns all of its result sets.");
             sb.AppendLine("/// </summary>");
-            sb.AppendLine($"public async Task<Results> QueryAllAsync(System.Data.IDbConnection connection{parameterDeclaration})");
+            sb.AppendLine(
+                $"public async Task<Results> QueryAllAsync(System.Data.IDbConnection connection{parameterDeclaration})");
             sb.AppendLine("{");
-            sb.AppendLine($"using var gridReader = await Dapper.SqlMapper.QueryMultipleAsync(connection, ProcedureName, {parameterArgument}, commandType: System.Data.CommandType.StoredProcedure);");
+            sb.AppendLine(
+                $"using var gridReader = await Dapper.SqlMapper.QueryMultipleAsync(connection, ProcedureName, {parameterArgument}, commandType: System.Data.CommandType.StoredProcedure);");
             sb.AppendLine("return new Results");
             sb.AppendLine("{");
             foreach (var resultSet in resultSets)
             {
                 var resultType = GetResultClassName(resultSet, resultSets);
-                sb.AppendLine($"{resultType} = new System.Collections.Generic.List<{resultType}>(await gridReader.ReadAsync<{resultType}>()),");
+                sb.AppendLine(
+                    $"{resultType} = new System.Collections.Generic.List<{resultType}>(await gridReader.ReadAsync<{resultType}>()),");
             }
+
             sb.AppendLine("};");
             sb.AppendLine("}");
         }
 
         sb.AppendLine();
         sb.AppendLine("// Alternative: query multiple rows from the procedure.");
-        sb.AppendLine($"// public async Task<System.Collections.Generic.IEnumerable<TResult>> QueryAsync<TResult>(System.Data.IDbConnection connection{parameterDeclaration})");
+        sb.AppendLine(
+            $"// public async Task<System.Collections.Generic.IEnumerable<TResult>> QueryAsync<TResult>(System.Data.IDbConnection connection{parameterDeclaration})");
         sb.AppendLine("// {");
         sb.AppendLine("//     return await Dapper.SqlMapper.QueryAsync<TResult>(");
         sb.AppendLine("//         connection,");
@@ -238,7 +246,8 @@ public class ProcedureToClassGenerator : CsharpGenerator
         sb.AppendLine("// }");
         sb.AppendLine();
         sb.AppendLine("// Alternative: query one row, or null when no row is returned.");
-        sb.AppendLine($"// public async Task<TResult?> QuerySingleOrDefaultAsync<TResult>(System.Data.IDbConnection connection{parameterDeclaration})");
+        sb.AppendLine(
+            $"// public async Task<TResult?> QuerySingleOrDefaultAsync<TResult>(System.Data.IDbConnection connection{parameterDeclaration})");
         sb.AppendLine("// {");
         sb.AppendLine("//     return await Dapper.SqlMapper.QuerySingleOrDefaultAsync<TResult>(");
         sb.AppendLine("//         connection,");
@@ -248,7 +257,8 @@ public class ProcedureToClassGenerator : CsharpGenerator
         sb.AppendLine("// }");
         sb.AppendLine();
         sb.AppendLine("// Alternative: consume multiple result sets.");
-        sb.AppendLine($"// public async Task<Dapper.SqlMapper.GridReader> QueryMultipleAsync(System.Data.IDbConnection connection{parameterDeclaration})");
+        sb.AppendLine(
+            $"// public async Task<Dapper.SqlMapper.GridReader> QueryMultipleAsync(System.Data.IDbConnection connection{parameterDeclaration})");
         sb.AppendLine("// {");
         sb.AppendLine("//     return await Dapper.SqlMapper.QueryMultipleAsync(");
         sb.AppendLine("//         connection,");
@@ -257,7 +267,8 @@ public class ProcedureToClassGenerator : CsharpGenerator
         sb.AppendLine("//         commandType: System.Data.CommandType.StoredProcedure);");
         sb.AppendLine("// }");
         sb.AppendLine();
-        sb.AppendLine("// Output parameters are configured in Parameters.GenerateParameters and copied back by ExecuteAsync.");
+        sb.AppendLine(
+            "// Output parameters are configured in Parameters.GenerateParameters and copied back by ExecuteAsync.");
     }
 
     /// <summary>
@@ -288,75 +299,166 @@ public class ProcedureToClassGenerator : CsharpGenerator
     }
 
     /// <summary>
-    /// Writes the nested parameter model and its Dapper parameter conversion method when parameters exist.
+    /// Collects the metadata required to generate the parameter model and its Dapper conversion method.
     /// </summary>
-    private (StringBuilder, bool) BuildParametersObject(TSqlObject sqlObject, StringBuilder sb)
+    private IReadOnlyList<GeneratedParameter> GetParameters(TSqlObject sqlObject)
     {
-        var parameters = sqlObject.GetReferenced(Procedure.Parameters).ToList();
-        if (parameters.Any())
+        var procedureWrapper = sqlObject.ToProcedure();
+        return procedureWrapper.Parameters.Select(x => x.ToParameter()).Select(parameter =>
         {
-            sb.AppendLine($"""
-                           /// <summary>
-                           /// Represents the parameters for the {sqlObject.Name.Parts.Last()} procedure.
-                           /// </summary>
-                           """);
-            sb.AppendLine($"public class Parameters");
-            sb.AppendLine("{");
+            var sqlName = parameter.SqlObject.Name.Parts.Last();
+            var dataType = parameter.DataType.FirstOrDefault();
+            var isTableType = dataType?.ObjectType == TableType.TypeClass;
+            var dotnetType = isTableType
+                ? _tableTypeToClassGenerator.TypeName(dataType!)
+                : dataType?.GetDotNetDataType(parameter.IsNullable)?.ToString() ?? "object";
+            var isReadonly = parameter.ReadOnly;
 
-            foreach (var parameter in parameters)
-            {
-                var parameterName = parameter.Name.Parts.Last();
-                var dataType = parameter.GetReferenced(Parameter.DataType).FirstOrDefault();
-                var isNullable = parameter.GetProperty<bool>(Parameter.IsNullable);
+            return new GeneratedParameter(
+                sqlName,
+                sqlName.TrimStart('@').ToPascalCase(),
+                dataType?.Name.ToString() ?? "unknown",
+                dotnetType,
+                !isTableType && parameter.IsNullable,
+                parameter.IsOutput,
+                isTableType,
+                parameter.IsOutput ? GetDbType(dataType) : null, 
+                isReadonly,
+                isTableType ? dataType.Name.ToString() : null);
+        }).ToList();
+    }
 
-                sb.AppendLine($"""
-                               /// <summary>
-                               /// Gets or sets the {parameterName} ({dataType?.Name.ToString()}){(isNullable ? " (nullable)" : "")}.
-                               /// </summary>
-                               """);
-
-                var dotnetType = dataType?.GetDotNetDataType(isNullable);
-                if (dotnetType == null)
-                {
-                    if (dataType?.ObjectType == TableType.TypeClass)
-                    {
-                        int i = 0;
-                    }
-                    
-                    sb.AppendLine($"// Warning: Unrecognized SQL data type '{dataType}' for parameter '{parameterName}'.");
-                    sb.AppendLine($"public object {parameterName.TrimStart('@').ToPascalCase()} {{ get; set; }}");
-                }
-                else
-                {
-                    sb.AppendLine($"public {dotnetType} {parameterName.TrimStart('@').ToPascalCase()} {{ get; set; }}");
-                }
-            }
-
-            sb.AppendLine();
-            sb.AppendLine("public Dapper.DynamicParameters GenerateParameters()");
-            sb.AppendLine("{");
-            sb.AppendLine("var dynamicParameters = new Dapper.DynamicParameters();");
-
-            foreach (var parameter in parameters)
-            {
-                var parameterName = parameter.Name.Parts.Last();
-                var propertyName = parameterName.TrimStart('@').ToPascalCase();
-                var dataType = parameter.GetReferenced(Parameter.DataType).FirstOrDefault();
-                var dbType = parameter.GetProperty<bool>(Parameter.IsOutput) ? GetDbType(dataType) : null;
-                var outputArguments = parameter.GetProperty<bool>(Parameter.IsOutput)
-                    ? $", {(dbType == null ? string.Empty : $"dbType: System.Data.DbType.{dbType}, ")}direction: System.Data.ParameterDirection.InputOutput"
-                    : string.Empty;
-
-                sb.AppendLine($"dynamicParameters.Add(\"{EscapeCSharpStringLiteral(parameterName)}\", {propertyName}{outputArguments});");
-            }
-
-            sb.AppendLine("return dynamicParameters;");
-            sb.AppendLine("}");
-            sb.AppendLine("}");
-            return (sb, true);
+    /// <summary>
+    /// Writes the nested parameter model and its Dapper parameter conversion method.
+    /// </summary>
+    private static void BuildParametersObject(TSqlObject sqlObject, IReadOnlyList<GeneratedParameter> parameters,
+        StringBuilder sb)
+    {
+        if (parameters.Count == 0)
+        {
+            return;
         }
 
-        return (sb, false);
+        var summaryBuilder = new SummaryBuilder($"Represents the parameters for the {sqlObject.Name.Parts.Last()} procedure.", sb);
+
+        sb.AppendLine($"""
+                       /// <summary>
+                       /// Represents the parameters for the {sqlObject.Name.Parts.Last()} procedure.
+                       /// </summary>
+                       """);
+        sb.AppendLine("public class Parameters");
+        sb.AppendLine("{");
+        
+        sb.AppendLine("Parameters(");
+        foreach (var parameter in parameters)
+        {
+            sb.AppendLine($"{Type(parameter)} {parameter.ConstructorName},");
+        }
+
+        if (parameters.Count > 0)
+        {
+            sb.Remove(sb.Length - 1, 1);    
+        }
+
+        sb.AppendLine(")")
+            .AppendLine("{");
+
+        foreach (var parameter in parameters)
+        {
+            sb.AppendLine($"{parameter.PropertyName} = {parameter.ConstructorName};");
+        }
+        
+        sb.AppendLine("}");
+
+        string Type(GeneratedParameter parameter)
+        {
+            if (parameter.IsTableType)
+            {
+                return $"System.Collections.Generic.IEnumerable<{parameter.DotnetType}>";
+            }
+            else
+            {
+                return parameter.DotnetType;
+            }
+        }
+
+        foreach (var parameter in parameters)
+        {
+            var builder = new SummaryBuilder($"Gets or sets the {parameter.SqlName} ({parameter.SqlTypeName}){(parameter.IsNullable ? " (nullable)" : "")}", sb);
+            if (parameter is {IsTableType: true, IsReadonly: true})
+            {
+                builder.WithRemarks("This accepts an empty collection");
+            }
+            else if (parameter is {IsTableType: true, IsReadonly: false})
+            {
+                builder.WithRemarks("The collection must have at least one element");
+            }
+
+            sb.AppendSummary(
+                $"Gets or sets the {parameter.SqlName} ({parameter.SqlTypeName}){(parameter.IsNullable ? " (nullable)" : "")}");
+
+            if (parameter.DotnetType == "object")
+            {
+                sb.AppendLine(
+                    $"// Warning: Unrecognized SQL data type '{parameter.SqlTypeName}' for parameter '{parameter.SqlName}'.");
+            }
+
+            sb.Append($"public ");
+            sb.Append(Type(parameter));            
+
+            sb.AppendLine($" {parameter.PropertyName} {{get; set; }}");
+        }
+
+        sb.AppendLine();
+        sb.AppendLine("public Dapper.DynamicParameters GenerateParameters()");
+        sb.AppendLine("{");
+        sb.AppendLine("var dynamicParameters = new Dapper.DynamicParameters();");
+
+        foreach (var parameter in parameters)
+        {
+            var value = GenerateParameterInitialzation(parameter);
+            var outputArguments = parameter.IsOutput
+                ? $", {(parameter.DbType == null ? string.Empty : $"dbType: System.Data.DbType.{parameter.DbType}, ")}direction: System.Data.ParameterDirection.InputOutput"
+                : string.Empty;
+
+            sb.AppendLine(
+                $"dynamicParameters.Add(\"{EscapeCSharpStringLiteral(parameter.SqlName)}\", {value}{outputArguments});");
+        }
+
+        sb.AppendLine("return dynamicParameters;");
+        sb.AppendLine("}");
+        sb.AppendLine("}");
+    }
+
+    
+    private static string GenerateParameterInitialzation(GeneratedParameter parameter)
+    {
+        if (parameter.IsTableType)
+        {
+            return $"new TableValuedParameter({parameter.DotnetType}.ToDataTable({parameter.PropertyName}), \"{parameter.TableTypeName}\"";
+        }
+        else
+        {
+            return parameter.PropertyName;
+        }
+    }
+
+    /// <summary>
+    /// Represents the metadata for one stored procedure parameter used throughout generated code emission.
+    /// </summary>
+    private sealed record GeneratedParameter(
+        string SqlName,
+        string PropertyName,
+        string SqlTypeName,
+        string DotnetType,
+        bool IsNullable,
+        bool IsOutput,
+        bool IsTableType,
+        string? DbType,
+        bool IsReadonly,
+        string? TableTypeName)
+    {
+        public string ConstructorName => PropertyName.ToParameterName();
     }
 
 
