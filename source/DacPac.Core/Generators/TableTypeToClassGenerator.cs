@@ -67,7 +67,7 @@ public class TableTypeToClassGenerator : CsharpGenerator
         foreach (var column in columns)
         {
             var propertyName = column.SqlObject.Name.Parts.Last().ToPascalCase();
-            sb.AppendLine($"(object?)item.{propertyName} ?? System.DBNull.Value,");
+            sb.AppendLine($"(object?)item.{propertyName} ?? System.DBNull.Value");
         }
         sb.AppendLine(");");
         sb.AppendLine("}");
