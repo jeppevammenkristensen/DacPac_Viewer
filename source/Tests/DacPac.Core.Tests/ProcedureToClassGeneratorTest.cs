@@ -1,5 +1,6 @@
 using System.Linq;
 using DacPac.Core.Generators;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.SqlServer.Dac.Model;
 using Xunit;
 
@@ -7,6 +8,8 @@ namespace DacPac.Core.Tests;
 
 public class ProcedureToClassGeneratorTest
 {
+    private static readonly NullLogger<Builder> Logger = NullLogger<Builder>.Instance;
+
     [Fact]
     public void Build_GeneratesDapperExecuteAndCommentedAlternatives()
     {
@@ -20,7 +23,7 @@ public class ProcedureToClassGeneratorTest
         """);
 
         var procedure = GetProcedure(model);
-        var output = new Builder([CreateGenerator()]).Build([procedure]);
+        var output = new Builder([CreateGenerator()], Logger).Build([procedure]);
 
         Assert.Contains("public async Task<int> ExecuteAsync(System.Data.IDbConnection connection, Parameters parameters)", output);
         Assert.Contains("public class Parameters", output);
@@ -47,7 +50,7 @@ public class ProcedureToClassGeneratorTest
                                    END
                                    """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("/// <remarks>", output);
         Assert.Contains("/// <code>", output);
@@ -69,7 +72,7 @@ public class ProcedureToClassGeneratorTest
         """);
 
         var procedure = GetProcedure(model);
-        var output = new Builder([CreateGenerator()]).Build([procedure]);
+        var output = new Builder([CreateGenerator()], Logger).Build([procedure]);
 
         Assert.Contains("public async Task<int> ExecuteAsync(System.Data.IDbConnection connection)", output);
         Assert.Contains("// Output parameters are configured in Parameters.GenerateParameters", output);
@@ -90,7 +93,7 @@ public class ProcedureToClassGeneratorTest
                                   """);
 
         var procedure = GetProcedure(model);
-        var output = new Builder([CreateGenerator()]).Build([procedure]);
+        var output = new Builder([CreateGenerator()], Logger).Build([procedure]);
 
         Assert.Contains("dynamicParameters.Add(\"@OutputValue\", OutputValue, dbType: System.Data.DbType.Int32, direction: System.Data.ParameterDirection.InputOutput);", output);
         Assert.Contains("parameters.OutputValue = dynamicParameters.Get<int?>(\"@OutputValue\");", output);
@@ -113,7 +116,7 @@ public class ProcedureToClassGeneratorTest
                                       END
                                       """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("public System.Collections.Generic.IEnumerable<", output);
         Assert.Contains("Items", output);
@@ -132,7 +135,7 @@ public class ProcedureToClassGeneratorTest
                                    END
                                    """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("public sealed class Result", output);
         Assert.Contains("public long CustomerId { get; set; }", output);
@@ -153,7 +156,7 @@ public class ProcedureToClassGeneratorTest
                                    END
                                    """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("public sealed class Result1", output);
         Assert.Contains("public sealed class Result2", output);
@@ -176,7 +179,7 @@ public class ProcedureToClassGeneratorTest
                                    END
                                    """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("The SQL expression 'FunctionCall' could not be statically typed", output);
         Assert.Contains("public object? CreatedAt { get; set; }", output);
@@ -199,7 +202,7 @@ public class ProcedureToClassGeneratorTest
                                    END
                                    """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("public long CustomerId { get; set; }", output);
         Assert.Contains("public string? Name { get; set; }", output);
@@ -222,7 +225,7 @@ public class ProcedureToClassGeneratorTest
                                    END
                                    """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("public sealed class Bar", output);
         Assert.Contains("System.Collections.Generic.List<Bar>> QueryAsync", output);
@@ -249,7 +252,7 @@ public class ProcedureToClassGeneratorTest
                                    END
                                    """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("public sealed class ActiveBar", output);
         Assert.Contains("System.Collections.Generic.List<ActiveBar>> QueryAsync", output);
@@ -270,7 +273,7 @@ public class ProcedureToClassGeneratorTest
                                    END
                                    """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("public sealed class Result1", output);
         Assert.Contains("public sealed class Result2", output);
@@ -294,7 +297,7 @@ public class ProcedureToClassGeneratorTest
                                    END
                                    """);
 
-        var output = new Builder([CreateGenerator()]).Build([GetProcedure(model)]);
+        var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.DoesNotContain("public sealed class Result", output);
         Assert.DoesNotContain("QueryAsync(System.Data.IDbConnection", output);

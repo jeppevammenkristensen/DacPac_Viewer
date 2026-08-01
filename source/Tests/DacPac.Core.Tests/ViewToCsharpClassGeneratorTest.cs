@@ -1,5 +1,6 @@
 using System.Linq;
 using DacPac.Core.Generators;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.SqlServer.Dac.Model;
 using Xunit;
 
@@ -18,7 +19,7 @@ public class ViewToCsharpClassGeneratorTest
                          """);
 
         var view = model.GetObjects(DacQueryScopes.UserDefined, View.TypeClass).Single();
-        var output = new Builder([new ViewToCsharpClassGenerator()]).Build([view]);
+        var output = new Builder([new ViewToCsharpClassGenerator()], NullLogger<Builder>.Instance).Build([view]);
 
         Assert.Contains("/// <remarks>", output);
         Assert.Contains("/// <code>", output);

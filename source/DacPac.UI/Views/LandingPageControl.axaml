@@ -45,14 +45,14 @@
                       PlaceholderText="{Binding FilterSummary}"
                       ItemsSource="{Binding FilterOptions}">
                 <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="x:String">
+                    <DataTemplate x:DataType="viewModel:FilterOption">
                         <CheckBox HorizontalAlignment="Stretch"
-                                  Content="{Binding}"
+                                  Content="{Binding DisplayName}"
                                   Command="{Binding $parent[ComboBox].((viewModel:LandingPageControlViewModel)DataContext).ToggleFilterCommand}"
                                   CommandParameter="{Binding}">
                             <CheckBox.IsChecked>
                                 <MultiBinding Converter="{StaticResource ContainsConverter}" Mode="OneWay">
-                                    <Binding />
+                                    <Binding Path="Type" />
                                     <Binding Path="$parent[ComboBox].((viewModel:LandingPageControlViewModel)DataContext).SelectedFilters" />
                                 </MultiBinding>
                             </CheckBox.IsChecked>
@@ -101,6 +101,7 @@
                     <DataGridTextColumn Header="Database" Binding="{Binding Database}" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+                    <DataGridCheckBoxColumn IsReadOnly="True" Header="Can Genereate Code" Binding="{Binding  GeneratorSupported}" />
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -133,7 +134,7 @@
                      Stroke="{DynamicResource SystemAccentColor}"
                      StrokeThickness="4"
                      StrokeLineCap="Round" />
-                <TextBlock Text="Loading…"
+                <TextBlock Text="{Binding LoadingMessage}"
                            HorizontalAlignment="Center"
                            Foreground="White" />
             </StackPanel>
