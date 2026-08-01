@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using AvaloniaEdit.Utils;
 using DacPac.UI.Infrastructure;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -84,6 +85,18 @@ public partial class LandingPageControlViewModel : ScreenPage
     partial void OnSelectedFiltersChanged(ObservableCollection<string> value)
     {
         OnPropertyChanged(nameof(FilterSummary));
+    }
+
+
+    private bool CanExecuteSelectAll(DataGrid dataGrid)
+    {
+        return true;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteSelectAll))]
+    private void SelectAll(DataGrid dataGrid)
+    {
+        dataGrid.SelectAll();
     }
 
     /// <summary>Toggles whether a filter option is part of the current selection.</summary>
