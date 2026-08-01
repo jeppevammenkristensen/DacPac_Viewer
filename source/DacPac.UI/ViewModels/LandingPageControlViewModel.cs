@@ -24,17 +24,40 @@ namespace DacPac.UI.ViewModels;
 /// <summary>
 /// An initial landing page.
 /// </summary>
-public partial class LandingPageControlViewModel(
-    ILogger<LandingPageControlViewModel> logger,
-    IFilePickerService filePicker, 
-    DacPacLoader loader,
-    Builder builder,
-    IClipboardService clipboard,
-    IServiceLocator locator,
-    ISettingsService settingsService,
-    MainWindowViewModel mainWindow)
-    : ScreenPage
+public partial class LandingPageControlViewModel : ScreenPage
 {
+    private readonly ILogger<LandingPageControlViewModel> _logger;
+    private readonly IFilePickerService _filePicker;
+    private readonly DacPacLoader _loader;
+    private readonly Builder _builder;
+    private readonly IClipboardService _clipboard;
+    private readonly IServiceLocator _locator;
+    private readonly ISettingsService _settingsService;
+    private readonly MainWindowViewModel _mainWindow;
+    private HashSet<ModelTypeClass> _supportedObjectTypes = [];
+
+    /// <summary>
+    /// An initial landing page.
+    /// </summary>
+    public LandingPageControlViewModel(ILogger<LandingPageControlViewModel> logger,
+        IFilePickerService filePicker, 
+        DacPacLoader loader,
+        Builder builder,
+        IClipboardService clipboard,
+        IServiceLocator locator,
+        ISettingsService settingsService,
+        MainWindowViewModel mainWindow)
+    {
+        _logger = logger;
+        _filePicker = filePicker;
+        _loader = loader;
+        _builder = builder;
+        _clipboard = clipboard;
+        _locator = locator;
+        _settingsService = settingsService;
+        _mainWindow = mainWindow;
+        
+    }
 
     [NotifyPropertyChangedFor(nameof(Title))] [ObservableProperty]
     private partial string CurrentTitle { get; set; } = "(empty)";
@@ -48,7 +71,7 @@ public partial class LandingPageControlViewModel(
 
     /// <summary>Options shown in the multi-select filter dropdown. Populated later.</summary>
     [ObservableProperty]
-    public partial ObservableCollection<string> FilterOptions { get; set; } = [];
+    public partial ObservableCollection<FilterOption> FilterOptions { get; set; } = [];
 
     /// <summary>The currently selected filter options (bound to the ListBox selection).</summary>
     /// <summary>The currently selected filter options (bound to the combobox checkboxes).</summary>
@@ -65,8 +88,9 @@ public partial class LandingPageControlViewModel(
 
     /// <summary>Toggles whether a filter option is part of the current selection.</summary>
     [RelayCommand]
-    private void ToggleFilter(string filter)
+    private void ToggleFilter(FilterOption filterOption)
     {
+        var filter = filterOption.Type;
         bool isRemoved = SelectedFilters.Remove(filter);
         
         if (filter == "All")
@@ -77,7 +101,7 @@ public partial class LandingPageControlViewModel(
             }
             else
             {
-                SelectedFilters = [.. FilterOptions];
+                SelectedFilters = [.. FilterOptions.Select(option => option.Type)];
             }
         }
         else
@@ -115,6 +139,7 @@ public partial class LandingPageControlViewModel(
     public ObservableCollection<string> OpenedDacpacFiles { get; } = [];
 
     [ObservableProperty] public partial bool IsLoading { get; set; }
+    [ObservableProperty] public partial string LoadingMessage { get; set; } = "Loading…";
     [ObservableProperty] public partial IDisplayViewModel Detail { get; set; }
 
     partial void OnPreventCloseChanged(bool value)
@@ -174,7 +199,7 @@ public partial class LandingPageControlViewModel(
     [RelayCommand(CanExecute = nameof(CanSearch))]
     private void Search()
     {
-       FilteredResults =
+        FilteredResults =
             [
                 ..Results
                     .Where(x => SelectedFilters.Contains(x.Type))
@@ -188,24 +213,36 @@ public partial class LandingPageControlViewModel(
     [RelayCommand(CanExecute = nameof(CanGenerateCode))]
     private async Task GenerateCode(IList? items)
     {
-        var rows = items?.OfType<SearchResultRow>().ToArray() ?? [];
+        var rows = items?.OfType<SearchResultRow>()
+            .Where(x => x.GeneratorSupported)
+            .ToArray() ?? [];
         if (rows.Length == 0) return;
 
-        var script = await Task.Run(() => builder.Build([.. rows.Select(x => x.Source)]));
-        
-        await clipboard.SetTextAsync(script);
-        var generatedCodePage = locator.GetRequiredService<GeneratedCodePageViewModel>();
-        generatedCodePage.Load(script, rows.Length);
-        await mainWindow.LaunchScreenAsync(generatedCodePage);
-        SetStatusMessage(rows.Length == 1
-            ? $"Copied generated code for {rows[0].Name} to the clipboard."
-            : $"Copied generated code for {rows.Length} objects to the clipboard.");
+        LoadingMessage = "Generating…";
+        IsLoading = true;
+        try
+        {
+            var script = await Task.Run(() => _builder.Build([.. rows.Select(x => x.Source)]));
+
+            await _clipboard.SetTextAsync(script);
+            var generatedCodePage = _locator.GetRequiredService<GeneratedCodePageViewModel>();
+            generatedCodePage.Load(script, rows.Length);
+            await _mainWindow.LaunchScreenAsync(generatedCodePage);
+            SetStatusMessage(rows.Length == 1
+                ? $"Copied generated code for {rows[0].Name} to the clipboard."
+                : $"Copied generated code for {rows.Length} objects to the clipboard.");
+        }
+        finally
+        {
+            IsLoading = false;
+            LoadingMessage = "Loading…";
+        }
     }
 
     [RelayCommand]
     private async Task OpenDacpac()
     {
-        var files = await filePicker.PickDacpacFilesAsync();
+        var files = await _filePicker.PickDacpacFilesAsync();
         if (files.Count == 0)
             return;
 
@@ -217,12 +254,13 @@ public partial class LandingPageControlViewModel(
     /// </summary>
     public async Task OpenDacpacFilesAsync(IReadOnlyList<AbsolutePath> files)
     {
+        LoadingMessage = "Loading…";
         IsLoading = true;
         try
         {
             if (!CheckFiles(files))
             {
-                settingsService.RemovePaths(files);
+                _settingsService.RemovePaths(files);
                 return;
             }
             
@@ -231,13 +269,24 @@ public partial class LandingPageControlViewModel(
 
             var uniqueFiles = files.Distinct().ToList();
             List<SearchResultRow> searchResultRows = new();
-            var resultRows = await Task.Run(() =>loader.LoadMultiple(uniqueFiles)
-                .SelectMany(x => x.Model.GetObjects(DacQueryScopes.UserDefined).Select(y => new {ObjectName = y, x.Path}))
-                .Where(x => x.ObjectName.Name.HasName)
-                .Select(x => new SearchResultRow(x.ObjectName, x.Path.GetFilenameWithoutExtension())).ToList());
+            
+            var resultRows = await Task.Run(async () =>
+            {
+                var source = _loader.LoadMultiple(uniqueFiles).ToList();
+                
+                _supportedObjectTypes = _builder.GetSupportedObjectTypes();
+                
+                return 
+                    source  
+                    .SelectMany(x =>
+                        x.Model.GetObjects(DacQueryScopes.UserDefined).Select(y => new {ObjectName = y, x.Path}))
+                    .Where(x => x.ObjectName.Name.HasName)
+                    .Select(x => new SearchResultRow(x.ObjectName, x.Path.GetFilenameWithoutExtension(),
+                        _supportedObjectTypes.Contains(x.ObjectName.ObjectType))).ToList();
+            });
 
             OpenedDacpacFiles.AddRange(uniqueFiles.Select(x => x.Value));
-            settingsService.SaveOrUpdatePaths(uniqueFiles);
+            _settingsService.SaveOrUpdatePaths(uniqueFiles);
             
             searchResultRows.AddRange(resultRows);
 
@@ -246,12 +295,16 @@ public partial class LandingPageControlViewModel(
             // Computing the filter options touches the DacFx model for every row, so keep it
             // off the UI thread to avoid freezing the window while a dacpac is opened.
             var filterOptions = await Task.Run(() =>
-                searchResultRows.Select(x => x.Type).Distinct().Order().ToList());
+                searchResultRows
+                    .GroupBy(row => row.Type)
+                    .Select(group => new FilterOption(group.Key, group.Any(row => row.GeneratorSupported)))
+                    .OrderBy(option => option.Type)
+                    .ToList());
 
             Results = new ObservableCollection<SearchResultRow>(searchResultRows);
             FilteredResults = [..Results];
-            FilterOptions = ["All", ..filterOptions];
-            SelectedFilters = ["All",..filterOptions];
+            FilterOptions = [new FilterOption("All", false), .. filterOptions];
+            SelectedFilters = ["All", .. filterOptions.Select(option => option.Type)];
             SetStatusMessage($"Opened {files.Count} dacpac file(s).");
             InstallCommand.NotifyCanExecuteChanged();
         }
@@ -275,13 +328,22 @@ public partial class LandingPageControlViewModel(
 
     public override Task OnActivatedAsync()
     {
-        logger.LogInformation("On Activated");
+        _logger.LogInformation("On Activated");
         return Task.CompletedTask;
     }
 
     public override Task CloseAsync()
     {
-        logger.LogInformation("On Close");
+        _logger.LogInformation("On Close");
         return Task.CompletedTask;
     }
+}
+
+/// <summary>
+/// Represents a selectable object-type filter and whether at least one matching result supports code generation.
+/// </summary>
+public sealed record FilterOption(string Type, bool CanGenerateCode)
+{
+    /// <summary>Gets the label shown in the filter dropdown.</summary>
+    public string DisplayName => CanGenerateCode ? $"{Type} (can generate code)" : Type;
 }
