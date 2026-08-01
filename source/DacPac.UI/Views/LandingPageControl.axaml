@@ -87,12 +87,26 @@
                       ItemsSource="{Binding FilteredResults}"
                       SelectedItem="{Binding SelectedResult}"
                       SelectionMode="Extended"
-                      IsReadOnly="True"
-                      AutoGenerateColumns="False"
-                      CanUserResizeColumns="True">
+                       IsReadOnly="True"
+                       AutoGenerateColumns="False"
+                       CanUserResizeColumns="True">
+                <DataGrid.Styles>
+                    <Style Selector="DataGridRow" x:DataType="viewModel:SearchResultRow">
+                        <Setter Property="Background" Value="{Binding GeneratorSupported, Converter={x:Static converters:GeneratorSupportedBrushConverter.Instance}}" />
+                    </Style>
+                </DataGrid.Styles>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="Select All" ToolTip.Tip="Select all (ctrl + a) "
+                                  Command="{Binding SelectAllCommand}" CommandParameter="{Binding #ResultsGrid}"
+                                  ></MenuItem>
+                        <MenuItem Header="Generate Code for all"
+                                  ToolTip.Tip="Generates code for all the currently filtered items"
+                                  Command="{Binding GenerateCodeCommand}" CommandParameter="{Binding FilteredResults}">
+                            
+                        </MenuItem>
                         <MenuItem Header="Generate Code"
+                                  ToolTip.Tip="Generates code for the selected items that support generation"
                                   Command="{Binding GenerateCodeCommand}"
                                   CommandParameter="{Binding #ResultsGrid.SelectedItems}" />
                     </ContextMenu>
@@ -101,7 +115,7 @@
                     <DataGridTextColumn Header="Database" Binding="{Binding Database}" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                    <DataGridCheckBoxColumn IsReadOnly="True" Header="Can Genereate Code" Binding="{Binding  GeneratorSupported}" />
+                    <DataGridCheckBoxColumn IsReadOnly="True" Header="Can Generate Code" Binding="{Binding  GeneratorSupported}" />
                 </DataGrid.Columns>
             </DataGrid>
 
