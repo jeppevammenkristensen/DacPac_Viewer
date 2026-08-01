@@ -2,6 +2,7 @@
 using DacPac.Core.Generators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core;
@@ -11,15 +12,17 @@ using SqlObjectWithGenerator = (TSqlObject sqlObject, CsharpGenerator generator)
 /// <summary>
 /// Coordinates registered C# generators and normalizes their combined output.
 /// </summary>
-public class Builder
+public partial class Builder
 {
+    private readonly ILogger<Builder> _logger;
     private readonly CsharpGenerator[] _generators;
 
     /// <summary>
     /// Creates a builder using the supplied object-specific C# generators.
     /// </summary>
-    public Builder(IEnumerable<CsharpGenerator> generators)
+    public Builder(IEnumerable<CsharpGenerator> generators, ILogger<Builder> logger)
     {
+        _logger = logger;
         _generators = generators.ToArray();
     }
 
@@ -28,7 +31,20 @@ public class Builder
     {
         return _generators.FirstOrDefault(x => x.IsValid(sqlObject));
     }
-    
+
+    public HashSet<ModelTypeClass> GetSupportedObjectTypes()
+    {
+        var modelTypeClasses = _generators.SelectMany(x => x.SupportedObjectTypes).ToList();
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (modelTypeClasses.All(x => x == null))
+        {
+            LogAllSupportedModelTypeClassesAreNullThisCanOccurIfThisMethodIsCalledBeforeADacpac();
+            return [];
+        }
+        
+        return [.. modelTypeClasses];
+    }
+
     /// <summary>
     /// Generates normalized C# source for the supplied DacPac objects.
     /// </summary>
@@ -46,7 +62,8 @@ public class Builder
         {
             if (FindGenerator(sqlObject) is { } generator)
             {
-                mappedGenerators.Add(sqlObject.Name.ToString(), (sqlObject, generator));
+                if (!mappedGenerators.ContainsKey(sqlObject.Name.ToString()))
+                    mappedGenerators.Add(sqlObject.Name.ToString(), (sqlObject, generator));
 
                 foreach (var requiredObject in generator.RequiredObjects(sqlObject))
                 {
@@ -65,12 +82,21 @@ public class Builder
             }
         }
         
-        foreach (var mappedGenerator in mappedGenerators.Values)
+        var generatedBuilders = new StringBuilder[mappedGenerators.Count];
+        Parallel.ForEach(mappedGenerators.Values.Select((mappedGenerator, index) => (mappedGenerator, index)), item =>
         {
-            mappedGenerator.generator.Build(mappedGenerator.sqlObject,sb);
-        }
+            var builder = new StringBuilder();
+            item.mappedGenerator.generator.Build(item.mappedGenerator.sqlObject, builder);
+            generatedBuilders[item.index] = builder;
+        });
+
+        foreach (var builder in generatedBuilders)
+            sb.Append(builder);
 
         return SyntaxFactory.ParseCompilationUnit(sb.ToString()).NormalizeWhitespace().ToFullString();
             
     }
+
+    [LoggerMessage(LogLevel.Warning, "All supported model type classes are null. This can occur if this method is called before a dacpac has been loaded")]
+    partial void LogAllSupportedModelTypeClassesAreNullThisCanOccurIfThisMethodIsCalledBeforeADacpac();
 }

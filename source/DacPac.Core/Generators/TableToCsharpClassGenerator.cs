@@ -14,6 +14,8 @@ public class TableToCsharpClassGenerator : CsharpGenerator
         return sqlObject.GenerateTypeName("Table");
     }
 
+    public override ModelTypeClass[] SupportedObjectTypes => [Table.TypeClass];
+
     /// <summary>
     /// Writes a class and mapped properties for the supplied table.
     /// </summary>

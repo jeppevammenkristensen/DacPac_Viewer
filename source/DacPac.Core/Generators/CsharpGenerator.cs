@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Microsoft.SqlServer.Dac;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core.Generators;
@@ -19,6 +20,8 @@ public class NotFoundGenerator : CsharpGenerator
         return string.Empty;
     }
 
+    public override ModelTypeClass[] SupportedObjectTypes => [];
+
     protected override void DoBuild(TSqlObject sqlObject, StringBuilder sb)
     {
         sb.AppendLine($"// No generator found for {sqlObject.Name} of type {sqlObject.ObjectType}");
@@ -36,6 +39,8 @@ public class NotFoundGenerator : CsharpGenerator
 public abstract class CsharpGenerator
 {
     public abstract string TypeName(TSqlObject sqlObject);
+    
+    public abstract ModelTypeClass[] SupportedObjectTypes { get; } 
     
     public virtual IEnumerable<TSqlObject> RequiredObjects(TSqlObject sqlObject) => Enumerable.Empty<TSqlObject>();
     
@@ -62,6 +67,6 @@ public abstract class CsharpGenerator
     /// <summary>
     /// Determines whether this generator supports the supplied DacPac object.
     /// </summary>
-    public abstract bool IsValid(TSqlObject tSqlObject);
+    public virtual bool IsValid(TSqlObject tSqlObject) => SupportedObjectTypes.Any(x => tSqlObject.ObjectType == x);
 
 }

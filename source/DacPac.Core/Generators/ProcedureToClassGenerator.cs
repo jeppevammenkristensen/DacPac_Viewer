@@ -35,6 +35,8 @@ public class ProcedureToClassGenerator : CsharpGenerator
         return sqlObject.GenerateTypeName("Procedure");
     }
 
+    public override ModelTypeClass[] SupportedObjectTypes => [Procedure.TypeClass];
+
     /// <summary>
     /// Writes the procedure wrapper, inferred result types, query methods, and parameter model.
     /// </summary>
@@ -295,9 +297,9 @@ public class ProcedureToClassGenerator : CsharpGenerator
         var matchingSources = resultSets
             .Where(x => string.Equals(x.SourceName, resultSet.SourceName, StringComparison.Ordinal))
             .ToArray();
-        return matchingSources.Length == 1
+        return (matchingSources.Length == 1
             ? resultSet.SourceName
-            : $"{resultSet.SourceName}{Array.IndexOf(matchingSources, resultSet) + 1}";
+            : $"{resultSet.SourceName}{Array.IndexOf(matchingSources, resultSet) + 1}") + "_Result";
     }
 
     /// <summary>
@@ -335,7 +337,7 @@ public class ProcedureToClassGenerator : CsharpGenerator
                 isTableType,
                 parameter.IsOutput ? GetDbType(dataType) : null, 
                 isReadonly,
-                isTableType ? dataType.Name.ToString() : null);
+                isTableType ? dataType!.Name.ToString() : null);
         }).ToList();
     }
 

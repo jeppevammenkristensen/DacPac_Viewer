@@ -11,6 +11,8 @@ public class TableTypeToClassGenerator : CsharpGenerator
         return sqlObject.GenerateTypeName("TableType");
     }
 
+    public override ModelTypeClass[] SupportedObjectTypes => [TableType.TypeClass];
+
     protected override void DoBuild(TSqlObject sqlObject, StringBuilder sb)
     {
         var tableTypeWrapper = sqlObject.ToTableType();

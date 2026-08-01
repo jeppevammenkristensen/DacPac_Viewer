@@ -11,6 +11,8 @@ public class ViewToCsharpClassGenerator : CsharpGenerator
         return sqlObject.GenerateTypeName("View");
     }
 
+    public override ModelTypeClass[] SupportedObjectTypes => [View.TypeClass];
+
     protected override void DoBuild(TSqlObject sqlObject, StringBuilder sb)
     {
         sb.AppendLine("/// <summary>");
