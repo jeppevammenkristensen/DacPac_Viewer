@@ -9,7 +9,7 @@ using DacPac.Core;
 using DacPac.UI.Infrastructure;
 using FileBasedApp.Toolkit.SimpleExec;
 
-namespace DacPac.UI.ViewModels.Docker;
+namespace DacPac.UI.ViewModels.LandingPage.Docker;
 
 /// <summary>
 /// Provides the input fields and future actions for a local Docker SQL Server setup.

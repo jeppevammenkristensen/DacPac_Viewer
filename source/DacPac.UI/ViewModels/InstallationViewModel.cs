@@ -11,7 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Dac;
 using TruePath;
 
-namespace DacPac.UI.ViewModels;
+namespace DacPac.UI.ViewModels.LandingPage;
 
 public partial class InstallationViewModel : ScreenPage
 {

@@ -14,13 +14,43 @@ using CommunityToolkit.Mvvm.Input;
 using DacPac.Core;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure.Messages;
-using DacPac.UI.ViewModels.Displays;
-using DacPac.UI.ViewModels.GeneratedCode;
+using DacPac.UI.ViewModels.LandingPage.Displays;
+using DacPac.UI.ViewModels.LandingPage.GeneratedCode;
+using DacPac.Wrappers;
 using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Dac.Model;
 using TruePath;
 
-namespace DacPac.UI.ViewModels;
+namespace DacPac.UI.ViewModels.LandingPage;
+
+public class ObjectIdentifierComparer : IEqualityComparer<ObjectIdentifier>
+{
+    public bool Equals(ObjectIdentifier? x, ObjectIdentifier? y)
+    {
+        if (ReferenceEquals(x, y)) return true;
+        if (x is null) return false;
+        if (y is null) return false;
+        if (x.GetType() != y.GetType()) return false;
+        return (x.Parts ?? []).SequenceEqual(y.Parts ?? []) && (x.ExternalParts ?? []).SequenceEqual(y.ExternalParts ?? []);
+    }
+
+    public int GetHashCode(ObjectIdentifier obj)
+    {
+        var hash = new HashCode();
+
+        foreach (var part in obj.Parts)
+        {
+            hash.Add(part);
+        }
+
+        foreach (var externalPart in obj.ExternalParts)
+        {
+            hash.Add(externalPart);
+        }
+
+        return hash.ToHashCode();
+    }
+}
 
 /// <summary>
 /// An initial landing page.
@@ -38,10 +68,10 @@ public partial class LandingPageControlViewModel : ScreenPage
     private HashSet<ModelTypeClass> _supportedObjectTypes = [];
 
     /// <summary>
-    /// An initial landing page.
+    /// Initializes the landing page and its application services.
     /// </summary>
     public LandingPageControlViewModel(ILogger<LandingPageControlViewModel> logger,
-        IFilePickerService filePicker, 
+        IFilePickerService filePicker,
         DacPacLoader loader,
         Builder builder,
         IClipboardService clipboard,
@@ -57,55 +87,101 @@ public partial class LandingPageControlViewModel : ScreenPage
         _locator = locator;
         _settingsService = settingsService;
         _mainWindow = mainWindow;
-        
+        SelectedSchemaFilters = [];
     }
 
-    [NotifyPropertyChangedFor(nameof(Title))] [ObservableProperty]
+    /// <summary>
+    /// Gets or sets the title derived from the currently opened dacpac files.
+    /// </summary>
+    [NotifyPropertyChangedFor(nameof(Title))]
+    [ObservableProperty]
     private partial string CurrentTitle { get; set; } = "(empty)";
 
+    /// <summary>
+    /// Gets the title displayed for this page.
+    /// </summary>
     public override string Title => CurrentTitle;
 
-    [ObservableProperty] public partial bool PreventClose { get; set; }
+    /// <summary>
+    /// Gets or sets whether the page must remain open while an operation is in progress.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool PreventClose { get; set; }
 
     /// <summary>The free-text search query.</summary>
-    [ObservableProperty] public partial string SearchText { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string SearchText { get; set; } = string.Empty;
 
     /// <summary>Options shown in the multi-select filter dropdown. Populated later.</summary>
     [ObservableProperty]
     public partial ObservableCollection<FilterOption> FilterOptions { get; set; } = [];
 
-    /// <summary>The currently selected filter options (bound to the ListBox selection).</summary>
     /// <summary>The currently selected filter options (bound to the combobox checkboxes).</summary>
     [ObservableProperty]
     public partial ObservableCollection<string> SelectedFilters { get; set; } = [];
 
+    /// <summary>Schema options currently included in the search.</summary>
+    [ObservableProperty]
+    public partial ObservableCollection<ISchemaOption> SelectedSchemaFilters { get; set; }
+
     /// <summary>Summary shown in the collapsed filter combobox.</summary>
     public string FilterSummary => SelectedFilters.Count == 0 ? "Filters" : $"{SelectedFilters.Count} selected";
 
+    /// <summary>
+    /// Refreshes the filter summary when the selected-filter collection is replaced.
+    /// </summary>
     partial void OnSelectedFiltersChanged(ObservableCollection<string> value)
     {
         OnPropertyChanged(nameof(FilterSummary));
     }
 
 
+    /// <summary>
+    /// Determines whether all rows in the results grid can be selected.
+    /// </summary>
     private bool CanExecuteSelectAll(DataGrid dataGrid)
     {
         return true;
     }
 
+    /// <summary>
+    /// Selects every row in the supplied results grid.
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanExecuteSelectAll))]
     private void SelectAll(DataGrid dataGrid)
     {
         dataGrid.SelectAll();
     }
 
+
+    /// <summary>Toggles whether a schema option is part of the current selection.</summary>
+    [RelayCommand]
+    private void ToggleSchemaFilter(ISchemaOption schemaOption)
+    {
+        var isRemoved = SelectedSchemaFilters.Remove(schemaOption);
+
+        if (schemaOption is AllSchemas)
+        {
+            SelectedSchemaFilters = isRemoved ? [] : [.. SchemaOptions];
+        }
+        else if (!isRemoved)
+        {
+            SelectedSchemaFilters.Add(schemaOption);
+        }
+
+        OnPropertyChanged(nameof(SelectedSchemaFilters));
+        if (SearchCommand.CanExecute(null))
+            SearchCommand.Execute(null);
+    }
+    
+    
     /// <summary>Toggles whether a filter option is part of the current selection.</summary>
     [RelayCommand]
     private void ToggleFilter(FilterOption filterOption)
     {
         var filter = filterOption.Type;
         bool isRemoved = SelectedFilters.Remove(filter);
-        
+
         if (filter == "All")
         {
             if (isRemoved)
@@ -120,7 +196,7 @@ public partial class LandingPageControlViewModel : ScreenPage
         else
         {
             if (!isRemoved)
-                SelectedFilters.Add(filter);    
+                SelectedFilters.Add(filter);
         }
 
         OnPropertyChanged(nameof(SelectedFilters));
@@ -128,16 +204,17 @@ public partial class LandingPageControlViewModel : ScreenPage
 
         if (SearchCommand.CanExecute(null))
             SearchCommand.Execute(null);
-        
     }
 
     /// <summary>Rows shown in the results grid. Populated later.</summary>
-    /// <summary>Rows shown in the results grid. Populated later.</summary>
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(SearchCommand))]
-    public partial ObservableCollection<SearchResultRow> Results { get; set; } = [];
-    
-    [ObservableProperty] 
+    private partial ObservableCollection<SearchResultRow> Results { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets the result rows that match the active search and type filters.
+    /// </summary>
+    [ObservableProperty]
     public partial ObservableCollection<SearchResultRow> FilteredResults { get; set; } = [];
 
     /// <summary>The currently selected result row.</summary>
@@ -146,32 +223,60 @@ public partial class LandingPageControlViewModel : ScreenPage
     public partial SearchResultRow? SelectedResult { get; set; }
 
     /// <summary>Detail text shown in the read-only panel for the selected result.</summary>
-    [ObservableProperty] public partial string DetailsText { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string DetailsText { get; set; } = string.Empty;
 
     /// <summary>Paths of dacpac files chosen via File ▸ Open dacpac.</summary>
     public ObservableCollection<string> OpenedDacpacFiles { get; } = [];
 
-    [ObservableProperty] public partial bool IsLoading { get; set; }
-    [ObservableProperty] public partial string LoadingMessage { get; set; } = "Loading…";
-    [ObservableProperty] public partial IDisplayViewModel Detail { get; set; }
+    /// <summary>
+    /// Gets or sets whether a background operation is active.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool IsLoading { get; set; }
 
+    /// <summary>
+    /// Gets or sets the message shown by the loading overlay.
+    /// </summary>
+    [ObservableProperty]
+    public partial string LoadingMessage { get; set; } = "Loading…";
+
+    /// <summary>
+    /// Gets or sets the detail view model for the selected result.
+    /// </summary>
+    [ObservableProperty]
+    public partial IDisplayViewModel Detail { get; set; }
+
+    [ObservableProperty] public partial ObservableCollection<ISchemaOption> SchemaOptions { get; set; }
+
+    /// <summary>
+    /// Updates the page's close availability when close prevention changes.
+    /// </summary>
     partial void OnPreventCloseChanged(bool value)
     {
         CanClose = !value;
     }
 
+    /// <summary>
+    /// Determines whether the opened dacpac files can be installed.
+    /// </summary>
     private bool CanExecuteInstall()
     {
         return OpenedDacpacFiles.Count > 0;
     }
 
+    /// <summary>
+    /// Opens the installation workflow for the loaded dacpac files.
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanExecuteInstall))]
     private async Task Install()
     {
         await this.Messenger.Send(new OpenInstallationMessage(OpenedDacpacFiles.Select(AbsolutePath.Create).ToArray()));
-        
     }
 
+    /// <summary>
+    /// Creates the appropriate detail view model for the selected result.
+    /// </summary>
     partial void OnSelectedResultChanged(SearchResultRow? value)
     {
         if (value is null) return;
@@ -180,7 +285,7 @@ public partial class LandingPageControlViewModel : ScreenPage
             Detail = new TableDisplayViewModel(value.Source);
         }
         else if (value.Source.ObjectType == Procedure.TypeClass)
-           
+
         {
             Detail = new ProcedureDisplayViewModel(value.Source);
         }
@@ -188,39 +293,83 @@ public partial class LandingPageControlViewModel : ScreenPage
         {
             Detail = new ViewDisplayViewModel(value.Source);
         }
-        
+
         else
         {
-            Detail = new DefaultDisplayViewModel(value.Source);    
+            Detail = new DefaultDisplayViewModel(value.Source);
         }
-        
-        
-        //
-        //
-        // // TODO: refresh DetailsText from the selected result
-        // DetailsText = value?.Source.GetScript() ?? "Not available";
-        
     }
 
+    /// <summary>
+    /// Determines whether a result row matches the current free-text search.
+    /// </summary>
     private bool SearchFilter(SearchResultRow row)
     {
         return row.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
     }
-    
+
+    /// <summary>
+    /// Determines whether loaded results are available to search.
+    /// </summary>
     private bool CanSearch() => Results.Count > 0;
 
+    /// <summary>
+    /// Applies the selected object-type filters and free-text query to the loaded results.
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanSearch))]
     private void Search()
     {
         FilteredResults =
-            [
-                ..Results
-                    .Where(x => SelectedFilters.Contains(x.Type))
-                    .Where(SearchFilter)
-            ];
+        [
+            .. Results
+                .Where(x => SelectedFilters.Contains(x.Type))
+                .Where(SchemaFilter)
+                .Where(SearchFilter)
+        ];
     }
 
-    private bool CanGenerateCode(IList? items) => items is { Count: > 0 };
+    private bool SchemaFilter(SearchResultRow row)
+    {
+        if (SelectedSchemaFilters.Count == 0)
+            return false;
+
+        if (SelectedSchemaFilters.OfType<AllSchemas>().Any())
+        {
+            return true;
+        }
+
+        else
+        {
+            var schemaName = row.Schema;
+            if (schemaName == null)
+                return false;
+
+            if (row.Schema?.Parts.Last() == "dbo")
+            {
+                return SelectedSchemaFilters.OfType<DefaultSchema>().Any();
+            }
+            else
+            {
+                foreach (var schemaWrapped in SelectedSchemaFilters.OfType<SchemaWrapped>())
+                {
+                    var sqlComparer = new ObjectIdentifierComparer();
+                    
+                    if (sqlComparer.Equals(schemaWrapped.Wrapped.SqlObject.Name, schemaName))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+        
+    }
+
+    /// <summary>
+    /// Determines whether code can be generated for the supplied selection.
+    /// </summary>
+    private bool CanGenerateCode(IList? items) => items is {Count: > 0};
 
     /// <summary>Copies the generated code for the selected results to the clipboard.</summary>
     [RelayCommand(CanExecute = nameof(CanGenerateCode))]
@@ -252,6 +401,9 @@ public partial class LandingPageControlViewModel : ScreenPage
         }
     }
 
+    /// <summary>
+    /// Prompts for dacpac files and loads the selected files.
+    /// </summary>
     [RelayCommand]
     private async Task OpenDacpac()
     {
@@ -262,9 +414,12 @@ public partial class LandingPageControlViewModel : ScreenPage
         await OpenDacpacFilesAsync(files.Select(AbsolutePath.Create).ToList());
     }
 
+    private readonly DacQueryScopes _dacQueryScopes = DacQueryScopes.UserDefined;
+    
     /// <summary>
     /// Loads the supplied dacpac files and records them as a recent open operation.
     /// </summary>
+    /// 
     public async Task OpenDacpacFilesAsync(IReadOnlyList<AbsolutePath> files)
     {
         LoadingMessage = "Loading…";
@@ -276,31 +431,41 @@ public partial class LandingPageControlViewModel : ScreenPage
                 _settingsService.RemovePaths(files);
                 return;
             }
-            
+
             OpenedDacpacFiles.Clear();
             Results.Clear();
 
             var uniqueFiles = files.Distinct().ToList();
             List<SearchResultRow> searchResultRows = new();
-            
-            var resultRows = await Task.Run(async () =>
+
+            var resultRows = await Task.Run(() =>
             {
                 var source = _loader.LoadMultiple(uniqueFiles).ToList();
-                
+
                 _supportedObjectTypes = _builder.GetSupportedObjectTypes();
+
+                var schemas = source
+                    .SelectMany(x => x.Model.GetObjects(_dacQueryScopes , Schema.TypeClass)
+                    .DistinctBy(y => y.Name.ToString()))
+                    .Select(x => x.ToSchema())
+                    .ToList();
+
+                SchemaOptions = new ObservableCollection<ISchemaOption>([
+                    new AllSchemas(), new DefaultSchema(), .. schemas.Select(x => new SchemaWrapped(x))
+                ]);
                 
-                return 
-                    source  
-                    .SelectMany(x =>
-                        x.Model.GetObjects(DacQueryScopes.UserDefined).Select(y => new {ObjectName = y, x.Path}))
-                    .Where(x => x.ObjectName.Name.HasName)
-                    .Select(x => new SearchResultRow(x.ObjectName, x.Path.GetFilenameWithoutExtension(),
-                        _supportedObjectTypes.Contains(x.ObjectName.ObjectType))).ToList();
+                return
+                    source
+                        .SelectMany(x =>
+                            x.Model.GetObjects(_dacQueryScopes).Select(y => new {ObjectName = y, x.Path}))
+                        .Where(x => x.ObjectName.Name.HasName)
+                        .Select(x => new SearchResultRow(x.ObjectName, x.Path.GetFilenameWithoutExtension(),
+                            _supportedObjectTypes.Contains(x.ObjectName.ObjectType))).ToList();
             });
 
             OpenedDacpacFiles.AddRange(uniqueFiles.Select(x => x.Value));
             _settingsService.SaveOrUpdatePaths(uniqueFiles);
-            
+
             searchResultRows.AddRange(resultRows);
 
             CurrentTitle = string.Join(",", OpenedDacpacFiles.Select(AbsolutePath.Create).Select(x => x.FileName));
@@ -313,11 +478,12 @@ public partial class LandingPageControlViewModel : ScreenPage
                     .Select(group => new FilterOption(group.Key, group.Any(row => row.GeneratorSupported)))
                     .OrderBy(option => option.Type)
                     .ToList());
-
+            
             Results = new ObservableCollection<SearchResultRow>(searchResultRows);
-            FilteredResults = [..Results];
+            FilteredResults = [.. Results];
             FilterOptions = [new FilterOption("All", false), .. filterOptions];
             SelectedFilters = ["All", .. filterOptions.Select(option => option.Type)];
+            SelectedSchemaFilters = [.. SchemaOptions];
             SetStatusMessage($"Opened {files.Count} dacpac file(s).");
             InstallCommand.NotifyCanExecuteChanged();
         }
@@ -327,6 +493,9 @@ public partial class LandingPageControlViewModel : ScreenPage
         }
     }
 
+    /// <summary>
+    /// Verifies that every supplied dacpac path exists and reports missing files.
+    /// </summary>
     private bool CheckFiles(IReadOnlyList<AbsolutePath> files)
     {
         var nonExisting = files.Where(x => !x.FileExists()).ToList();
@@ -339,24 +508,21 @@ public partial class LandingPageControlViewModel : ScreenPage
         return true;
     }
 
+    /// <summary>
+    /// Records activation of the landing page.
+    /// </summary>
     public override Task OnActivatedAsync()
     {
         _logger.LogInformation("On Activated");
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Records closure of the landing page.
+    /// </summary>
     public override Task CloseAsync()
     {
         _logger.LogInformation("On Close");
         return Task.CompletedTask;
     }
-}
-
-/// <summary>
-/// Represents a selectable object-type filter and whether at least one matching result supports code generation.
-/// </summary>
-public sealed record FilterOption(string Type, bool CanGenerateCode)
-{
-    /// <summary>Gets the label shown in the filter dropdown.</summary>
-    public string DisplayName => CanGenerateCode ? $"{Type} (can generate code)" : Type;
 }

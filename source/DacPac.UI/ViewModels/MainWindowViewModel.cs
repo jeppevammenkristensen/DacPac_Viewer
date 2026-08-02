@@ -9,17 +9,18 @@ using Avalonia.Controls;
 using Avalonia.Styling;
 using DacPac.UI.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
-using DacPac.UI.ViewModels.Settings;
-using DacPac.UI.ViewModels.Docker;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure.Messages;
+using DacPac.UI.ViewModels.LandingPage.Docker;
+using DacPac.UI.ViewModels.LandingPage;
+using DacPac.UI.ViewModels.LandingPage.Settings;
 using JetBrains.Annotations;
 using TruePath;
 
-namespace DacPac.UI.ViewModels;
+namespace DacPac.UI.ViewModels.LandingPage;
 
 /// <summary>
 /// Represents a group of dacpac files that was opened together.
