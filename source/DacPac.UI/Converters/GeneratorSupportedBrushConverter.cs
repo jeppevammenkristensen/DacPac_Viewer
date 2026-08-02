@@ -8,7 +8,7 @@ using Avalonia.Media;
 namespace DacPac.UI.Converters;
 
 /// <summary>
-/// Provides a light green row background for results that support code generation.
+/// Provides a green row background for results that support code generation.
 /// </summary>
 public sealed class GeneratorSupportedBrushConverter : IValueConverter
 {
@@ -16,7 +16,7 @@ public sealed class GeneratorSupportedBrushConverter : IValueConverter
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return value is true ? Brushes.LightGreen : AvaloniaProperty.UnsetValue;
+        return value is true ? Brushes.Green : AvaloniaProperty.UnsetValue;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

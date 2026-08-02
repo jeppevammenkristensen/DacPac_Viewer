@@ -2,7 +2,7 @@
 using DacPac.Core;
 using Microsoft.SqlServer.Dac.Model;
 
-namespace DacPac.UI.ViewModels.Displays;
+namespace DacPac.UI.ViewModels.LandingPage.Displays;
 
 public sealed class ColumnWrapper
 {

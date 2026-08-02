@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using DacPac.UI.Infrastructure;
-using DacPac.UI.ViewModels.GeneratedCode;
+using DacPac.UI.ViewModels.LandingPage.GeneratedCode;
 using Xunit;
 
 namespace DacPac.UI.Tests.ViewModels;
