@@ -1,6 +1,6 @@
 ﻿using Avalonia.Controls;
 using DacPac.UI.Infrastructure;
-using DacPac.UI.ViewModels.Displays;
+using DacPac.UI.ViewModels.LandingPage.Displays;
 
 namespace DacPac.UI.Views.Displays;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using DacPac.Core;
-using DacPac.UI.ViewModels.Displays;
+using DacPac.UI.ViewModels.LandingPage.Displays;
 using Microsoft.SqlServer.Dac.Model;
 using Xunit;
 
