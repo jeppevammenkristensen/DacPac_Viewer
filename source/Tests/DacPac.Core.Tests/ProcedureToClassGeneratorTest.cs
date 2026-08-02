@@ -228,7 +228,7 @@ public class ProcedureToClassGeneratorTest
         var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("public sealed class Bar", output);
-        Assert.Contains("System.Collections.Generic.List<Bar>> QueryAsync", output);
+        Assert.Contains("System.Collections.Generic.List<Bar_Result>> QueryAsync", output);
         Assert.DoesNotContain("public sealed class Result", output);
     }
 
@@ -255,7 +255,7 @@ public class ProcedureToClassGeneratorTest
         var output = new Builder([CreateGenerator()], Logger).Build([GetProcedure(model)]);
 
         Assert.Contains("public sealed class ActiveBar", output);
-        Assert.Contains("System.Collections.Generic.List<ActiveBar>> QueryAsync", output);
+        Assert.Contains("System.Collections.Generic.List<ActiveBar_Result>> QueryAsync", output);
     }
 
     [Fact]
