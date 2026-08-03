@@ -39,6 +39,7 @@
             <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
             <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
             <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}" />
+            <SolidColorBrush x:Key="GeneratorSupportedRowBrush" Color="#243B2B" />
 
             <!-- Window background gradient -->
             <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0%,0%" EndPoint="100%,100%">
@@ -98,6 +99,7 @@
             <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}" />
             <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}" />
             <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}" />
+            <SolidColorBrush x:Key="GeneratorSupportedRowBrush" Color="#E4F5E9" />
 
             <!-- Window background gradient -->
             <LinearGradientBrush x:Key="WindowBackgroundBrush" StartPoint="0%,0%" EndPoint="100%,100%">

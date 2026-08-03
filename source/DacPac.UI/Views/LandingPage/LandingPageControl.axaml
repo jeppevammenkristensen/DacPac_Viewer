@@ -6,7 +6,7 @@
              xmlns:converters="clr-namespace:DacPac.UI.Converters"
              x:DataType="viewModel:LandingPageControlViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="DacPac.UI.Views.LandingPageControl">
+              x:Class="DacPac.UI.Views.LandingPage.LandingPageControl">
     <UserControl.Resources>
         <converters:ContainsConverter x:Key="ContainsConverter" />
     </UserControl.Resources>
@@ -28,7 +28,7 @@
     <Grid RowDefinitions="Auto,*" RowSpacing="12">
         
         <!-- Search bar -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="8">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="8">
             <TextBox Grid.Column="0"
                      PlaceholderText="Search (press enter to execute)…"
                      Classes="Search"
@@ -40,7 +40,7 @@
             </TextBox>
             <ComboBox Grid.Column="1"
                        MinWidth="160"
-                       ToolTip.Tip="Filter options. Click All to toggle all or deselect all"
+                      ToolTip.Tip="Filter options. Click All to toggle all or deselect all"
                       VerticalAlignment="Top"
                       PlaceholderText="{Binding FilterSummary}"
                       ItemsSource="{Binding FilterOptions}">
@@ -108,9 +108,9 @@
                       ItemsSource="{Binding FilteredResults}"
                       SelectedItem="{Binding SelectedResult}"
                       SelectionMode="Extended"
-                       IsReadOnly="True"
-                       AutoGenerateColumns="False"
-                       CanUserResizeColumns="True">
+                      IsReadOnly="True"
+                      AutoGenerateColumns="False"
+                      CanUserResizeColumns="True">
                 <DataGrid.Styles>
                     <Style Selector="DataGridRow" x:DataType="viewModel:SearchResultRow">
                         <Setter Property="Background" Value="{Binding GeneratorSupported, Converter={x:Static converters:GeneratorSupportedBrushConverter.Instance}}" />
@@ -118,9 +118,6 @@
                 </DataGrid.Styles>
                 <DataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Select All" ToolTip.Tip="Select all (ctrl + a) "
-                                  Command="{Binding SelectAllCommand}" CommandParameter="{Binding #ResultsGrid}"
-                                  ></MenuItem>
                         <MenuItem Header="Generate Code for all"
                                   ToolTip.Tip="Generates code for all the currently filtered items"
                                   Command="{Binding GenerateCodeCommand}" CommandParameter="{Binding FilteredResults}">

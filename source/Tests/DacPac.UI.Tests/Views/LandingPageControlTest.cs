@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
-using DacPac.UI.Views;
+using DacPac.UI.Views.LandingPage;
 using Xunit;
 
 namespace DacPac.UI.Tests.Views;

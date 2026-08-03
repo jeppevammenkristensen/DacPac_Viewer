@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Globalization;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Data.Converters;
-using Avalonia.Media;
 
 namespace DacPac.UI.Converters;
 
 /// <summary>
-/// Provides a green row background for results that support code generation.
+/// Resolves the active theme's supported-generator row brush.
 /// </summary>
 public sealed class GeneratorSupportedBrushConverter : IValueConverter
 {
@@ -16,7 +16,13 @@ public sealed class GeneratorSupportedBrushConverter : IValueConverter
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return value is true ? Brushes.Green : AvaloniaProperty.UnsetValue;
+        if (value is not true)
+            return AvaloniaProperty.UnsetValue;
+
+        var application = Application.Current;
+        return application?.TryFindResource("GeneratorSupportedRowBrush", application.ActualThemeVariant, out var brush) == true
+            ? brush
+            : AvaloniaProperty.UnsetValue;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

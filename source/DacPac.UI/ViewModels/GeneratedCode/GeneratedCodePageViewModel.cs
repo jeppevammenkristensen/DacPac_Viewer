@@ -3,7 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DacPac.UI.Infrastructure;
 
-namespace DacPac.UI.ViewModels.LandingPage.GeneratedCode;
+namespace DacPac.UI.ViewModels.GeneratedCode;
 
 /// <summary>
 /// Displays editable C# source produced from DacPac objects.

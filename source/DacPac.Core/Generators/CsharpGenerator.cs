@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Microsoft.SqlServer.Dac;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core.Generators;
