@@ -126,7 +126,10 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     public partial ObservableCollection<ISchemaOption> SelectedSchemaFilters { get; set; }
 
     /// <summary>Summary shown in the collapsed filter combobox.</summary>
-    public string FilterSummary => SelectedFilters.Count == 0 ? "Filters" : $"{SelectedFilters.Count} selected";
+    public string FilterSummary => SelectedFilters.Count == FilterOptions.Count ? "Filters" : $"{SelectedFilters.Count} filter(s) selected";
+
+    public string SchemaSummary =>
+        SelectedSchemaFilters.Count == SchemaOptions.Count ? "Schemas" : $"{SelectedSchemaFilters.Count} schema(s) selected";
 
     /// <summary>
     /// Refreshes the filter summary when the selected-filter collection is replaced.
@@ -134,6 +137,11 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     partial void OnSelectedFiltersChanged(ObservableCollection<string> value)
     {
         OnPropertyChanged(nameof(FilterSummary));
+    }
+
+    partial void OnSelectedSchemaFiltersChanged(ObservableCollection<ISchemaOption> value)
+    {
+        OnPropertyChanged(nameof(SchemaSummary));
     }
 
 
@@ -162,6 +170,8 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         }
 
         OnPropertyChanged(nameof(SelectedSchemaFilters));
+        OnPropertyChanged(nameof(SchemaSummary));
+        
         if (SearchCommand.CanExecute(null))
             SearchCommand.Execute(null);
     }
@@ -239,7 +249,9 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     [ObservableProperty]
     public partial IDisplayViewModel Detail { get; set; }
 
-    [ObservableProperty] public partial ObservableCollection<ISchemaOption> SchemaOptions { get; set; }
+    [ObservableProperty] public partial ObservableCollection<ISchemaOption> SchemaOptions { get; set; } = [];
+
+    
 
     /// <summary>
     /// Updates the page's close availability when close prevention changes.

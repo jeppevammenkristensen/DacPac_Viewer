@@ -38,12 +38,13 @@
                     <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
                 </TextBox.KeyBindings>
             </TextBox>
+            <!-- Keep no visual item selected so the dynamic summary remains visible after checkbox toggles. -->
             <ComboBox Grid.Column="1"
-                       MinWidth="160"
-                      ToolTip.Tip="Filter options. Click All to toggle all or deselect all"
-                      VerticalAlignment="Top"
-                      PlaceholderText="{Binding FilterSummary}"
-                      ItemsSource="{Binding FilterOptions}">
+                       ToolTip.Tip="Filter options. Click All to toggle all or deselect all"
+                       VerticalAlignment="Top"
+                       PlaceholderText="{Binding FilterSummary}"
+                       SelectedIndex="-1"
+                       ItemsSource="{Binding FilterOptions}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="viewModel:FilterOption">
                         <CheckBox HorizontalAlignment="Stretch"
@@ -60,11 +61,13 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <!-- This is a checkbox-driven multi-select; the ComboBox selection is intentionally unused. -->
             <ComboBox Grid.Column="2"
-                      MinWidth="160"
-                      VerticalAlignment="Top"
-                      PlaceholderText="Schema"
-                      ItemsSource="{Binding SchemaOptions}">
+                       MinWidth="160"
+                       PlaceholderText="{Binding SchemaSummary}"
+                       ToolTip.Tip="Schemas options. Click All to toggle all or deselect all"
+                       SelectedIndex="-1"
+                       ItemsSource="{Binding SchemaOptions}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="viewModel:ISchemaOption">
                         <CheckBox HorizontalAlignment="Stretch"
@@ -110,7 +113,8 @@
                       SelectionMode="Extended"
                       IsReadOnly="True"
                       AutoGenerateColumns="False"
-                      CanUserResizeColumns="True">
+                      CanUserResizeColumns="True"
+                      ToolTip.Tip="Select results to view details. Press Ctrl+A to select all, or right-click to generate code.">
                 <DataGrid.Styles>
                     <Style Selector="DataGridRow" x:DataType="viewModel:SearchResultRow">
                         <Setter Property="Background" Value="{Binding GeneratorSupported, Converter={x:Static converters:GeneratorSupportedBrushConverter.Instance}}" />
@@ -133,11 +137,17 @@
                     <DataGridTextColumn Header="Database" Binding="{Binding Database}" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                    <DataGridCheckBoxColumn IsReadOnly="True" Header="Can Generate Code" Binding="{Binding  GeneratorSupported}" />
+                    <DataGridCheckBoxColumn IsReadOnly="True"
+                                            Header="Can Generate Code"
+                                            Binding="{Binding  GeneratorSupported}"
+                                            ToolTip.Tip="Only supported object types can have code generated." />
                 </DataGrid.Columns>
             </DataGrid>
 
-            <GridSplitter Grid.Column="1" Width="4" ResizeDirection="Columns" />
+            <GridSplitter Grid.Column="1"
+                          Width="4"
+                          ResizeDirection="Columns"
+                          ToolTip.Tip="Drag to resize the results and details panes." />
 
             <ContentControl  Grid.Column="2" Content="{Binding Detail}" />
             
