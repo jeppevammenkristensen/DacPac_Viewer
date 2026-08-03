@@ -65,16 +65,23 @@
             SelectedItem="{Binding Screen}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Name="TabTitleTextBox" Text="{Binding Title}">
-                        <TextBlock.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem
-                                    Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).CloseCommand}"
-                                    CommandParameter="{Binding}"
-                                    Header="Close" />
-                            </ContextMenu>
-                        </TextBlock.ContextMenu>
-                    </TextBlock>
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Name="TabTitleTextBox" Text="{Binding Title}" VerticalAlignment="Center">
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem
+                                        Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).CloseCommand}"
+                                        CommandParameter="{Binding}"
+                                        Header="Close" />
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
+                        <Button Classes="TabCloseButton"
+                                Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).CloseCommand}"
+                                CommandParameter="{Binding}"
+                                Content="×"
+                                ToolTip.Tip="Close tab" />
+                    </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
