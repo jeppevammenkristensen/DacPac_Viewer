@@ -370,8 +370,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         if (rows.Length == 0)
         {
             SetStatusMessage("No selected objects support code generation.");
-            return;
-        }
+            return; }
 
         LoadingMessage = "Generating…";
         IsLoading = true;
