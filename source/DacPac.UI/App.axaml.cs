@@ -179,6 +179,7 @@ public class App : Application
 
 
         collection.AddView<TableDisplayViewModel, TableDisplay>();
+        collection.AddView<TableTypeDisplayViewModel, TableTypeDisplay>();
         collection.AddView<ProcedureDisplayViewModel, ProcedureDisplay>();
         collection.AddView<DefaultDisplayViewModel, DefaultDisplay>();
         collection.AddView<ViewDisplayViewModel, ViewDisplay>();
