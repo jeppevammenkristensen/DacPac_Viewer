@@ -288,6 +288,10 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         {
             Detail = new TableDisplayViewModel(value.Source);
         }
+        else if (value.Source.ObjectType == TableType.TypeClass)
+        {
+            Detail = new TableTypeDisplayViewModel(value.Source);
+        }
         else if (value.Source.ObjectType == Procedure.TypeClass)
 
         {
