@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using DacPac.Core;
 using Microsoft.SqlServer.Dac.Model;
 
-namespace DacPac.UI.ViewModels.LandingPage.Displays;
+namespace DacPac.UI.ViewModels.Displays;
 
 public interface IDisplayViewModel 
 {

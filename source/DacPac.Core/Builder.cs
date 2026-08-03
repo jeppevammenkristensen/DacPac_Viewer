@@ -34,15 +34,14 @@ public partial class Builder
 
     public HashSet<ModelTypeClass> GetSupportedObjectTypes()
     {
-        var modelTypeClasses = _generators.SelectMany(x => x.SupportedObjectTypes).ToList();
-        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (modelTypeClasses.All(x => x == null))
+        var modelTypeClasses = _generators.SelectMany(x => x.SupportedObjectTypes).ToHashSet();
+        if (modelTypeClasses.Count == 0)
         {
             LogAllSupportedModelTypeClassesAreNullThisCanOccurIfThisMethodIsCalledBeforeADacpac();
             return [];
         }
         
-        return [.. modelTypeClasses];
+        return modelTypeClasses;
     }
 
     /// <summary>
@@ -62,36 +61,28 @@ public partial class Builder
         {
             if (FindGenerator(sqlObject) is { } generator)
             {
-                if (!mappedGenerators.ContainsKey(sqlObject.Name.ToString()))
-                    mappedGenerators.Add(sqlObject.Name.ToString(), (sqlObject, generator));
+                mappedGenerators.TryAdd(sqlObject.Name.ToString(), (sqlObject, generator));
 
                 foreach (var requiredObject in generator.RequiredObjects(sqlObject))
                 {
-                    if (!mappedGenerators.ContainsKey(requiredObject.Name.ToString()))
+                    if (FindGenerator(requiredObject) is { } requiredGenerator)
                     {
-                        if (FindGenerator(requiredObject) is { } requiredGenerator)
-                        {
-                            mappedGenerators.Add(requiredObject.Name.ToString(), (requiredObject, requiredGenerator));    
-                        }
+                        mappedGenerators.TryAdd(requiredObject.Name.ToString(), (requiredObject, requiredGenerator));
                     }
                 }
             }
             else
             {
-                mappedGenerators.Add(sqlObject.Name.ToString(), (sqlObject, new NotFoundGenerator()));
+                mappedGenerators.TryAdd(sqlObject.Name.ToString(), (sqlObject, new NotFoundGenerator()));
             }
         }
         
-        var generatedBuilders = new StringBuilder[mappedGenerators.Count];
-        Parallel.ForEach(mappedGenerators.Values.Select((mappedGenerator, index) => (mappedGenerator, index)), item =>
+        foreach (var mappedGenerator in mappedGenerators.Values)
         {
             var builder = new StringBuilder();
-            item.mappedGenerator.generator.Build(item.mappedGenerator.sqlObject, builder);
-            generatedBuilders[item.index] = builder;
-        });
-
-        foreach (var builder in generatedBuilders)
+            mappedGenerator.generator.Build(mappedGenerator.sqlObject, builder);
             sb.Append(builder);
+        }
 
         return SyntaxFactory.ParseCompilationUnit(sb.ToString()).NormalizeWhitespace().ToFullString();
             

@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using DacPac.UI.Infrastructure;
 using Microsoft.SqlServer.Dac.Model;
 
-namespace DacPac.UI.ViewModels.LandingPage.Displays;
+namespace DacPac.UI.ViewModels.Displays;
 
 /// <summary>
 /// Provides common display data for a DACPAC SQL object.

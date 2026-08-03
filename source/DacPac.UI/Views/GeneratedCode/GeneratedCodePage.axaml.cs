@@ -1,7 +1,7 @@
 using System;
 using Avalonia.Controls;
 using DacPac.UI.Infrastructure;
-using DacPac.UI.ViewModels.LandingPage.GeneratedCode;
+using DacPac.UI.ViewModels.GeneratedCode;
 
 namespace DacPac.UI.Views.GeneratedCode;
 

@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 
-namespace DacPac.UI.Views;
+namespace DacPac.UI.Views.LandingPage;
 
 public partial class LandingPageControl : UserControl
 {

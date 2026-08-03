@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using AvaloniaEdit.Utils;
 using DacPac.UI.Infrastructure;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -13,9 +12,10 @@ using CommunityToolkit.Mvvm.Messaging;
 using CommunityToolkit.Mvvm.Input;
 using DacPac.Core;
 using DacPac.UI.ApplicationLayer.Infrastructure;
+using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.Infrastructure.Messages;
-using DacPac.UI.ViewModels.LandingPage.Displays;
-using DacPac.UI.ViewModels.LandingPage.GeneratedCode;
+using DacPac.UI.ViewModels.Displays;
+using DacPac.UI.ViewModels.GeneratedCode;
 using DacPac.Wrappers;
 using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Dac.Model;
@@ -23,7 +23,7 @@ using TruePath;
 
 namespace DacPac.UI.ViewModels.LandingPage;
 
-public class ObjectIdentifierComparer : IEqualityComparer<ObjectIdentifier>
+internal sealed class ObjectIdentifierComparer : IEqualityComparer<ObjectIdentifier>
 {
     public bool Equals(ObjectIdentifier? x, ObjectIdentifier? y)
     {
@@ -38,12 +38,12 @@ public class ObjectIdentifierComparer : IEqualityComparer<ObjectIdentifier>
     {
         var hash = new HashCode();
 
-        foreach (var part in obj.Parts)
+        foreach (var part in obj.Parts ?? [])
         {
             hash.Add(part);
         }
 
-        foreach (var externalPart in obj.ExternalParts)
+        foreach (var externalPart in obj.ExternalParts ?? [])
         {
             hash.Add(externalPart);
         }
@@ -55,7 +55,7 @@ public class ObjectIdentifierComparer : IEqualityComparer<ObjectIdentifier>
 /// <summary>
 /// An initial landing page.
 /// </summary>
-public partial class LandingPageControlViewModel : ScreenPage
+public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeChangedMessage>
 {
     private readonly ILogger<LandingPageControlViewModel> _logger;
     private readonly IFilePickerService _filePicker;
@@ -65,6 +65,7 @@ public partial class LandingPageControlViewModel : ScreenPage
     private readonly IServiceLocator _locator;
     private readonly ISettingsService _settingsService;
     private readonly MainWindowViewModel _mainWindow;
+    private static readonly ObjectIdentifierComparer ObjectIdentifierComparer = new();
     private HashSet<ModelTypeClass> _supportedObjectTypes = [];
 
     /// <summary>
@@ -136,24 +137,6 @@ public partial class LandingPageControlViewModel : ScreenPage
     }
 
 
-    /// <summary>
-    /// Determines whether all rows in the results grid can be selected.
-    /// </summary>
-    private bool CanExecuteSelectAll(DataGrid dataGrid)
-    {
-        return true;
-    }
-
-    /// <summary>
-    /// Selects every row in the supplied results grid.
-    /// </summary>
-    [RelayCommand(CanExecute = nameof(CanExecuteSelectAll))]
-    private void SelectAll(DataGrid dataGrid)
-    {
-        dataGrid.SelectAll();
-    }
-
-
     /// <summary>Toggles whether a schema option is part of the current selection.</summary>
     [RelayCommand]
     private void ToggleSchemaFilter(ISchemaOption schemaOption)
@@ -167,6 +150,15 @@ public partial class LandingPageControlViewModel : ScreenPage
         else if (!isRemoved)
         {
             SelectedSchemaFilters.Add(schemaOption);
+        }
+
+        if (schemaOption is not AllSchemas)
+        {
+            var allSchemas = SchemaOptions.OfType<AllSchemas>().FirstOrDefault();
+            if (allSchemas is not null)
+                SelectedSchemaFilters.Remove(allSchemas);
+            if (SelectedSchemaFilters.Count == SchemaOptions.Count - 1)
+                SelectedSchemaFilters.Add(SchemaOptions.OfType<AllSchemas>().First());
         }
 
         OnPropertyChanged(nameof(SelectedSchemaFilters));
@@ -338,32 +330,17 @@ public partial class LandingPageControlViewModel : ScreenPage
             return true;
         }
 
-        else
+        var schemaName = row.Schema;
+        if (schemaName == null)
         {
-            var schemaName = row.Schema;
-            if (schemaName == null)
-                return false;
-
-            if (row.Schema?.Parts.Last() == "dbo")
-            {
-                return SelectedSchemaFilters.OfType<DefaultSchema>().Any();
-            }
-            else
-            {
-                foreach (var schemaWrapped in SelectedSchemaFilters.OfType<SchemaWrapped>())
-                {
-                    var sqlComparer = new ObjectIdentifierComparer();
-                    
-                    if (sqlComparer.Equals(schemaWrapped.Wrapped.SqlObject.Name, schemaName))
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
+            return false;
         }
-        
+
+        if (schemaName.Parts.LastOrDefault() == "dbo")
+            return SelectedSchemaFilters.OfType<DefaultSchema>().Any();
+
+        return SelectedSchemaFilters.OfType<SchemaWrapped>()
+            .Any(schemaWrapped => ObjectIdentifierComparer.Equals(schemaWrapped.Wrapped.SqlObject.Name, schemaName));
     }
 
     /// <summary>
@@ -378,7 +355,11 @@ public partial class LandingPageControlViewModel : ScreenPage
         var rows = items?.OfType<SearchResultRow>()
             .Where(x => x.GeneratorSupported)
             .ToArray() ?? [];
-        if (rows.Length == 0) return;
+        if (rows.Length == 0)
+        {
+            SetStatusMessage("No selected objects support code generation.");
+            return;
+        }
 
         LoadingMessage = "Generating…";
         IsLoading = true;
@@ -438,7 +419,7 @@ public partial class LandingPageControlViewModel : ScreenPage
             var uniqueFiles = files.Distinct().ToList();
             List<SearchResultRow> searchResultRows = new();
 
-            var resultRows = await Task.Run(() =>
+            var loadResult = await Task.Run(() =>
             {
                 var source = _loader.LoadMultiple(uniqueFiles).ToList();
 
@@ -450,23 +431,31 @@ public partial class LandingPageControlViewModel : ScreenPage
                     .Select(x => x.ToSchema())
                     .ToList();
 
-                SchemaOptions = new ObservableCollection<ISchemaOption>([
-                    new AllSchemas(), new DefaultSchema(), .. schemas.Select(x => new SchemaWrapped(x))
-                ]);
-                
-                return
-                    source
+                var schemaOptions = new List<ISchemaOption>
+                {
+                    new AllSchemas(),
+                    new DefaultSchema()
+                };
+                schemaOptions.AddRange(schemas.Select(x => new SchemaWrapped(x)));
+
+                var rows = source
                         .SelectMany(x =>
                             x.Model.GetObjects(_dacQueryScopes).Select(y => new {ObjectName = y, x.Path}))
                         .Where(x => x.ObjectName.Name.HasName)
-                        .Select(x => new SearchResultRow(x.ObjectName, x.Path.GetFilenameWithoutExtension(),
-                            _supportedObjectTypes.Contains(x.ObjectName.ObjectType))).ToList();
+                        .Select(x => new SearchResultRow(
+                            x.ObjectName,
+                            x.Path.GetFilenameWithoutExtension(),
+                            _supportedObjectTypes.Contains(x.ObjectName.ObjectType),
+                            GetSchema(x.ObjectName)))
+                        .ToList();
+
+                return (Rows: rows, SchemaOptions: schemaOptions);
             });
 
             OpenedDacpacFiles.AddRange(uniqueFiles.Select(x => x.Value));
             _settingsService.SaveOrUpdatePaths(uniqueFiles);
 
-            searchResultRows.AddRange(resultRows);
+            searchResultRows.AddRange(loadResult.Rows);
 
             CurrentTitle = string.Join(",", OpenedDacpacFiles.Select(AbsolutePath.Create).Select(x => x.FileName));
 
@@ -483,6 +472,7 @@ public partial class LandingPageControlViewModel : ScreenPage
             FilteredResults = [.. Results];
             FilterOptions = [new FilterOption("All", false), .. filterOptions];
             SelectedFilters = ["All", .. filterOptions.Select(option => option.Type)];
+            SchemaOptions = new ObservableCollection<ISchemaOption>(loadResult.SchemaOptions);
             SelectedSchemaFilters = [.. SchemaOptions];
             SetStatusMessage($"Opened {files.Count} dacpac file(s).");
             InstallCommand.NotifyCanExecuteChanged();
@@ -491,6 +481,14 @@ public partial class LandingPageControlViewModel : ScreenPage
         {
             IsLoading = false;
         }
+    }
+
+    private static ObjectIdentifier? GetSchema(TSqlObject source)
+    {
+        if (source.ObjectType.Relationships.FirstOrDefault(x => x.Name == "Schema") is not { } hasSchema)
+            return null;
+
+        return source.GetReferenced(hasSchema).FirstOrDefault()?.Name;
     }
 
     /// <summary>
@@ -514,6 +512,7 @@ public partial class LandingPageControlViewModel : ScreenPage
     public override Task OnActivatedAsync()
     {
         _logger.LogInformation("On Activated");
+        IsActive = true;
         return Task.CompletedTask;
     }
 
@@ -524,5 +523,13 @@ public partial class LandingPageControlViewModel : ScreenPage
     {
         _logger.LogInformation("On Close");
         return Task.CompletedTask;
+    }
+
+    public void Receive(ThemeChangedMessage message)
+    {
+        foreach (var result in FilteredResults)
+        {
+           result.TriggerGeneratorSupportedChanged();
+        }
     }
 }
