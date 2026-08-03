@@ -137,10 +137,9 @@
                     <DataGridTextColumn Header="Database" Binding="{Binding Database}" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
                     <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                    <DataGridCheckBoxColumn IsReadOnly="True"
-                                            Header="Can Generate Code"
-                                            Binding="{Binding  GeneratorSupported}"
-                                            ToolTip.Tip="Only supported object types can have code generated." />
+                     <DataGridCheckBoxColumn IsReadOnly="True"
+                                             Header="Can Generate Code"
+                                             Binding="{Binding GeneratorSupported}" />
                 </DataGrid.Columns>
             </DataGrid>
 
