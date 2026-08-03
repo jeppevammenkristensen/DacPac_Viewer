@@ -297,9 +297,9 @@ public class ProcedureToClassGenerator : CsharpGenerator
         var matchingSources = resultSets
             .Where(x => string.Equals(x.SourceName, resultSet.SourceName, StringComparison.Ordinal))
             .ToArray();
-        return (matchingSources.Length == 1
+        return matchingSources.Length == 1
             ? resultSet.SourceName
-            : $"{resultSet.SourceName}{Array.IndexOf(matchingSources, resultSet) + 1}") + "_Result";
+            : $"{resultSet.SourceName}{Array.IndexOf(matchingSources, resultSet) + 1}";
     }
 
     /// <summary>

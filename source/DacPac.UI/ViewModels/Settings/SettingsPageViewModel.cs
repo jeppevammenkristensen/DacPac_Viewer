@@ -4,7 +4,7 @@ using DacPac.Core;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure;
 
-namespace DacPac.UI.ViewModels.LandingPage.Settings;
+namespace DacPac.UI.ViewModels.Settings;
 
 public partial class SettingsPageViewModel(
     ISettingsService settingsService,

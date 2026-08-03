@@ -14,13 +14,13 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure.Messages;
-using DacPac.UI.ViewModels.LandingPage.Docker;
 using DacPac.UI.ViewModels.LandingPage;
-using DacPac.UI.ViewModels.LandingPage.Settings;
+using DacPac.UI.ViewModels.Docker;
+using DacPac.UI.ViewModels.Settings;
 using JetBrains.Annotations;
 using TruePath;
 
-namespace DacPac.UI.ViewModels.LandingPage;
+namespace DacPac.UI.ViewModels;
 
 /// <summary>
 /// Represents a group of dacpac files that was opened together.
@@ -258,6 +258,7 @@ public partial class MainWindowViewModel : ViewModelBase,
     private void ToggleTheme()
     {
         IsDarkTheme = !IsDarkTheme;
+        Messenger.Send(new ThemeChangedMessage());
     }
 
     partial void OnIsDarkThemeChanged(bool value)
