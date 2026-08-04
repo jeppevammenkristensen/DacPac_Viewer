@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Messaging;
 using DacPac.UI.ApplicationLayer.Infrastructure;
-using DacPac.UI.Infrastructure.LongRunning;
 using Microsoft.Extensions.Logging;
 using Velopack;
 using Velopack.Sources;
@@ -20,7 +19,8 @@ public partial class VelopackUpdateService : IUpdateService
     private UpdateManager? _lastUsedManager;
     private UpdateInfo? _pendingUpdate;
 
-    public VelopackUpdateService(ILogger<VelopackUpdateService> logger, ISettingsService settingsService, IMessenger messenger)
+    public VelopackUpdateService(ILogger<VelopackUpdateService> logger, ISettingsService settingsService,
+        IMessenger messenger)
     {
         _logger = logger;
         _settingsService = settingsService;
@@ -31,7 +31,8 @@ public partial class VelopackUpdateService : IUpdateService
     // on the next check without requiring an app restart.
     private UpdateManager CreateUpdateManager()
     {
-        return new UpdateManager(new GithubSource(RepositoryUrl, accessToken: null, prerelease: _settingsService.EnableBetaUpdates));
+        return new UpdateManager(new GithubSource(RepositoryUrl, accessToken: null,
+            prerelease: _settingsService.EnableBetaUpdates));
     }
 
     public async Task<string?> CheckAndDownloadUpdateAsync(CancellationToken cancellationToken = default)
@@ -43,22 +44,22 @@ public partial class VelopackUpdateService : IUpdateService
         if (!updateManager.IsInstalled)
         {
             LogNotAVelopackInstallSkippingUpdateCheck();
-            _messenger.Send(new StatusValueDataMessage(new StatusMessage("Not a Velopack install; skipping update check", StatusType.Info)));
+            _messenger.SendInformation("Not a Velopack install; skipping update check");
             return null;
         }
 
         try
         {
-            _messenger.Send(new StatusValueDataMessage(new StatusMessage("Checking for updates...", StatusType.Info)));
+            _messenger.SendInformation("Checking for updates...");
             var update = await updateManager.CheckForUpdatesAsync();
             if (update is null)
             {
-                _messenger.Send(new StatusValueDataMessage(new StatusMessage("Application is up to date", StatusType.Info)));
+                _messenger.SendInformation("Application is up to date");
                 LogApplicationIsUpToDate();
                 return null;
             }
 
-            _messenger.Send(new StatusValueDataMessage(new StatusMessage("Downloading update", StatusType.Info)));
+            _messenger.SendInformation("Downloading update");
             await updateManager.DownloadUpdatesAsync(update, cancelToken: cancellationToken);
             _lastUsedManager = updateManager;
             _pendingUpdate = update;
@@ -67,7 +68,7 @@ public partial class VelopackUpdateService : IUpdateService
         catch (Exception ex)
         {
             // Update failures must never disturb normal application use
-            _messenger.Send(new StatusValueDataMessage(new StatusMessage("Failed to check or download updates", StatusType.Error)));
+            _messenger.SendError("Failed to check or download updates");
             LogCheckingOrDownloadingUpdatesFailed(ex);
             return null;
         }

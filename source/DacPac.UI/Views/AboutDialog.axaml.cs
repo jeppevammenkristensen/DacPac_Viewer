@@ -19,6 +19,11 @@ public partial class AboutDialog : Window
         InitializeComponent();
         DataContext = new AboutDialogViewModel(applicationInfoService);
     }
+
+    private void CloseButton_OnClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Close();
+    }
 }
 
 /// <summary>
