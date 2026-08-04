@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
-using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 
 namespace DacPac.UI.Infrastructure;
 
@@ -20,11 +18,10 @@ public interface IScreenPage : INotifyPropertyChanged
     /// Signal if the current screen can close
     /// </summary>
     bool CanClose { get; set; }
-    
+
     string Title { get; }
 
     Task CloseAsync();
-
 }
 
 /// <summary>
@@ -43,7 +40,8 @@ public abstract partial class ScreenPage : ViewModelBase, IScreenPage
     /// <summary>
     /// Signal if the current screen can close
     /// </summary>
-    [ObservableProperty] public partial bool CanClose { get; set; } = true;
+    [ObservableProperty]
+    public partial bool CanClose { get; set; } = true;
 
     /// <summary>
     /// Override this to perform an operation after an instance of the given
@@ -71,8 +69,7 @@ public abstract partial class ScreenPage : ViewModelBase, IScreenPage
     /// <param name="message"></param>
     protected void SetStatusMessage(string message)
     {
-        var valueMesage = new StatusValueDataMessage(new StatusMessage(message, StatusType.Info));
-        Messenger.Send(valueMesage);
+        Messenger.SendInformation(message);
     }
 
     /// <summary>
@@ -82,7 +79,6 @@ public abstract partial class ScreenPage : ViewModelBase, IScreenPage
     /// <param name="message"></param>
     protected void SetErrorMessage(string message)
     {
-        var valueMesage = new StatusValueDataMessage(new StatusMessage(message, StatusType.Error));
-        Messenger.Send(valueMesage);
+        Messenger.SendError(message);
     }
 }
