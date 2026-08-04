@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:view="clr-namespace:DacPac.UI.Views"
+        x:Class="DacPac.UI.Views.AboutDialog"
+        x:DataType="view:AboutDialogViewModel"
+        CanResize="False"
+        ShowInTaskbar="False"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
+        Title="About DacPac Viewer">
+    <Border Width="360" Padding="20">
+        <StackPanel Spacing="16">
+            <TextBlock Classes="Header" Text="DacPac Viewer" />
+            <TextBlock Text="{Binding Version}" />
+            <Button Command="{Binding OpenReleaseNotesCommand}"
+                    Content="View release notes"
+                    HorizontalAlignment="Left" />
+            <Button HorizontalAlignment="Right"
+                    Content="Close"
+                    IsCancel="True"
+                    IsDefault="True" />
+        </StackPanel>
+    </Border>
+</Window>

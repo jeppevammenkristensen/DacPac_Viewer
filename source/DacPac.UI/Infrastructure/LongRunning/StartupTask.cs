@@ -14,8 +14,7 @@ public class StartupTask(IMessenger messenger, IDockerService service) : BasePro
     
     public override async Task ExecuteTask(CancellationToken? token)
     {
-        ReportStatus("Starting engines... (DummyTask)");
-
+        ReportStatus("Starting engines...");
         ReportStatus("Testing if docker is available");
 
         DockerIsAvailable = await _service.PingDocker();
