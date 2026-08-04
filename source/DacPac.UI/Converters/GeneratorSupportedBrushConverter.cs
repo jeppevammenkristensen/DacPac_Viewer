@@ -14,7 +14,7 @@ public sealed class GeneratorSupportedBrushConverter : IValueConverter
 {
     public static GeneratorSupportedBrushConverter Instance { get; } = new();
 
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not true)
             return AvaloniaProperty.UnsetValue;

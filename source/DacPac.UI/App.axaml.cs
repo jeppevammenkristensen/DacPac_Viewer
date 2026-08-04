@@ -136,6 +136,7 @@ public class App : Application
         services.AddSingleton<IFilePickerService, StorageProviderFilePickerService>();
         services.AddSingleton<IClipboardService, TopLevelClipboardService>();
         services.AddSingleton<IConfirmationDialogService, ConfirmationDialogService>();
+        services.AddSingleton<IApplicationInfoService, ApplicationInfoService>();
         services.AddSingleton<IFolderLauncher, FolderLauncher>();
 
         services.AddSingleton<IFileSystem>(ctx => new FileSystem());
