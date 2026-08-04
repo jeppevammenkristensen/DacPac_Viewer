@@ -17,6 +17,7 @@
                     HorizontalAlignment="Left" />
             <Button HorizontalAlignment="Right"
                     Content="Close"
+                    Click="CloseButton_OnClick"
                     IsCancel="True"
                     IsDefault="True" />
         </StackPanel>
