@@ -54,12 +54,14 @@ public partial class MainWindowViewModel : ViewModelBase,
 {
     private readonly IServiceLocator _locator;
     private readonly IUpdateService _updateService;
+    private readonly IApplicationInfoService _applicationInfoService;
     private readonly ISettingsService _settingsService;
 
-    public MainWindowViewModel(IServiceLocator locator, IUpdateService updateService, ISettingsService settingsService)
+    public MainWindowViewModel(IServiceLocator locator, IUpdateService updateService, IApplicationInfoService applicationInfoService, ISettingsService settingsService)
     {
         _locator = locator;
         _updateService = updateService;
+        _applicationInfoService = applicationInfoService;
         _settingsService = settingsService;
         Screens = [];
         Status = string.Empty;
@@ -122,13 +124,27 @@ public partial class MainWindowViewModel : ViewModelBase,
     /// Gets whether a DacPac installation is in progress.
     /// </summary>
     [NotifyPropertyChangedFor(nameof(IsProgressVisible))]
+    [NotifyPropertyChangedFor(nameof(IsProgressIndeterminate))]
     [ObservableProperty]
     public partial bool IsInstalling { get; set; }
 
     /// <summary>
+    /// Gets whether Velopack is checking for or downloading an application update.
+    /// </summary>
+    [NotifyPropertyChangedFor(nameof(IsProgressVisible))]
+    [NotifyPropertyChangedFor(nameof(IsProgressIndeterminate))]
+    [ObservableProperty]
+    private bool _isUpdating;
+
+    /// <summary>
     /// Gets whether the shared progress indicator should be visible.
     /// </summary>
-    public bool IsProgressVisible => StartupCommand.IsRunning || IsInstalling;
+    public bool IsProgressVisible => IsInstalling || IsUpdating;
+
+    /// <summary>
+    /// Gets whether the shared progress indicator should use its indeterminate state.
+    /// </summary>
+    public bool IsProgressIndeterminate => IsInstalling || IsUpdating;
 
     [ObservableProperty] public partial bool Loaded { get; set; }
 
@@ -186,7 +202,16 @@ public partial class MainWindowViewModel : ViewModelBase,
 
         CurrentProgress = 0;
         var longRunningTask = _locator.GetRequiredService<StartupTask>();
-        await longRunningTask.ExecuteTask(token);
+        IsInstalling = true;
+        try
+        {
+            await longRunningTask.ExecuteTask(token);
+        }
+        finally
+        {
+            IsInstalling = false;
+        }
+
         DockerIsAvailable = longRunningTask.DockerIsAvailable;
         Loaded = true;
         await LaunchPrimaryCommand.ExecuteAsync(null);
@@ -198,12 +223,20 @@ public partial class MainWindowViewModel : ViewModelBase,
 
     private async Task CheckForUpdatesAsync()
     {
-        var version = await _updateService.CheckAndDownloadUpdateAsync();
-        if (version is null) return;
+        IsUpdating = true;
+        try
+        {
+            var version = await _updateService.CheckAndDownloadUpdateAsync();
+            if (version is null) return;
 
-        UpdateAvailable = true;
-        Status = $"Version {version} has been downloaded. Restart to apply it.";
-        StatusType = StatusType.Info;
+            UpdateAvailable = true;
+            Status = $"Version {version} has been downloaded. Restart to apply it.";
+            StatusType = StatusType.Info;
+        }
+        finally
+        {
+            IsUpdating = false;
+        }
     }
 
     /// <summary>
@@ -259,6 +292,18 @@ public partial class MainWindowViewModel : ViewModelBase,
     {
         IsDarkTheme = !IsDarkTheme;
         Messenger.Send(new ThemeChangedMessage());
+    }
+
+    /// <summary>
+    /// Shows the current application version in an About dialog.
+    /// </summary>
+    [RelayCommand]
+    private void ShowAbout()
+    {
+        var owner = (Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+        if (owner is null) return;
+
+        _ = new Views.AboutDialog(_applicationInfoService).ShowDialog(owner);
     }
 
     partial void OnIsDarkThemeChanged(bool value)
