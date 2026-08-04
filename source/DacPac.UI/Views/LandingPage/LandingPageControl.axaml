@@ -44,6 +44,7 @@
                        VerticalAlignment="Top"
                        PlaceholderText="{Binding FilterSummary}"
                        SelectedIndex="-1"
+                       SelectionChanged="ClearComboBoxSelection"
                        ItemsSource="{Binding FilterOptions}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="viewModel:FilterOption">
@@ -67,6 +68,7 @@
                        PlaceholderText="{Binding SchemaSummary}"
                        ToolTip.Tip="Schemas options. Click All to toggle all or deselect all"
                        SelectedIndex="-1"
+                       SelectionChanged="ClearComboBoxSelection"
                        ItemsSource="{Binding SchemaOptions}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="viewModel:ISchemaOption">
