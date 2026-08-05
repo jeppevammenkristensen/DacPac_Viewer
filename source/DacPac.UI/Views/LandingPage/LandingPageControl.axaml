@@ -3,12 +3,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels.LandingPage"
+             xmlns:models="clr-namespace:DacPac.UI.Models.LandingPage"
              xmlns:converters="clr-namespace:DacPac.UI.Converters"
              x:DataType="viewModel:LandingPageControlViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-              x:Class="DacPac.UI.Views.LandingPage.LandingPageControl">
+             x:Class="DacPac.UI.Views.LandingPage.LandingPageControl">
     <UserControl.Resources>
         <converters:ContainsConverter x:Key="ContainsConverter" />
+        <converters:TreeItemIconConverter x:Key="TreeItemIconConverter" />
+        <converters:TreeItemHasIconConverter x:Key="TreeItemHasIconConverter" />
     </UserControl.Resources>
     <UserControl.Styles>
         <Style Selector="Arc.spinner">
@@ -26,7 +29,7 @@
         </Style>
     </UserControl.Styles>
     <Grid RowDefinitions="Auto,*" RowSpacing="12">
-        
+
         <!-- Search bar -->
         <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="8">
             <TextBox Grid.Column="0"
@@ -40,12 +43,12 @@
             </TextBox>
             <!-- Keep no visual item selected so the dynamic summary remains visible after checkbox toggles. -->
             <ComboBox Grid.Column="1"
-                       ToolTip.Tip="Filter options. Click All to toggle all or deselect all"
-                       VerticalAlignment="Top"
-                       PlaceholderText="{Binding FilterSummary}"
-                       SelectedIndex="-1"
-                       SelectionChanged="ClearComboBoxSelection"
-                       ItemsSource="{Binding FilterOptions}">
+                      ToolTip.Tip="Filter options. Click All to toggle all or deselect all"
+                      VerticalAlignment="Top"
+                      PlaceholderText="{Binding FilterSummary}"
+                      SelectedIndex="-1"
+                      SelectionChanged="ClearComboBoxSelection"
+                      ItemsSource="{Binding FilterOptions}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="viewModel:FilterOption">
                         <CheckBox HorizontalAlignment="Stretch"
@@ -55,7 +58,8 @@
                             <CheckBox.IsChecked>
                                 <MultiBinding Converter="{StaticResource ContainsConverter}" Mode="OneWay">
                                     <Binding Path="Type" />
-                                    <Binding Path="$parent[ComboBox].((viewModel:LandingPageControlViewModel)DataContext).SelectedFilters" />
+                                    <Binding
+                                        Path="$parent[ComboBox].((viewModel:LandingPageControlViewModel)DataContext).SelectedFilters" />
                                 </MultiBinding>
                             </CheckBox.IsChecked>
                         </CheckBox>
@@ -64,12 +68,12 @@
             </ComboBox>
             <!-- This is a checkbox-driven multi-select; the ComboBox selection is intentionally unused. -->
             <ComboBox Grid.Column="2"
-                       MinWidth="160"
-                       PlaceholderText="{Binding SchemaSummary}"
-                       ToolTip.Tip="Schemas options. Click All to toggle all or deselect all"
-                       SelectedIndex="-1"
-                       SelectionChanged="ClearComboBoxSelection"
-                       ItemsSource="{Binding SchemaOptions}">
+                      MinWidth="160"
+                      PlaceholderText="{Binding SchemaSummary}"
+                      ToolTip.Tip="Schemas options. Click All to toggle all or deselect all"
+                      SelectedIndex="-1"
+                      SelectionChanged="ClearComboBoxSelection"
+                      ItemsSource="{Binding SchemaOptions}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="viewModel:ISchemaOption">
                         <CheckBox HorizontalAlignment="Stretch"
@@ -79,7 +83,8 @@
                             <CheckBox.IsChecked>
                                 <MultiBinding Converter="{StaticResource ContainsConverter}" Mode="OneWay">
                                     <Binding />
-                                    <Binding Path="$parent[ComboBox].((viewModel:LandingPageControlViewModel)DataContext).SelectedSchemaFilters" />
+                                    <Binding
+                                        Path="$parent[ComboBox].((viewModel:LandingPageControlViewModel)DataContext).SelectedSchemaFilters" />
                                 </MultiBinding>
                             </CheckBox.IsChecked>
                         </CheckBox>
@@ -105,53 +110,78 @@
                     VerticalAlignment="Top"
                     Command="{Binding InstallCommand}" />
         </Grid>
-    
+
         <!-- Results split -->
         <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*">
-            <DataGrid Grid.Column="0"
-                      Name="ResultsGrid"
-                      ItemsSource="{Binding FilteredResults}"
-                      SelectedItem="{Binding SelectedResult}"
-                      SelectionMode="Extended"
-                      IsReadOnly="True"
-                      AutoGenerateColumns="False"
-                      CanUserResizeColumns="True"
-                      ToolTip.Tip="Select results to view details. Press Ctrl+A to select all, or right-click to generate code.">
-                <DataGrid.Styles>
-                    <Style Selector="DataGridRow" x:DataType="viewModel:SearchResultRow">
-                        <Setter Property="Background" Value="{Binding GeneratorSupported, Converter={x:Static converters:GeneratorSupportedBrushConverter.Instance}}" />
-                    </Style>
-                </DataGrid.Styles>
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Generate Code for all"
-                                  ToolTip.Tip="Generates code for all the currently filtered items"
-                                  Command="{Binding GenerateCodeCommand}" CommandParameter="{Binding FilteredResults}">
-                            
-                        </MenuItem>
-                        <MenuItem Header="Generate Code"
-                                  ToolTip.Tip="Generates code for the selected items that support generation"
-                                  Command="{Binding GenerateCodeCommand}"
-                                  CommandParameter="{Binding #ResultsGrid.SelectedItems}" />
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Database" Binding="{Binding Database}" />
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                     <DataGridCheckBoxColumn IsReadOnly="True"
-                                             Header="Can Generate Code"
-                                             Binding="{Binding GeneratorSupported}" />
-                </DataGrid.Columns>
-            </DataGrid>
+
+            <Grid Grid.Column="0" RowDefinitions="*, Auto, *">
+                <DataGrid
+                    Name="ResultsGrid"
+                    ItemsSource="{Binding FilteredResults}"
+                    SelectedItem="{Binding SelectedResult}"
+                    SelectionMode="Extended"
+                    IsReadOnly="True"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    ToolTip.Tip="Select results to view details. Press Ctrl+A to select all, or right-click to generate code.">
+                    <DataGrid.Styles>
+                        <Style Selector="DataGridRow" x:DataType="viewModel:SearchResultRow">
+                            <Setter Property="Background"
+                                    Value="{Binding GeneratorSupported, Converter={x:Static converters:GeneratorSupportedBrushConverter.Instance}}" />
+                        </Style>
+                    </DataGrid.Styles>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Generate Code for all"
+                                      ToolTip.Tip="Generates code for all the currently filtered items"
+                                      Command="{Binding GenerateCodeCommand}"
+                                      CommandParameter="{Binding FilteredResults}">
+
+                            </MenuItem>
+                            <MenuItem Header="Generate Code"
+                                      ToolTip.Tip="Generates code for the selected items that support generation"
+                                      Command="{Binding GenerateCodeCommand}"
+                                      CommandParameter="{Binding #ResultsGrid.SelectedItems}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Database" Binding="{Binding Database}" />
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+                        <DataGridCheckBoxColumn IsReadOnly="True"
+                                                Header="Can Generate Code"
+                                                Binding="{Binding GeneratorSupported}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <GridSplitter Grid.Row="1" Height="4" ResizeDirection="Rows"></GridSplitter>
+
+                <TreeView Grid.Row="2" ItemsSource="{Binding TreeItems}">
+                    <TreeView.ItemTemplate>
+                        <TreeDataTemplate x:DataType="models:ITreeItem"
+                                          ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="6"
+                                        ToolTip.Tip="{Binding ToolTip}">
+                                <PathIcon Width="16"
+                                          Height="16"
+                                          Data="{Binding IconId, Converter={StaticResource TreeItemIconConverter}}"
+                                          IsVisible="{Binding IconId, Converter={StaticResource TreeItemHasIconConverter}}" />
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                            </StackPanel>
+                        </TreeDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+
+            </Grid>
 
             <GridSplitter Grid.Column="1"
                           Width="4"
                           ResizeDirection="Columns"
                           ToolTip.Tip="Drag to resize the results and details panes." />
 
-            <ContentControl  Grid.Column="2" Content="{Binding Detail}" />
-            
+            <ContentControl Grid.Column="2" Content="{Binding Detail}" />
+
             <!-- <TextBox Grid.Column="2" -->
             <!--          IsReadOnly="True" -->
             <!--          AcceptsReturn="True" -->
