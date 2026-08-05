@@ -14,6 +14,7 @@ using DacPac.Core;
 using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.Infrastructure.Messages;
+using DacPac.UI.Models.LandingPage;
 using DacPac.UI.ViewModels.Displays;
 using DacPac.UI.ViewModels.GeneratedCode;
 using DacPac.Wrappers;
@@ -22,35 +23,6 @@ using Microsoft.SqlServer.Dac.Model;
 using TruePath;
 
 namespace DacPac.UI.ViewModels.LandingPage;
-
-internal sealed class ObjectIdentifierComparer : IEqualityComparer<ObjectIdentifier>
-{
-    public bool Equals(ObjectIdentifier? x, ObjectIdentifier? y)
-    {
-        if (ReferenceEquals(x, y)) return true;
-        if (x is null) return false;
-        if (y is null) return false;
-        if (x.GetType() != y.GetType()) return false;
-        return (x.Parts ?? []).SequenceEqual(y.Parts ?? []) && (x.ExternalParts ?? []).SequenceEqual(y.ExternalParts ?? []);
-    }
-
-    public int GetHashCode(ObjectIdentifier obj)
-    {
-        var hash = new HashCode();
-
-        foreach (var part in obj.Parts ?? [])
-        {
-            hash.Add(part);
-        }
-
-        foreach (var externalPart in obj.ExternalParts ?? [])
-        {
-            hash.Add(externalPart);
-        }
-
-        return hash.ToHashCode();
-    }
-}
 
 /// <summary>
 /// An initial landing page.
@@ -64,6 +36,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     private readonly IClipboardService _clipboard;
     private readonly IServiceLocator _locator;
     private readonly ISettingsService _settingsService;
+    private readonly TreeDisplayService _treeDisplayService;
     private readonly MainWindowViewModel _mainWindow;
     private static readonly ObjectIdentifierComparer ObjectIdentifierComparer = new();
     private HashSet<ModelTypeClass> _supportedObjectTypes = [];
@@ -78,6 +51,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         IClipboardService clipboard,
         IServiceLocator locator,
         ISettingsService settingsService,
+        TreeDisplayService treeDisplayService,
         MainWindowViewModel mainWindow)
     {
         _logger = logger;
@@ -87,6 +61,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         _clipboard = clipboard;
         _locator = locator;
         _settingsService = settingsService;
+        _treeDisplayService = treeDisplayService;
         _mainWindow = mainWindow;
         SelectedSchemaFilters = [];
     }
@@ -248,6 +223,12 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     /// </summary>
     [ObservableProperty]
     public partial IDisplayViewModel Detail { get; set; }
+
+    /// <summary>
+    /// Gets the sample hierarchy displayed beneath the search results.
+    /// </summary>
+    [ObservableProperty]
+    public partial ObservableCollection<ITreeItem> TreeItems { get; set; }
 
     [ObservableProperty] public partial ObservableCollection<ISchemaOption> SchemaOptions { get; set; } = [];
 
@@ -461,8 +442,10 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                             x.ObjectName,
                             x.Path.GetFilenameWithoutExtension(),
                             _supportedObjectTypes.Contains(x.ObjectName.ObjectType),
-                            GetSchema(x.ObjectName)))
+                            x.ObjectName.GetSchema()))
                         .ToList();
+
+                TreeItems = [.. _treeDisplayService.GetRoots(source.Select(x => x.Model))];
 
                 return (Rows: rows, SchemaOptions: schemaOptions);
             });
@@ -473,6 +456,8 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             searchResultRows.AddRange(loadResult.Rows);
 
             CurrentTitle = string.Join(",", OpenedDacpacFiles.Select(AbsolutePath.Create).Select(x => x.FileName));
+            
+            
 
             // Computing the filter options touches the DacFx model for every row, so keep it
             // off the UI thread to avoid freezing the window while a dacpac is opened.
@@ -482,6 +467,8 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                     .Select(group => new FilterOption(group.Key, group.Any(row => row.GeneratorSupported)))
                     .OrderBy(option => option.Type)
                     .ToList());
+            
+            
             
             Results = new ObservableCollection<SearchResultRow>(searchResultRows);
             FilteredResults = [.. Results];
@@ -496,14 +483,6 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         {
             IsLoading = false;
         }
-    }
-
-    private static ObjectIdentifier? GetSchema(TSqlObject source)
-    {
-        if (source.ObjectType.Relationships.FirstOrDefault(x => x.Name == "Schema") is not { } hasSchema)
-            return null;
-
-        return source.GetReferenced(hasSchema).FirstOrDefault()?.Name;
     }
 
     /// <summary>

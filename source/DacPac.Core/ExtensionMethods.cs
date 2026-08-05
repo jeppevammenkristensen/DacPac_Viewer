@@ -305,4 +305,9 @@ public static class ExtensionMethods
         "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual",
         "void", "volatile", "while"
     };
+
+    public static IEnumerable<T> SkipNulls<T>(this IEnumerable<T?> source)
+    {
+        return source.Where(x => x != null).Select(x => x!);
+    }
 }
