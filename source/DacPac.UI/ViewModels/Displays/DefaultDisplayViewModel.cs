@@ -29,7 +29,7 @@ public abstract partial class DisplayViewModel : ViewModelBase, IDisplayViewMode
     /// <summary>
     /// Gets or sets the SQL definition script for the object.
     /// </summary>
-    [ObservableProperty] public partial string Script { get; set; }
+    [ObservableProperty] public partial string? Script { get; set; }
 
     /// <summary>
     /// Gets or sets the DAC object type name.
@@ -55,7 +55,7 @@ public abstract partial class DisplayViewModel : ViewModelBase, IDisplayViewMode
         ShortName = model.Name.Parts.Last();
         FullName = model.Name.ToString();
         Type = model.ObjectType.Name;
-        Script = model.GetScript();
+        Script = model.TryGetScript(out var script) ? script : null;
         Referencing = [..model.GetReferencing()
             .Where(FilterReferencing)
             .Select(RenderReferencing).Distinct()];

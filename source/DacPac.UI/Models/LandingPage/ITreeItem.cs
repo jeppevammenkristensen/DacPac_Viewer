@@ -1,6 +1,12 @@
 using System.Collections.Generic;
+using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.Models.LandingPage;
+
+public interface ISqlObjectTreeItem : ITreeItem
+{
+    public TSqlObject Source { get; }
+}
 
 /// <summary>
 /// Represents an item displayed in the landing page tree.

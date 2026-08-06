@@ -19,26 +19,29 @@ public sealed class SchemaTreeItem : ITreeItem
     }
 
     public string Name => _schemaWrapper.Parts.Last();
-    public string IconId => "Schema";
+    public string IconId => TreeIconIds.Schema;
     public string ToolTip => $"Schema: {Name}";
 
     public IEnumerable<ITreeItem> Children => GetChildren();
 
     private IEnumerable<ITreeItem> GetChildren()
     {
-        foreach (var sqlObject in _children)
+        foreach (var sqlObject in _children.GroupBy(x => x.ObjectType.Name))
         {
-            if (sqlObject.ObjectType == Table.TypeClass)
+            var modelTypeClass = sqlObject.First().ObjectType;
+            if (modelTypeClass == Table.TypeClass)
             {
-                yield return new TableTreeItem(sqlObject);
+                var tableTreeItems = sqlObject.Select(x => new TableTreeItem(x));
+                yield return new FolderTreeItem("Tables", tableTreeItems);
             }
-            else if (sqlObject.ObjectType == View.TypeClass)
+            else if (modelTypeClass == View.TypeClass)
             {
-                yield return new ViewTreeItem(sqlObject);
+                var viewTreeItems = sqlObject.Select(x => new ViewTreeItem(x));
+                yield return new FolderTreeItem("Views", viewTreeItems);
             }
-            else if (sqlObject.ObjectType == Procedure.TypeClass)
+            else if (modelTypeClass == Procedure.TypeClass)
             {
-                yield return new ProcedureTreeItem(sqlObject);
+                yield return new FolderTreeItem("Procedures", sqlObject.Select(x => new ProcedureTreeItem(x)));
             }
         }
     }

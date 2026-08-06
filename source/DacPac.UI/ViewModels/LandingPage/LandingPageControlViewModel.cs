@@ -101,10 +101,14 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     public partial ObservableCollection<ISchemaOption> SelectedSchemaFilters { get; set; }
 
     /// <summary>Summary shown in the collapsed filter combobox.</summary>
-    public string FilterSummary => SelectedFilters.Count == FilterOptions.Count ? "Filters" : $"{SelectedFilters.Count} filter(s) selected";
+    public string FilterSummary => SelectedFilters.Count == FilterOptions.Count
+        ? "Filters"
+        : $"{SelectedFilters.Count} filter(s) selected";
 
     public string SchemaSummary =>
-        SelectedSchemaFilters.Count == SchemaOptions.Count ? "Schemas" : $"{SelectedSchemaFilters.Count} schema(s) selected";
+        SelectedSchemaFilters.Count == SchemaOptions.Count
+            ? "Schemas"
+            : $"{SelectedSchemaFilters.Count} schema(s) selected";
 
     /// <summary>
     /// Refreshes the filter summary when the selected-filter collection is replaced.
@@ -146,12 +150,12 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
 
         OnPropertyChanged(nameof(SelectedSchemaFilters));
         OnPropertyChanged(nameof(SchemaSummary));
-        
+
         if (SearchCommand.CanExecute(null))
             SearchCommand.Execute(null);
     }
-    
-    
+
+
     /// <summary>Toggles whether a filter option is part of the current selection.</summary>
     [RelayCommand]
     private void ToggleFilter(FilterOption filterOption)
@@ -232,7 +236,6 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
 
     [ObservableProperty] public partial ObservableCollection<ISchemaOption> SchemaOptions { get; set; } = [];
 
-    
 
     /// <summary>
     /// Updates the page's close availability when close prevention changes.
@@ -265,27 +268,33 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     partial void OnSelectedResultChanged(SearchResultRow? value)
     {
         if (value is null) return;
-        if (value.Source.ObjectType == Table.TypeClass)
-        {
-            Detail = new TableDisplayViewModel(value.Source);
-        }
-        else if (value.Source.ObjectType == TableType.TypeClass)
-        {
-            Detail = new TableTypeDisplayViewModel(value.Source);
-        }
-        else if (value.Source.ObjectType == Procedure.TypeClass)
+        SetDetails(value.Source);
+    }
 
+    /// <summary>
+    /// Creates the appropriate detail view model for the supplied SQL object.
+    /// </summary>
+    internal void SetDetails(TSqlObject sqlObject)
+    {   
+        if (sqlObject.ObjectType == Table.TypeClass)
         {
-            Detail = new ProcedureDisplayViewModel(value.Source);
+            Detail = new TableDisplayViewModel(sqlObject);
         }
-        else if (value.Source.ObjectType == View.TypeClass)
+        else if (sqlObject.ObjectType == TableType.TypeClass)
         {
-            Detail = new ViewDisplayViewModel(value.Source);
+            Detail = new TableTypeDisplayViewModel(sqlObject);
         }
-
+        else if (sqlObject.ObjectType == Procedure.TypeClass)
+        {
+            Detail = new ProcedureDisplayViewModel(sqlObject);
+        }
+        else if (sqlObject.ObjectType == View.TypeClass)
+        {
+            Detail = new ViewDisplayViewModel(sqlObject);
+        }
         else
         {
-            Detail = new DefaultDisplayViewModel(value.Source);
+            Detail = new DefaultDisplayViewModel(sqlObject);
         }
     }
 
@@ -355,7 +364,8 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         if (rows.Length == 0)
         {
             SetStatusMessage("No selected objects support code generation.");
-            return; }
+            return;
+        }
 
         LoadingMessage = "Generating…";
         IsLoading = true;
@@ -392,7 +402,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     }
 
     private readonly DacQueryScopes _dacQueryScopes = DacQueryScopes.UserDefined;
-    
+
     /// <summary>
     /// Loads the supplied dacpac files and records them as a recent open operation.
     /// </summary>
@@ -422,8 +432,8 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                 _supportedObjectTypes = _builder.GetSupportedObjectTypes();
 
                 var schemas = source
-                    .SelectMany(x => x.Model.GetObjects(_dacQueryScopes , Schema.TypeClass)
-                    .DistinctBy(y => y.Name.ToString()))
+                    .SelectMany(x => x.Model.GetObjects(_dacQueryScopes, Schema.TypeClass)
+                        .DistinctBy(y => y.Name.ToString()))
                     .Select(x => x.ToSchema())
                     .ToList();
 
@@ -435,15 +445,15 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                 schemaOptions.AddRange(schemas.Select(x => new SchemaWrapped(x)));
 
                 var rows = source
-                        .SelectMany(x =>
-                            x.Model.GetObjects(_dacQueryScopes).Select(y => new {ObjectName = y, x.Path}))
-                        .Where(x => x.ObjectName.Name.HasName)
-                        .Select(x => new SearchResultRow(
-                            x.ObjectName,
-                            x.Path.GetFilenameWithoutExtension(),
-                            _supportedObjectTypes.Contains(x.ObjectName.ObjectType),
-                            x.ObjectName.GetSchema()))
-                        .ToList();
+                    .SelectMany(x =>
+                        x.Model.GetObjects(_dacQueryScopes).Select(y => new {ObjectName = y, x.Path}))
+                    .Where(x => x.ObjectName.Name.HasName)
+                    .Select(x => new SearchResultRow(
+                        x.ObjectName,
+                        x.Path.GetFilenameWithoutExtension(),
+                        _supportedObjectTypes.Contains(x.ObjectName.ObjectType),
+                        x.ObjectName.GetSchema()))
+                    .ToList();
 
                 TreeItems = [.. _treeDisplayService.GetRoots(source.Select(x => x.Model))];
 
@@ -456,8 +466,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             searchResultRows.AddRange(loadResult.Rows);
 
             CurrentTitle = string.Join(",", OpenedDacpacFiles.Select(AbsolutePath.Create).Select(x => x.FileName));
-            
-            
+
 
             // Computing the filter options touches the DacFx model for every row, so keep it
             // off the UI thread to avoid freezing the window while a dacpac is opened.
@@ -467,9 +476,8 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                     .Select(group => new FilterOption(group.Key, group.Any(row => row.GeneratorSupported)))
                     .OrderBy(option => option.Type)
                     .ToList());
-            
-            
-            
+
+
             Results = new ObservableCollection<SearchResultRow>(searchResultRows);
             FilteredResults = [.. Results];
             FilterOptions = [new FilterOption("All", false), .. filterOptions];
@@ -523,7 +531,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     {
         foreach (var result in FilteredResults)
         {
-           result.TriggerGeneratorSupportedChanged();
+            result.TriggerGeneratorSupportedChanged();
         }
     }
 }

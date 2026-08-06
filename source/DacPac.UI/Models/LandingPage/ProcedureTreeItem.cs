@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DacPac.UI.Views.LandingPage;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.Models.LandingPage;
@@ -7,7 +8,7 @@ namespace DacPac.UI.Models.LandingPage;
 /// <summary>
 /// Represents a stored procedure in the landing page tree.
 /// </summary>
-public sealed class ProcedureTreeItem : ITreeItem
+public sealed class ProcedureTreeItem : ISqlObjectTreeItem
 {
     private readonly TSqlObject _source;
 
@@ -17,7 +18,8 @@ public sealed class ProcedureTreeItem : ITreeItem
     }
 
     public string Name => _source.Name.Parts.Last();
-    public string IconId => "Procedure";
+    public TSqlObject Source => _source;
+    public string IconId => TreeIconIds.Procedure;
     public string ToolTip => $"Procedure: {Name}";
-    public IEnumerable<ITreeItem> Children => [];
+    public IEnumerable<ITreeItem> Children => this.GetReferencedAndReferencing(x => x.ObjectType != DataType.TypeClass);
 }

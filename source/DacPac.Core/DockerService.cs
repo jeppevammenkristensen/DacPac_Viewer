@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Text;
-using System.Text.Unicode;
 using FileBasedApp.Toolkit.SimpleExec;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.Extensions.Logging;
 
 namespace DacPac.Core;
