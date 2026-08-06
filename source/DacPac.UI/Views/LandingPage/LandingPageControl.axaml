@@ -156,18 +156,19 @@
 
                 <GridSplitter Grid.Row="1" Height="4" ResizeDirection="Rows"></GridSplitter>
 
-                <TreeView Grid.Row="2" ItemsSource="{Binding TreeItems}">
+                <TreeView Grid.Row="2" ItemsSource="{Binding TreeItems}"  SelectionChanged="TreeView_OnSelectionChanged" SelectionMode="Single" >
                     <TreeView.ItemTemplate>
                         <TreeDataTemplate x:DataType="models:ITreeItem"
-                                          ItemsSource="{Binding Children}">
+                                          ItemsSource="{Binding Children}" >
                             <StackPanel Orientation="Horizontal"
                                         Spacing="6"
-                                        ToolTip.Tip="{Binding ToolTip}">
+                                        >
                                 <PathIcon Width="16"
                                           Height="16"
+                                          ToolTip.Tip="{Binding ToolTip}"
                                           Data="{Binding IconId, Converter={StaticResource TreeItemIconConverter}}"
                                           IsVisible="{Binding IconId, Converter={StaticResource TreeItemHasIconConverter}}" />
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" ToolTip.Tip="{Binding ToolTip}" />
                             </StackPanel>
                         </TreeDataTemplate>
                     </TreeView.ItemTemplate>
