@@ -6,7 +6,7 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.Infrastructure;
 
-public class TreeDisplayService 
+public class TreeDisplayService
 {
     public IEnumerable<ITreeItem> GetRoots(IEnumerable<TSqlModel> models)
     {

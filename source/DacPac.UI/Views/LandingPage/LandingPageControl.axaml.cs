@@ -21,7 +21,7 @@ public partial class LandingPageControl : UserControl
     private void ClearComboBoxSelection(object? sender, SelectionChangedEventArgs e)
     {
         // This is done to enforce that the Placeholder text (for instance 1 selected) is "always" displayed
-        
+
         if (sender is ComboBox {SelectedIndex: not -1} comboBox)
         {
             comboBox.Clear();
