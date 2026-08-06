@@ -53,6 +53,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <InternalsVisibleTo Include="DacPac.UI.Tests" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Compile Remove="Infrastructure\IFolderLauncher.cs" />
       <Compile Remove="Infrastructure\FolderLauncher.cs" />
       <Compile Update="Views\LandingPage\LandingPageControl.axaml.cs">
