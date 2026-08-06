@@ -53,20 +53,20 @@ public static class SqlObjectExtensions
         params Func<TSqlObject, bool>[] predicates)
     {
         return GetFolderTreeItems("Referenced", source.GetReferencedTreeItems(predicates))
-            .Concat(GetFolderTreeItems("Referencing", source.GetReferencingTreeItems(predicates)));
+            .Concat(GetFolderTreeItems("Referenced by", source.GetReferencingTreeItems(predicates)));
     }
 
     private static IEnumerable<ITreeItem> GetReferencingTreeItems(this ISqlObjectTreeItem sourceTreeItem,
         params Func<TSqlObject, bool>[] predicates)
     {
-        var sqlObjects = sourceTreeItem.Source.GetReferenced();
+        var sqlObjects = sourceTreeItem.Source.GetReferencing();
 
         foreach (var predicate in predicates)
         {
             sqlObjects = sqlObjects.Where(predicate);
         }
 
-        return GetTreeItems(sourceTreeItem.Source.GetReferencing());
+        return GetTreeItems(sqlObjects);
     }
 
     private static IEnumerable<ITreeItem> GetReferencedTreeItems(this ISqlObjectTreeItem sourceTreeItem,
