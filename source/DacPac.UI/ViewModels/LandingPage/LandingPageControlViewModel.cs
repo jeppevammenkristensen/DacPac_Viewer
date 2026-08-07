@@ -86,6 +86,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
 
     /// <summary>The free-text search query.</summary>
     [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(ResetSearchCommand))]
     public partial string SearchText { get; set; } = string.Empty;
 
     /// <summary>Options shown in the multi-select filter dropdown. Populated later.</summary>
@@ -344,6 +345,21 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             IsLoading = false;
         }
     }
+
+    /// <summary>
+    /// Clears the free-text query and reapplies the active filters.
+    /// </summary>
+    [RelayCommand(CanExecute = nameof(CanResetSearch))]
+    private async Task ResetSearch()
+    {
+        SearchText = string.Empty;
+        await Search();
+    }
+
+    /// <summary>
+    /// Determines whether the free-text query can be reset.
+    /// </summary>
+    private bool CanResetSearch() => !string.IsNullOrEmpty(SearchText) && CanSearch();
 
     private void FilterTree()
     {

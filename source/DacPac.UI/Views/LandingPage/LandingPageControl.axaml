@@ -35,11 +35,20 @@
             <TextBox Grid.Column="0"
                      PlaceholderText="Search (press enter to execute)…"
                      Classes="Search"
-                     VerticalAlignment="Top"
-                     Text="{Binding SearchText}">
+                      VerticalAlignment="Top"
+                      Text="{Binding SearchText}">
                 <TextBox.KeyBindings>
                     <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
                 </TextBox.KeyBindings>
+                <TextBox.InnerRightContent>
+                    <Button Classes="SearchReset"
+                            Command="{Binding ResetSearchCommand}"
+                            ToolTip.Tip="Clear search">
+                        <PathIcon Width="14"
+                                  Height="14"
+                                  Data="M19.778 8.222 13.556 14.444l6.222 6.223-2.334 2.333-6.222-6.222L5 23l-2.333-2.333 6.222-6.223L2.667 8.222 5 5.889l6.222 6.222L17.444 5.89z" />
+                    </Button>
+                </TextBox.InnerRightContent>
             </TextBox>
             <!-- Keep no visual item selected so the dynamic summary remains visible after checkbox toggles. -->
             <ComboBox Grid.Column="1"
