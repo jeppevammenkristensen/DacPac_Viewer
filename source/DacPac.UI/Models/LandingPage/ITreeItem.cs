@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.Models.LandingPage;
@@ -32,4 +34,25 @@ public interface ITreeItem
     /// Gets the child items displayed beneath this item.
     /// </summary>
     IEnumerable<ITreeItem> Children { get; }
+
+    /// <summary>
+    /// Gets or sets whether the item's child nodes are displayed.
+    /// </summary>
+    bool IsExpanded { get; set; }
+
+    bool IsHidden { get; set; }
+    
+    bool IsMatch { get; set; }
+}
+
+public static class Extensions
+{
+    public static void Traverse(this ITreeItem item, Action<ITreeItem> action)
+    {
+        action(item);
+        foreach (var itemChild in item. Children)
+        {
+            Traverse(itemChild, action);
+        }
+    }
 }
