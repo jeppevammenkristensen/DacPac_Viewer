@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.Models.LandingPage;
@@ -7,26 +8,35 @@ namespace DacPac.UI.Models.LandingPage;
 /// <summary>
 /// Represents a database schema and its supported objects in the landing page tree.
 /// </summary>
-public sealed class SchemaTreeItem : ITreeItem
+public sealed partial class SchemaTreeItem : ObservableObject, ITreeItem
 {
-    private readonly IEnumerable<TSqlObject> _children;
-    private readonly ObjectIdentifier _schemaWrapper;
+    private readonly IReadOnlyList<ITreeItem> _children;
+    public readonly ObjectIdentifier Identifier;
 
     public SchemaTreeItem(ObjectIdentifier source, IEnumerable<TSqlObject> children)
     {
-        _children = children;
-        _schemaWrapper = source;
+        Identifier = source;
+        _children = GetChildren(children).ToList();
     }
 
-    public string Name => _schemaWrapper.Parts.Last();
+    public string Name => Identifier.Parts.Last();
     public string IconId => TreeIconIds.Schema;
     public string ToolTip => $"Schema: {Name}";
 
-    public IEnumerable<ITreeItem> Children => GetChildren();
+    public IEnumerable<ITreeItem> Children => _children;
 
-    private IEnumerable<ITreeItem> GetChildren()
+    [ObservableProperty]
+    public partial bool IsExpanded { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsHidden { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsMatch { get; set; }
+
+    private static IEnumerable<ITreeItem> GetChildren(IEnumerable<TSqlObject> children)
     {
-        foreach (var sqlObject in _children.GroupBy(x => x.ObjectType.Name))
+        foreach (var sqlObject in children.GroupBy(x => x.ObjectType.Name))
         {
             var modelTypeClass = sqlObject.First().ObjectType;
             if (modelTypeClass == Table.TypeClass)

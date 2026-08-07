@@ -234,6 +234,14 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     [ObservableProperty]
     public partial ObservableCollection<ITreeItem> TreeItems { get; set; }
 
+    /// <summary>
+    /// Gets or sets the currently selected tree item.
+    /// </summary>
+    [NotifyCanExecuteChangedFor(nameof(CopyTreeItemNameCommand))]
+    [NotifyCanExecuteChangedFor(nameof(GenerateTreeItemCodeCommand))]
+    [ObservableProperty]
+    public partial ObservableCollection<ITreeItem> SelectedTreeItem { get; set; } = [];
+
     [ObservableProperty] public partial ObservableCollection<ISchemaOption> SchemaOptions { get; set; } = [];
 
 
@@ -275,7 +283,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     /// Creates the appropriate detail view model for the supplied SQL object.
     /// </summary>
     internal void SetDetails(TSqlObject sqlObject)
-    {   
+    {
         if (sqlObject.ObjectType == Table.TypeClass)
         {
             Detail = new TableDisplayViewModel(sqlObject);
@@ -315,7 +323,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     /// Applies the selected object-type filters and free-text query to the loaded results.
     /// </summary>
     [RelayCommand(CanExecute = nameof(CanSearch))]
-    private void Search()
+    private async Task Search()
     {
         FilteredResults =
         [
@@ -324,6 +332,117 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                 .Where(SchemaFilter)
                 .Where(SearchFilter)
         ];
+
+        IsLoading = true;
+        try
+        {
+            LoadingMessage = "Filtering";
+            await Task.Run(FilterTree);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void FilterTree()
+    {
+        foreach (var treeItem in TreeItems)
+        {
+            treeItem.Traverse(x =>
+            {
+                x.IsHidden = false;
+                x.IsMatch = false;
+                x.IsExpanded = false;
+            });
+        }
+        
+
+        if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            if (SelectedSchemaFilters.Count == SchemaOptions.Count && SelectedFilters.Count == FilterOptions.Count)
+            {
+                ExpandAllTreeItemsCommand.Execute(null);
+                return;
+            }
+        }
+        
+        foreach (var treeItem in TreeItems)
+        {
+            SetExpanded(treeItem, isExpanded: false, includeSqlObjects: true);
+            
+            if (treeItem is SchemaTreeItem sqlObjectTreeItem)
+            {
+                if (!SchemaFilter(sqlObjectTreeItem.Identifier))
+                {
+                    treeItem.IsHidden = true;
+                    continue;
+                }
+            }
+            
+            FilterTreeItem(treeItem);
+        }
+    }
+
+    private (bool isMatch, bool isDirectMatch) FilterTreeItem(ITreeItem treeItem, bool hasSqlObjectAncestor = false)
+    {
+        bool isMatch = false;
+        bool childIsDirectMatch = false;
+        bool isRootMatch = false;
+        
+        if (treeItem is ISqlObjectTreeItem sqlObjectTreeItem)
+        {
+            var (match, directMatch) = IsMatch(sqlObjectTreeItem.Source);
+            isMatch = match;
+
+            sqlObjectTreeItem.IsHidden = !isMatch;
+            if (hasSqlObjectAncestor)
+            {
+                treeItem.IsHidden = false;
+            }
+            
+            sqlObjectTreeItem.IsMatch = directMatch;
+            childIsDirectMatch = directMatch;
+            isRootMatch = true;
+        }
+
+        foreach (var child in treeItem.Children)
+        {
+            var (currentIsMatch, currentIsDirectMatch) = FilterTreeItem(child, isRootMatch || hasSqlObjectAncestor);
+
+            if (currentIsMatch)
+            {
+                isMatch = true;
+            }
+
+            if (currentIsDirectMatch)
+            {
+                childIsDirectMatch = true;
+            }
+        }
+
+        treeItem.IsHidden = !isMatch;
+        if (hasSqlObjectAncestor)
+        {
+            treeItem.IsHidden = false;
+        }
+        
+        treeItem.IsExpanded = (isMatch && !hasSqlObjectAncestor) || childIsDirectMatch;
+
+        return (isMatch, childIsDirectMatch);
+    }
+
+    private (bool match, bool directMatch) IsMatch(TSqlObject source)
+    {
+        
+        if (!SelectedFilters.Contains(source.ObjectType.Name))
+        {
+            return (false,false);
+        }
+        
+        var isTextMatch = (source.Name.Parts?.Last() ?? string.Empty).Contains(this.SearchText, StringComparison.OrdinalIgnoreCase);
+        return (isTextMatch, isTextMatch && !string.IsNullOrWhiteSpace(this.SearchText));   
+        
     }
 
     private bool SchemaFilter(SearchResultRow row)
@@ -348,11 +467,117 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         return SelectedSchemaFilters.OfType<SchemaWrapped>()
             .Any(schemaWrapped => ObjectIdentifierComparer.Equals(schemaWrapped.Wrapped.SqlObject.Name, schemaName));
     }
+    
+    private bool SchemaFilter(ObjectIdentifier? row)
+    {
+        if (SelectedSchemaFilters.Count == 0)
+            return false;
+
+        if (SelectedSchemaFilters.OfType<AllSchemas>().Any())
+        {
+            return true;
+        }       
+        
+        if (row == null)
+        {
+            return false;
+        }
+
+        if (row.Parts.LastOrDefault() == "dbo")
+            return SelectedSchemaFilters.OfType<DefaultSchema>().Any();
+
+        return SelectedSchemaFilters.OfType<SchemaWrapped>()
+            .Any(schemaWrapped => ObjectIdentifierComparer.Equals(schemaWrapped.Wrapped.SqlObject.Name, row));
+    }
 
     /// <summary>
     /// Determines whether code can be generated for the supplied selection.
     /// </summary>
     private bool CanGenerateCode(IList? items) => items is {Count: > 0};
+
+    private bool CanCopyTreeItemName() => SelectedTreeItem is { Count: 1};
+
+    /// <summary>Copies the selected tree item's name to the clipboard.</summary>
+    [RelayCommand(CanExecute = nameof(CanCopyTreeItemName))]
+    private async Task CopyTreeItemName()
+    {
+        if (SelectedTreeItem is { Count: 0})
+            return;
+
+        await _clipboard.SetTextAsync(SelectedTreeItem[0].Name);
+        SetStatusMessage($"Copied {SelectedTreeItem[0].Name} to the clipboard.");
+    }
+
+    private bool CanGenerateTreeItemCode() => SelectedTreeItem?.OfType<ISqlObjectTreeItem>().ToList() is
+        {Count: > 0};
+
+    /// <summary>
+    /// Expands non-SQL grouping nodes throughout the object tree.
+    /// </summary>
+    [RelayCommand]
+    private void ExpandAllTreeItems()
+    {
+        foreach (var item in TreeItems)
+        {
+            SetExpanded(item, isExpanded: true, includeSqlObjects: false);
+        }
+    }
+
+    /// <summary>
+    /// Expands all descendants of the selected tree items.
+    /// </summary>
+    [RelayCommand]
+    private void ExpandSelected()
+    {
+        foreach (var item in SelectedTreeItem)
+        {
+            SetExpanded(item, isExpanded: true, includeSqlObjects: true);
+        }
+    }
+
+    /// <summary>
+    /// Collapses the selected tree items and all their descendants.
+    /// </summary>
+    [RelayCommand]
+    private void CollapseSelected()
+    {
+        foreach (var item in SelectedTreeItem)
+        {
+            SetExpanded(item, isExpanded: false, includeSqlObjects: true);
+        }
+    }
+
+    /// <summary>
+    /// Updates expansion state recursively without depending on generated tree controls.
+    /// </summary>
+    private static void SetExpanded(ITreeItem item, bool isExpanded, bool includeSqlObjects)
+    {
+        if (item is not ISqlObjectTreeItem || includeSqlObjects)
+        {
+            item.IsExpanded = isExpanded;
+        }
+
+        foreach (var child in item.Children)
+        {
+            SetExpanded(child, isExpanded, includeSqlObjects);
+        }
+    }
+                                              
+
+    /// <summary>Generates code for the selected SQL object tree item.</summary>
+    [RelayCommand(CanExecute = nameof(CanGenerateTreeItemCode))]
+    private async Task GenerateTreeItemCode()
+    {
+        if (SelectedTreeItem?.OfType<ISqlObjectTreeItem>().ToList() is not {Count: >0} sqlObjectTreeItems)
+            return;
+
+        var treeItems = sqlObjectTreeItems.Select(treeItem => new SearchResultRow(treeItem.Source,
+            string.Empty,
+            _supportedObjectTypes.Contains(treeItem.Source.ObjectType),
+            treeItem.Source.GetSchema())).ToList();
+
+        await GenerateCode(treeItems);
+    }
 
     /// <summary>Copies the generated code for the selected results to the clipboard.</summary>
     [RelayCommand(CanExecute = nameof(CanGenerateCode))]
@@ -413,85 +638,111 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         IsLoading = true;
         try
         {
-            if (!CheckFiles(files))
+            if (!TryPrepareFiles(files, out var uniqueFiles))
             {
-                _settingsService.RemovePaths(files);
                 return;
             }
 
-            OpenedDacpacFiles.Clear();
-            Results.Clear();
-
-            var uniqueFiles = files.Distinct().ToList();
-            List<SearchResultRow> searchResultRows = new();
-
-            var loadResult = await Task.Run(() =>
-            {
-                var source = _loader.LoadMultiple(uniqueFiles).ToList();
-
-                _supportedObjectTypes = _builder.GetSupportedObjectTypes();
-
-                var schemas = source
-                    .SelectMany(x => x.Model.GetObjects(_dacQueryScopes, Schema.TypeClass)
-                        .DistinctBy(y => y.Name.ToString()))
-                    .Select(x => x.ToSchema())
-                    .ToList();
-
-                var schemaOptions = new List<ISchemaOption>
-                {
-                    new AllSchemas(),
-                    new DefaultSchema()
-                };
-                schemaOptions.AddRange(schemas.Select(x => new SchemaWrapped(x)));
-
-                var rows = source
-                    .SelectMany(x =>
-                        x.Model.GetObjects(_dacQueryScopes).Select(y => new {ObjectName = y, x.Path}))
-                    .Where(x => x.ObjectName.Name.HasName)
-                    .Select(x => new SearchResultRow(
-                        x.ObjectName,
-                        x.Path.GetFilenameWithoutExtension(),
-                        _supportedObjectTypes.Contains(x.ObjectName.ObjectType),
-                        x.ObjectName.GetSchema()))
-                    .ToList();
-
-                TreeItems = [.. _treeDisplayService.GetRoots(source.Select(x => x.Model))];
-
-                return (Rows: rows, SchemaOptions: schemaOptions);
-            });
-
-            OpenedDacpacFiles.AddRange(uniqueFiles.Select(x => x.Value));
-            _settingsService.SaveOrUpdatePaths(uniqueFiles);
-
-            searchResultRows.AddRange(loadResult.Rows);
-
-            CurrentTitle = string.Join(",", OpenedDacpacFiles.Select(AbsolutePath.Create).Select(x => x.FileName));
-
-
-            // Computing the filter options touches the DacFx model for every row, so keep it
-            // off the UI thread to avoid freezing the window while a dacpac is opened.
-            var filterOptions = await Task.Run(() =>
-                searchResultRows
-                    .GroupBy(row => row.Type)
-                    .Select(group => new FilterOption(group.Key, group.Any(row => row.GeneratorSupported)))
-                    .OrderBy(option => option.Type)
-                    .ToList());
-
-
-            Results = new ObservableCollection<SearchResultRow>(searchResultRows);
-            FilteredResults = [.. Results];
-            FilterOptions = [new FilterOption("All", false), .. filterOptions];
-            SelectedFilters = ["All", .. filterOptions.Select(option => option.Type)];
-            SchemaOptions = new ObservableCollection<ISchemaOption>(loadResult.SchemaOptions);
-            SelectedSchemaFilters = [.. SchemaOptions];
-            SetStatusMessage($"Opened {files.Count} dacpac file(s).");
-            InstallCommand.NotifyCanExecuteChanged();
+            var loadResult = await Task.Run(() => LoadDacpacs(uniqueFiles));
+            var filterOptions = await Task.Run(() => CreateFilterOptions(loadResult.Rows));
+            ApplyLoadedDacpacs(files.Count, uniqueFiles, loadResult, filterOptions);
         }
         finally
         {
             IsLoading = false;
         }
     }
+
+    /// <summary>
+    /// Validates the selected paths and clears state that belongs to a previous open operation.
+    /// </summary>
+    private bool TryPrepareFiles(IReadOnlyList<AbsolutePath> files, out List<AbsolutePath> uniqueFiles)
+    {
+        uniqueFiles = [];
+        if (!CheckFiles(files))
+        {
+            _settingsService.RemovePaths(files);
+            return false;
+        }
+
+        OpenedDacpacFiles.Clear();
+        Results.Clear();
+        uniqueFiles = files.Distinct().ToList();
+        return true;
+    }
+
+    /// <summary>
+    /// Loads DAC models and derives data required to populate the page.
+    /// </summary>
+    private LoadedDacpacs LoadDacpacs(IReadOnlyList<AbsolutePath> files)
+    {
+        var source = _loader.LoadMultiple(files).ToList();
+        _supportedObjectTypes = _builder.GetSupportedObjectTypes();
+
+        var schemaOptions = new List<ISchemaOption>
+        {
+            new AllSchemas(),
+            new DefaultSchema()
+        };
+        schemaOptions.AddRange(source
+            .SelectMany(x => x.Model.GetObjects(_dacQueryScopes, Schema.TypeClass)
+                .DistinctBy(y => y.Name.ToString()))
+            .Select(x => new SchemaWrapped(x.ToSchema())));
+
+        var rows = source
+            .SelectMany(x => x.Model.GetObjects(_dacQueryScopes).Select(y => new { ObjectName = y, x.Path }))
+            .Where(x => x.ObjectName.Name.HasName)
+            .Select(x => new SearchResultRow(
+                x.ObjectName,
+                x.Path.GetFilenameWithoutExtension(),
+                _supportedObjectTypes.Contains(x.ObjectName.ObjectType),
+                x.ObjectName.GetSchema()))
+            .ToList();
+
+        var treeItems = _treeDisplayService.GetRoots(source.Select(x => x.Model)).ToList();
+        return new LoadedDacpacs(rows, schemaOptions, treeItems);
+    }
+
+    /// <summary>
+    /// Creates selectable object-type filters from the loaded rows.
+    /// </summary>
+    private static List<FilterOption> CreateFilterOptions(IEnumerable<SearchResultRow> rows)
+    {
+        return rows
+            .GroupBy(row => row.Type)
+            .Select(group => new FilterOption(group.Key, group.Any(row => row.GeneratorSupported)))
+            .OrderBy(option => option.Type)
+            .ToList();
+    }
+
+    /// <summary>
+    /// Applies a completed load operation to the page state.
+    /// </summary>
+    private void ApplyLoadedDacpacs(int fileCount,
+        IReadOnlyList<AbsolutePath> files,
+        LoadedDacpacs loadResult,
+        IReadOnlyList<FilterOption> filterOptions)
+    {
+        OpenedDacpacFiles.AddRange(files.Select(x => x.Value));
+        _settingsService.SaveOrUpdatePaths(files);
+        CurrentTitle = string.Join(",", OpenedDacpacFiles.Select(AbsolutePath.Create).Select(x => x.FileName));
+        TreeItems = [.. loadResult.TreeItems];
+        Results = new ObservableCollection<SearchResultRow>(loadResult.Rows);
+        FilteredResults = [.. Results];
+        FilterOptions = [new FilterOption("All", false), .. filterOptions];
+        SelectedFilters = ["All", .. filterOptions.Select(option => option.Type)];
+        SchemaOptions = new ObservableCollection<ISchemaOption>(loadResult.SchemaOptions);
+        SelectedSchemaFilters = [.. SchemaOptions];
+        SetStatusMessage($"Opened {fileCount} dacpac file(s).");
+        InstallCommand.NotifyCanExecuteChanged();
+        ExpandAllTreeItemsCommand.Execute(null);
+    }
+
+    private sealed record LoadedDacpacs(
+        IReadOnlyList<SearchResultRow> Rows,
+        IReadOnlyList<ISchemaOption> SchemaOptions,
+        IReadOnlyList<ITreeItem> TreeItems);
+
 
     /// <summary>
     /// Verifies that every supplied dacpac path exists and reports missing files.

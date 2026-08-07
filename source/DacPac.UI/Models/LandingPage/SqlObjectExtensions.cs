@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using DacPac.Core;
 using DacPac.UI.ViewModels.LandingPage;
 using DacPac.UI.Views.LandingPage;
@@ -105,10 +106,19 @@ public static class SqlObjectExtensions
     }
 }
 
-public class TypeGroupTreeItem(string display, IEnumerable<ISqlObjectTreeItem> grouping) : ITreeItem
+public partial class TypeGroupTreeItem(string display, IEnumerable<ISqlObjectTreeItem> grouping) : ObservableObject, ITreeItem
 {
     public string Name { get; } = display;
     public string? IconId { get; } = TreeIconIds.Folder;
     public string? ToolTip { get; }
     public IEnumerable<ITreeItem> Children { get; } = grouping.ToList();
+
+    [ObservableProperty]
+    public partial bool IsExpanded { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsHidden { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsMatch { get; set; }
 }

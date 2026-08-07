@@ -1,34 +1,46 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using DacPac.UI.Views.LandingPage;
 using DacPac.Wrappers;
 using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.Models.LandingPage;
 
-public class FolderTreeItem : ITreeItem
+public partial class FolderTreeItem : ObservableObject, ITreeItem
 {
     public IEnumerable<ITreeItem> Items { get; }
 
     public FolderTreeItem(string title, IEnumerable<ITreeItem> items)
     {
         Name = title;
-        Children = items;
+        Children = items.ToList();
     }
 
     public string Name { get; }
     public string? IconId { get; } = TreeIconIds.Folder;
     public string? ToolTip { get; } = null;
     public IEnumerable<ITreeItem> Children { get; }
+
+    [ObservableProperty]
+    public partial bool IsExpanded { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsHidden { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsMatch { get; set; }
 }
 
-public sealed class TableTreeItem : ISqlObjectTreeItem
+public sealed partial class TableTreeItem : ObservableObject, ISqlObjectTreeItem
 {
     public readonly TableWrapper _tableWrapper;
+    private readonly IReadOnlyList<ITreeItem> _children;
 
     public TableTreeItem(TSqlObject source)
     {
         _tableWrapper = source.ToTable();
+        _children = this.GetReferencedAndReferencing().ToList();
     }
 
     public string Name => _tableWrapper.SqlObject.Name.Parts.Last();
@@ -36,5 +48,14 @@ public sealed class TableTreeItem : ISqlObjectTreeItem
     public string IconId => TreeIconIds.Table;
     public string ToolTip => $"Table: {Name}";
 
-    public IEnumerable<ITreeItem> Children => this.GetReferencedAndReferencing();
+    public IEnumerable<ITreeItem> Children => _children;
+
+    [ObservableProperty]
+    public partial bool IsExpanded { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsHidden { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsMatch { get; set; }
 }
