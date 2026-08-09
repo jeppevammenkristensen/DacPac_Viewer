@@ -53,6 +53,10 @@ public sealed partial class SchemaTreeItem : ObservableObject, ITreeItem
             {
                 yield return new FolderTreeItem("Procedures", sqlObject.Select(x => new ProcedureTreeItem(x)));
             }
+            else if (modelTypeClass == TableType.TypeClass)
+            {
+                yield return new FolderTreeItem("Table Types", sqlObject.Select(x => new TableTypeTreeItem(x)));
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace DacPac.UI.Tests.Models.LandingPage;
 
-public class SqlObjectExtensionsTest
+public class SqlObjectTreeToolTest
 {
     [Fact]
     public void GetTreeIcon_ReturnsExpectedIconForSupportedObjectTypes()
@@ -43,7 +43,7 @@ public class SqlObjectExtensionsTest
     }
 
     [Fact]
-    public void GetReferencedAndReferencing_GroupsReferencedAndReferencingObjects()
+    public void GetReferencedAndReferencing_GroupsReferencingObjectsAndOmitsSchemas()
     {
         using var model = CreateModel("""
             CREATE TABLE [dbo].[Customer] ([Id] int NOT NULL);
@@ -54,12 +54,10 @@ public class SqlObjectExtensionsTest
 
         var folders = new TestTreeItem(table).GetReferencedAndReferencing(x => x.ObjectType != Column.TypeClass).ToList();
 
-        var referenced = Assert.IsType<FolderTreeItem>(Assert.Single(folders, x => x.Name == "Referenced"));
-        var referencedBy = Assert.IsType<FolderTreeItem>(Assert.Single(folders, x => x.Name == "Referenced by"));
-        var referencedGroup = Assert.IsType<TypeGroupTreeItem>(Assert.Single(referenced.Children));
+        var referencedBy = Assert.IsType<FolderTreeItem>(Assert.Single(folders));
         var referencingGroup = Assert.IsType<TypeGroupTreeItem>(Assert.Single(referencedBy.Children));
 
-        Assert.Equal("Schemas", referencedGroup.Name);
+        Assert.Equal("Referenced by", referencedBy.Name);
         Assert.Equal("Views", referencingGroup.Name);
         Assert.Equal("CustomerView", Assert.Single(referencingGroup.Children).Name);
     }
@@ -78,5 +76,8 @@ public class SqlObjectExtensionsTest
         public string? ToolTip => null;
         public IEnumerable<ITreeItem> Children => [];
         public TSqlObject Source => source;
+        public bool IsExpanded { get; set; }
+        public bool IsHidden { get; set; }
+        public bool IsMatch { get; set; }
     }
 }

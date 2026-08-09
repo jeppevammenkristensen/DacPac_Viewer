@@ -5,7 +5,7 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.ViewModels.LandingPage;
 
-internal sealed class ObjectIdentifierComparer : IEqualityComparer<ObjectIdentifier>
+internal sealed class ObjectIdentifierComparer : IEqualityComparer<ObjectIdentifier?>
 {
     public bool Equals(ObjectIdentifier? x, ObjectIdentifier? y)
     {
