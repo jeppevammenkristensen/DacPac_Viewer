@@ -12,20 +12,22 @@ public class TreeDisplayServiceTest
     public void GetRoots_GroupsSupportedObjectsBySchemaInNameOrder()
     {
         using var model = CreateModel("""
-                                      CREATE SCHEMA [alpha];
-                                      GO
-                                      CREATE TABLE [dbo].[Customer] ([Id] int NOT NULL);
-                                      GO
-                                      CREATE VIEW [dbo].[CustomerView] AS SELECT [Id] FROM [dbo].[Customer];
-                                      GO
-                                      CREATE PROCEDURE [alpha].[GetCustomer] AS SELECT 1;
-                                      """);
+            CREATE SCHEMA [alpha];
+            GO
+            CREATE TABLE [dbo].[Customer] ([Id] int NOT NULL);
+            GO
+            CREATE VIEW [dbo].[CustomerView] AS SELECT [Id] FROM [dbo].[Customer];
+            GO
+            CREATE PROCEDURE [alpha].[GetCustomer] AS SELECT 1;
+            GO
+            CREATE TYPE [dbo].[CustomerType] AS TABLE ([Id] int NOT NULL);
+            """);
 
         var roots = new TreeDisplayService().GetRoots([model]).Cast<SchemaTreeItem>().ToList();
 
         Assert.Equal(["alpha", "dbo"], roots.Select(x => x.Name));
         Assert.Equal(["Procedures"], roots[0].Children.Select(x => x.Name));
-        Assert.Equal(["Tables", "Views"], roots[1].Children.Select(x => x.Name));
+        Assert.Equal(["Tables", "Table Types", "Views"], roots[1].Children.Select(x => x.Name));
     }
 
     [Fact]
