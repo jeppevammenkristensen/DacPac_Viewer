@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using DacPac.UI.Infrastructure;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -17,10 +19,13 @@ using DacPac.UI.Infrastructure.Messages;
 using DacPac.UI.Models.LandingPage;
 using DacPac.UI.ViewModels.Displays;
 using DacPac.UI.ViewModels.GeneratedCode;
+using DacPac.UI.Views.LandingPage;
 using DacPac.Wrappers;
 using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Dac.Model;
+using Spectre.Console;
 using TruePath;
+using Table = Microsoft.SqlServer.Dac.Model.Table;
 
 namespace DacPac.UI.ViewModels.LandingPage;
 
@@ -40,6 +45,11 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     private readonly MainWindowViewModel _mainWindow;
     private static readonly ObjectIdentifierComparer ObjectIdentifierComparer = new();
     private HashSet<ModelTypeClass> _supportedObjectTypes = [];
+
+    /// <summary>
+    /// Gets the tree control that displays the loaded database objects.
+    /// </summary>
+    public TreeView ObjectTree { get; set; } = null!;
 
     /// <summary>
     /// Initializes the landing page and its application services.
@@ -125,6 +135,70 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     }
 
 
+    private bool CanExecuteNavigateTo(ITreeItem item)
+    {
+        if (item is not SimpleTreeItem simple)
+        {
+            return false;
+        }
+
+        return simple.Source.IsRootType();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteNavigateTo))]
+    private async Task NavigateTo(ITreeItem item)
+    {
+        if (item is not SimpleTreeItem simpleTreeItem)
+        {
+            return;
+        }
+
+        // Locate the equivalent root object in the loaded tree by its SQL object identifier.
+        var comparer = new ObjectIdentifierComparer();
+        
+        foreach (var treeItem in TreeItems)
+        {
+            foreach (var treeItemChild in treeItem.Children)
+            {
+                if (treeItemChild.Children.OfType<ISqlObjectTreeItem>()
+                        .FirstOrDefault(x => comparer.Equals(x.Source.Name, simpleTreeItem.Source.Name)) is { } match)
+                {
+                    // Expand the matching branch and select the target before finding its realized visual container.
+                    match.IsHidden = false;
+                    match.IsExpanded = true;
+                    SelectedTreeItem = [match];
+                    
+                    treeItemChild.IsExpanded = true;
+                    treeItemChild.IsHidden = false;
+                    
+                    treeItem.IsExpanded = true;
+                    treeItem.IsHidden = false;
+                    
+                    this.Messenger.SendInformation($"Selected {match.Name}");
+
+                    // ObjectTree is assigned by LandingPageControl when it attaches this view model. This deliberate
+                    // view dependency is required to find the realized TreeViewItem and bring it into view.
+                    await Dispatcher.UIThread.InvokeAsync(async () =>
+                    {
+                        if (LandingPageControl.FindContainer(ObjectTree, match) is { } matchTreeViewItem)
+                        {
+                            matchTreeViewItem.BringIntoView();
+                        }
+                        else
+                        {
+                            _logger.LogWarning("Failed to match item");
+                        }
+
+                        await Task.CompletedTask;
+                    });
+                        
+
+                    return;
+                }
+            }
+        }
+    }
+    
     /// <summary>Toggles whether a schema option is part of the current selection.</summary>
     [RelayCommand]
     private void ToggleSchemaFilter(ISchemaOption schemaOption)

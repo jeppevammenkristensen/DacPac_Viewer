@@ -193,6 +193,10 @@
                                       Command="{Binding CopyTreeItemNameCommand}" />
                             <MenuItem Header="Generate Code"
                                       Command="{Binding GenerateTreeItemCodeCommand}" />
+                             <MenuItem Header="Navigate to"
+                                       Command="{Binding NavigateToCommand}"
+                                       CommandParameter="{Binding #ObjectTree.SelectedItem}" />
+                            
                         </ContextMenu>
                     </TreeView.ContextMenu>
                     <TreeView.ItemTemplate>
