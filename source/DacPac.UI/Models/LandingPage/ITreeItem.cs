@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using Microsoft.SqlServer.Dac.Model;
 
@@ -47,6 +48,19 @@ public interface ITreeItem
 
 public static class Extensions
 {
+    public static void Traverse(this ITreeItem item, ImmutableArray<ITreeItem>? parents, Action<ITreeItem, ImmutableArray<ITreeItem>> action)
+    {
+        var tree = parents ?? ImmutableArray<ITreeItem>.Empty;
+
+        action(item, tree);
+        tree = tree.Add(item);
+        
+        foreach (var itemChild in item. Children)
+        {
+            Traverse(itemChild, tree, action);
+        }
+    }
+    
     public static void Traverse(this ITreeItem item, Action<ITreeItem> action)
     {
         action(item);

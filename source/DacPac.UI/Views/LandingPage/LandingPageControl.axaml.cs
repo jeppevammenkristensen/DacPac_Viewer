@@ -18,6 +18,15 @@ public partial class LandingPageControl : UserControl
     {
         InitializeComponent();
         ResultsGrid.KeyDown += ResultsGridOnKeyDown;
+        DataContextChanged += OnDataContextChanged;
+    }
+
+    private void OnDataContextChanged(object? sender, EventArgs e)
+    {
+        if (DataContext is LandingPageControlViewModel viewModel)
+        {
+            viewModel.ObjectTree = ObjectTree;
+        }
     }
 
     private void ClearComboBoxSelection(object? sender, SelectionChangedEventArgs e)
@@ -109,7 +118,7 @@ public partial class LandingPageControl : UserControl
         item.IsExpanded = false;
     }
 
-    private static TreeViewItem? FindContainer(ItemsControl parent, object selectedItem)
+    public static TreeViewItem? FindContainer(ItemsControl parent, object selectedItem)
     {
         foreach (var container in parent.GetRealizedContainers().OfType<TreeViewItem>())
         {
