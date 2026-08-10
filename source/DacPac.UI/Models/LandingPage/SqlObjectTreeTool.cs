@@ -31,6 +31,15 @@ public static class SqlObjectTreeTool
         return source.ObjectType == typeName;
     }
 
+    /// <summary>
+    /// Determines whether the SQL object type is displayed at the tree root.
+    /// </summary>
+    public static bool IsRootType(this TSqlObject source)
+    {
+        return SqlObjectConstants.RootModelTypes.Contains(source.ObjectType);
+        
+    }
+    
     public static string? GetTreeIcon(this TSqlObject source)
     {
         if (source.IsType(Column.TypeClass))
