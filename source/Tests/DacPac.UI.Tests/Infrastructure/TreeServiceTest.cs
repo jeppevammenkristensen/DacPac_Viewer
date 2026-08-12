@@ -6,7 +6,7 @@ using Xunit;
 
 namespace DacPac.UI.Tests.Infrastructure;
 
-public class TreeDisplayServiceTest
+public class TreeServiceTest
 {
     [Fact]
     public void GetRoots_GroupsSupportedObjectsBySchemaInNameOrder()
@@ -23,7 +23,7 @@ public class TreeDisplayServiceTest
             CREATE TYPE [dbo].[CustomerType] AS TABLE ([Id] int NOT NULL);
             """);
 
-        var roots = new TreeDisplayService().GetRoots([model]).Cast<SchemaTreeItem>().ToList();
+        var roots = new TreeService().GetRoots([model]).Cast<SchemaTreeItem>().ToList();
 
         Assert.Equal(["alpha", "dbo"], roots.Select(x => x.Name));
         Assert.Equal(["Procedures"], roots[0].Children.Select(x => x.Name));
@@ -35,7 +35,7 @@ public class TreeDisplayServiceTest
     {
         using var model = CreateModel("CREATE TYPE [dbo].[CustomerId] FROM int;");
 
-        var roots = new TreeDisplayService().GetRoots([model]).ToList();
+        var roots = new TreeService().GetRoots([model]).ToList();
 
         Assert.Empty(roots);
     }

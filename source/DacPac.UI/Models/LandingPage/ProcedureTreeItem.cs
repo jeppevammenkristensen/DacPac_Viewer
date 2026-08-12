@@ -9,7 +9,7 @@ namespace DacPac.UI.Models.LandingPage;
 /// <summary>
 /// Represents a stored procedure in the landing page tree.
 /// </summary>
-public sealed partial class ProcedureTreeItem : ObservableObject, ISqlObjectTreeItem
+public sealed partial class ProcedureTreeItem : ObservableObject, ISqlObjectRootTreeItem
 {
     private readonly TSqlObject _source;
     private readonly IReadOnlyList<ITreeItem> _children;

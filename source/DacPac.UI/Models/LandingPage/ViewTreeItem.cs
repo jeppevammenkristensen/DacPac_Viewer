@@ -9,7 +9,7 @@ namespace DacPac.UI.Models.LandingPage;
 /// <summary>
 /// Represents a database view in the landing page tree.
 /// </summary>
-public sealed partial class ViewTreeItem : ObservableObject, ISqlObjectTreeItem
+public sealed partial class ViewTreeItem : ObservableObject, ISqlObjectRootTreeItem
 {
     private readonly TSqlObject _source;
     private readonly IReadOnlyList<ITreeItem> _children;

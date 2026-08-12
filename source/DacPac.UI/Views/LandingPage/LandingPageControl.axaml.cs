@@ -103,16 +103,17 @@ public partial class LandingPageControl : UserControl
             var container = FindContainer(ObjectTree, selectedItem);
             if (container is not null)
             {
-                CollapseAll(container);
+                CollapseAllForItem(container);
             }
         }
     }
+   
 
-    private static void CollapseAll(TreeViewItem item)
+    private static void CollapseAllForItem(TreeViewItem item)
     {
         foreach (var child in item.GetRealizedContainers().OfType<TreeViewItem>())
         {
-            CollapseAll(child);
+            CollapseAllForItem(child);
         }
 
         item.IsExpanded = false;

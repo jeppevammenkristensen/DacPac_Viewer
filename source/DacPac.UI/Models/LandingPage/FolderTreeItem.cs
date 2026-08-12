@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -18,13 +19,13 @@ public interface IWrappingTreeItem<TSelf, TTreeItem> : ITreeItem
 
 public partial class FolderTreeItem : ObservableObject, IWrappingTreeItem<FolderTreeItem, ITreeItem>
 {
-    public IEnumerable<ITreeItem> Items { get; }
+    public ImmutableArray<ITreeItem> Items { get; }
 
     public FolderTreeItem(string title, IEnumerable<ITreeItem> items)
     {
         Name = title;
-        Items = items.ToList();
-        Children = Items;
+        Items = [.. items];
+        Children = Items.ToList();
     }
 
     public static FolderTreeItem Create(string name, IEnumerable<ITreeItem> children)

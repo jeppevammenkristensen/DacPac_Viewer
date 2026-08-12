@@ -6,6 +6,15 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.Models.LandingPage;
 
+/// <summary>
+/// A marker interface for the upper level tree item
+/// </summary>
+/// <remarks>This is used when searching to identify root items.</remarks>
+public interface ISqlObjectRootTreeItem : ISqlObjectTreeItem
+{
+    
+}
+
 public interface ISqlObjectTreeItem : ITreeItem
 {
     public TSqlObject Source { get; }
@@ -60,6 +69,8 @@ public static class Extensions
             Traverse(itemChild, tree, action);
         }
     }
+    
+    
     
     public static void Traverse(this ITreeItem item, Action<ITreeItem> action)
     {
