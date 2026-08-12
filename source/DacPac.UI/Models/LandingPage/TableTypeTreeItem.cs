@@ -10,7 +10,7 @@ namespace DacPac.UI.Models.LandingPage;
 /// <summary>
 /// Represents a user-defined table type in the landing page tree.
 /// </summary>
-public sealed partial class TableTypeTreeItem : ObservableObject, ISqlObjectTreeItem
+public sealed partial class TableTypeTreeItem : ObservableObject, ISqlObjectRootTreeItem
 {
     private readonly TSqlObject _source;
     private readonly IReadOnlyList<ITreeItem> _children;

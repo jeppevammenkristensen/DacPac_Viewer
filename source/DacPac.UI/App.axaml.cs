@@ -138,7 +138,7 @@ public class App : Application
         services.AddSingleton<IConfirmationDialogService, ConfirmationDialogService>();
         services.AddSingleton<IApplicationInfoService, ApplicationInfoService>();
         services.AddSingleton<IFolderLauncher, FolderLauncher>();
-        services.AddSingleton<TreeDisplayService>();
+        services.AddSingleton<TreeService>();
 
         services.AddSingleton<IFileSystem>(ctx => new FileSystem());
         services.SetupApplicationLayerService();
