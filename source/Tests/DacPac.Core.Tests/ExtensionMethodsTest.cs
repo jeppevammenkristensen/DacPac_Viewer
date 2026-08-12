@@ -1,4 +1,5 @@
 using System.Linq;
+using DacPac.Core;
 using Microsoft.SqlServer.Dac.Model;
 using Xunit;
 
@@ -6,6 +7,14 @@ namespace DacPac.Core.Tests;
 
 public class ExtensionMethodsTest
 {
+    [Fact]
+    public void EscapeMarkdown_EscapesMarkdownMetacharacters()
+    {
+        var result = "# Heading [link](https://example.com) *emphasis*!".EscapeMarkdown();
+
+        Assert.Equal("\\# Heading \\[link\\]\\(https://example\\.com\\) \\*emphasis\\*\\!", result);
+    }
+
     [Fact]
     public void GetDotNetDataType_MapsUserDefinedTypeNameToUnderlyingType()
     {

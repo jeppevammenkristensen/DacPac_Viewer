@@ -902,6 +902,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     {
         _logger.LogInformation("On Activated");
         IsActive = true;
+        
         return Task.CompletedTask;
     }
 

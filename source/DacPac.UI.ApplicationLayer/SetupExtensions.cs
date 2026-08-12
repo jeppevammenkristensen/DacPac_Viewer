@@ -12,5 +12,6 @@ public static class SetupExtensions
         services.AddSingleton<IMachineIdentityProvider, LinuxMachineIdentityProvider>();
         services.AddSingleton<IStringEncrypter, StringEncrypter>();
         services.AddSingleton<ISettingsService, JsonFileSettingsService>();
+        services.AddSingleton<IErrorCollector, ErrorCollector>();
     }
 }

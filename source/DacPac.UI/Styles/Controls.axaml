@@ -45,7 +45,7 @@
         <Setter Property="BorderThickness" Value="0,1,0,0" />
         <Setter Property="Padding" Value="14,8" />
     </Style>
-    <Style Selector="Border.StatusBar > TextBlock">
+    <Style Selector="Border.StatusBar TextBlock">
         <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}" />
         <Setter Property="FontSize" Value="12" />
     </Style>
@@ -53,7 +53,7 @@
         <Setter Property="Background" Value="{DynamicResource StatusBarErrorBrush}" />
         <Setter Property="Padding" Value="14,8" />
     </Style>
-    <Style Selector="Border.StatusBarRed > TextBlock">
+    <Style Selector="Border.StatusBarRed TextBlock">
         <Setter Property="Foreground" Value="#FFE5E5" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="12" />
@@ -63,7 +63,7 @@
         <Setter Property="Background" Value="{DynamicResource StatusBarSuccessBrush}" />
         <Setter Property="Padding" Value="14,8" />
     </Style>
-    <Style Selector="Border.StatusBarSuccess > TextBlock">
+    <Style Selector="Border.StatusBarSuccess TextBlock">
         <Setter Property="Foreground" Value="#FFE5E5" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="12" />
