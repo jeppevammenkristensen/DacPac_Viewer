@@ -107,7 +107,7 @@ public partial class LandingPageControl : UserControl
             }
         }
     }
-   
+
 
     private static void CollapseAllForItem(TreeViewItem item)
     {
