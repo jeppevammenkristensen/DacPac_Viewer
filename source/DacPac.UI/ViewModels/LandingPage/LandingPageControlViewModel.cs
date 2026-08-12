@@ -24,7 +24,6 @@ using DacPac.UI.Views.LandingPage;
 using DacPac.Wrappers;
 using Microsoft.Extensions.Logging;
 using Microsoft.SqlServer.Dac.Model;
-using Spectre.Console;
 using TruePath;
 using Table = Microsoft.SqlServer.Dac.Model.Table;
 
@@ -127,11 +126,13 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     /// </summary>
     partial void OnSelectedFiltersChanged(ObservableCollection<string> value)
     {
+        _ = value;
         OnPropertyChanged(nameof(FilterSummary));
     }
 
     partial void OnSelectedSchemaFiltersChanged(ObservableCollection<ISchemaOption> value)
     {
+        _ = value;
         OnPropertyChanged(nameof(SchemaSummary));
     }
 
@@ -156,7 +157,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
 
         // Locate the equivalent root object in the loaded tree by its SQL object identifier.
         var comparer = new ObjectIdentifierComparer();
-        
+
         foreach (var treeItem in TreeItems)
         {
             foreach (var treeItemChild in treeItem.Children)
@@ -168,13 +169,13 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                     match.IsHidden = false;
                     match.IsExpanded = true;
                     SelectedTreeItem = [match];
-                    
+
                     treeItemChild.IsExpanded = true;
                     treeItemChild.IsHidden = false;
-                    
+
                     treeItem.IsExpanded = true;
                     treeItem.IsHidden = false;
-                    
+
                     this.Messenger.SendInformation($"Selected {match.Name}");
 
                     // ObjectTree is assigned by LandingPageControl when it attaches this view model. This deliberate
@@ -192,14 +193,14 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
 
                         await Task.CompletedTask;
                     });
-                        
+
 
                     return;
                 }
             }
         }
     }
-    
+
     /// <summary>Toggles whether a schema option is part of the current selection.</summary>
     [RelayCommand]
     private void ToggleSchemaFilter(ISchemaOption schemaOption)
@@ -302,13 +303,13 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     /// Gets or sets the detail view model for the selected result.
     /// </summary>
     [ObservableProperty]
-    public partial IDisplayViewModel Detail { get; set; }
+    public partial IDisplayViewModel? Detail { get; set; }
 
     /// <summary>
     /// Gets the sample hierarchy displayed beneath the search results.
     /// </summary>
     [ObservableProperty]
-    public partial ObservableCollection<ITreeItem> TreeItems { get; set; }
+    public partial ObservableCollection<ITreeItem> TreeItems { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the currently selected tree item.
@@ -413,7 +414,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         try
         {
             LoadingMessage = "Filtering";
-            FilterTree();
+            await Task.Run(FilterTree);
         }
         finally
         {
@@ -448,20 +449,11 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                 x.IsExpanded = false;
             });
         }
-        
-        if (string.IsNullOrWhiteSpace(SearchText))
-        {
-            if (SelectedSchemaFilters.Count == SchemaOptions.Count && SelectedFilters.Count == FilterOptions.Count)
-            {
-                ExpandAllTreeItemsCommand.Execute(null);
-                return;
-            }
-        }
-        
+
         foreach (var treeItem in TreeItems)
         {
             SetExpanded(treeItem, isExpanded: false, includeSqlObjects: true);
-            
+
             if (treeItem is SchemaTreeItem sqlObjectTreeItem)
             {
                 if (!SchemaFilter(sqlObjectTreeItem.Identifier))
@@ -470,10 +462,24 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                     continue;
                 }
             }
-            
-            ImmutableArray<ITreeItem> parents = ImmutableArray<ITreeItem>.Empty; 
-            
+
+            ImmutableArray<ITreeItem> parents = ImmutableArray<ITreeItem>.Empty;
+
             FilterTreeItem(treeItem, parents);
+        }
+
+       if (string.IsNullOrWhiteSpace(SearchText))
+        {
+            foreach (var treeItem in TreeItems)
+            {
+                treeItem.Traverse(x =>
+                {
+                    if (x.Children.OfType<ISqlObjectRootTreeItem>().Any())
+                    {
+                        x.IsExpanded = true;
+                    }
+                });
+            }
         }
     }
 
@@ -484,9 +490,16 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         bool isMatch = false;
         bool childIsDirectMatch = false;
         bool isRootMatch = false;
-        
+
         if (treeItem is ISqlObjectTreeItem sqlObjectTreeItem)
         {
+            if (!SelectedFilters.Contains(sqlObjectTreeItem.Source.ObjectType.Name))
+            {
+                sqlObjectTreeItem.Traverse(x => x.IsHidden = true);
+                return (false, false);
+            }
+            
+            
             // SQL object nodes are the filter targets. Their children provide details that must remain visible.
             var (match, directMatch) = IsMatch(sqlObjectTreeItem.Source);
             isMatch = match;
@@ -497,18 +510,19 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                 // Keep descendants visible when their containing SQL object matches the active filters.
                 treeItem.IsHidden = false;
             }
-            
+
             sqlObjectTreeItem.IsMatch = directMatch;
             //childIsDirectMatch = directMatch;
             isRootMatch = true;
         }
 
         var parentsForChild = parents.Add(treeItem);
-        
+
         // Recurse before deciding a grouping node's visibility so matching descendants keep its path visible.
         foreach (var child in treeItem.Children)
         {
-            var (currentIsMatch, currentIsDirectMatch) = FilterTreeItem(child, parentsForChild,  hasSqlObjectAncestor: isRootMatch || hasSqlObjectAncestor);
+            var (currentIsMatch, currentIsDirectMatch) = FilterTreeItem(child, parentsForChild,
+                hasSqlObjectAncestor: isRootMatch || hasSqlObjectAncestor);
 
             if (currentIsMatch)
             {
@@ -528,14 +542,14 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         {
             treeItem.IsHidden = false;
         }
-        
+
         // Expand match paths and nodes that contain a direct text match; do not expand SQL object details by default.
         treeItem.IsExpanded = (isMatch && !hasSqlObjectAncestor) || childIsDirectMatch;
         if (treeItem is ISqlObjectRootTreeItem rootTreeItem)
         {
             if (!childIsDirectMatch)
             {
-                rootTreeItem.IsExpanded = false;    
+                rootTreeItem.IsExpanded = false;
             }
 
             // if (isRootMatch && string.IsNullOrWhiteSpace(SearchText))
@@ -547,7 +561,6 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             //
             //     //rootTreeItem.IsExpanded = true;
             // }
-            
         }
 
         return (isMatch, childIsDirectMatch);
@@ -555,15 +568,9 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
 
     private (bool match, bool directMatch) IsMatch(TSqlObject source)
     {
-        
-        if (!SelectedFilters.Contains(source.ObjectType.Name))
-        {
-            return (false,false);
-        }
-        
-        var isTextMatch = (source.Name.Parts?.Last() ?? string.Empty).Contains(this.SearchText, StringComparison.OrdinalIgnoreCase);
-        return (isTextMatch, isTextMatch && !string.IsNullOrWhiteSpace(this.SearchText));   
-        
+        var isTextMatch =
+            (source.Name.Parts?.Last() ?? string.Empty).Contains(this.SearchText, StringComparison.OrdinalIgnoreCase);
+        return (isTextMatch, isTextMatch && !string.IsNullOrWhiteSpace(this.SearchText));
     }
 
     private bool SchemaFilter(SearchResultRow row)
@@ -588,7 +595,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         return SelectedSchemaFilters.OfType<SchemaWrapped>()
             .Any(schemaWrapped => ObjectIdentifierComparer.Equals(schemaWrapped.Wrapped.SqlObject.Name, schemaName));
     }
-    
+
     private bool SchemaFilter(ObjectIdentifier? row)
     {
         if (SelectedSchemaFilters.Count == 0)
@@ -597,8 +604,8 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         if (SelectedSchemaFilters.OfType<AllSchemas>().Any())
         {
             return true;
-        }       
-        
+        }
+
         if (row == null)
         {
             return false;
@@ -616,20 +623,20 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     /// </summary>
     private bool CanGenerateCode(IList? items) => items is {Count: > 0};
 
-    private bool CanCopyTreeItemName() => SelectedTreeItem is { Count: 1};
+    private bool CanCopyTreeItemName() => SelectedTreeItem is {Count: 1};
 
     /// <summary>Copies the selected tree item's name to the clipboard.</summary>
     [RelayCommand(CanExecute = nameof(CanCopyTreeItemName))]
     private async Task CopyTreeItemName()
     {
-        if (SelectedTreeItem is { Count: 0})
+        if (SelectedTreeItem is {Count: 0})
             return;
 
         await _clipboard.SetTextAsync(SelectedTreeItem[0].Name);
         SetStatusMessage($"Copied {SelectedTreeItem[0].Name} to the clipboard.");
     }
 
-    private bool CanGenerateTreeItemCode() => SelectedTreeItem?.OfType<ISqlObjectTreeItem>().ToList() is
+    private bool CanGenerateTreeItemCode() => SelectedTreeItem.OfType<ISqlObjectTreeItem>().ToList() is
         {Count: > 0};
 
     /// <summary>
@@ -668,14 +675,6 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         }
     }
 
-    private void CollapseAll()
-    {
-        foreach (var treeItem in TreeItems)
-        {
-            SetExpanded(treeItem, isExpanded:false, includeSqlObjects:true);
-        }
-    }
-
     /// <summary>
     /// Updates expansion state recursively without depending on generated tree controls.
     /// </summary>
@@ -691,13 +690,13 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             SetExpanded(child, isExpanded, includeSqlObjects);
         }
     }
-                                              
+
 
     /// <summary>Generates code for the selected SQL object tree item.</summary>
     [RelayCommand(CanExecute = nameof(CanGenerateTreeItemCode))]
     private async Task GenerateTreeItemCode()
     {
-        if (SelectedTreeItem?.OfType<ISqlObjectTreeItem>().ToList() is not {Count: >0} sqlObjectTreeItems)
+        if (SelectedTreeItem.OfType<ISqlObjectTreeItem>().ToList() is not {Count: > 0} sqlObjectTreeItems)
             return;
 
         var treeItems = sqlObjectTreeItems.Select(treeItem => new SearchResultRow(treeItem.Source,
@@ -819,7 +818,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             .Select(x => new SchemaWrapped(x.ToSchema())));
 
         var rows = source
-            .SelectMany(x => x.Model.GetObjects(_dacQueryScopes).Select(y => new { ObjectName = y, x.Path }))
+            .SelectMany(x => x.Model.GetObjects(_dacQueryScopes).Select(y => new {ObjectName = y, x.Path}))
             .Where(x => x.ObjectName.Name.HasName)
             .Select(x => new SearchResultRow(
                 x.ObjectName,
