@@ -6,11 +6,6 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.ViewModels.Displays;
 
-public interface IDisplayViewModel 
-{
-    
-}
-
 public partial class TableDisplayViewModel : DisplayViewModel
 {
     [ObservableProperty] public partial ObservableCollection<ColumnWrapper> Columns { get; set; }
