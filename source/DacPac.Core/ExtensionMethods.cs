@@ -1,4 +1,5 @@
-﻿using Microsoft.SqlServer.Dac.Model;
+﻿using System.Text;
+using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core;
 
@@ -7,6 +8,31 @@ namespace DacPac.Core;
 /// </summary>
 public static class ExtensionMethods
 {
+    /// <param name="text">The text to encode.</param>
+    extension(string text)
+    {
+        /// <summary>
+        /// Escapes Markdown metacharacters so text is rendered literally.
+        /// </summary>
+        /// <returns>The text with Markdown metacharacters prefixed by a backslash.</returns>
+        public string EscapeMarkdown()
+        {
+            ArgumentNullException.ThrowIfNull(text);
+
+            var builder = new StringBuilder(text.Length);
+            foreach (var character in text)
+            {
+                if (MarkdownMetacharacters.Contains(character))
+                {
+                    builder.Append('\\');
+                }
+
+                builder.Append(character);
+            }
+
+            return builder.ToString();
+        }
+    }
 
     /// <summary>
     /// Determines whether a DacFx object has any of the supplied model types.
@@ -305,6 +331,14 @@ public static class ExtensionMethods
         "try", "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual",
         "void", "volatile", "while"
     };
+
+    /// <summary>
+    /// Characters that require a preceding backslash to render literally in Markdown.
+    /// </summary>
+    private static readonly HashSet<char> MarkdownMetacharacters =
+    [
+        '\\', '`', '*', '_', '{', '}', '[', ']', '<', '>', '(', ')', '#', '+', '-', '.', '!', '|'
+    ];
 
     public static IEnumerable<T> SkipNulls<T>(this IEnumerable<T?> source)
     {

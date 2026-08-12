@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="clr-namespace:DacPac.UI.ViewModels.ErrorHandling"
+             x:Class="DacPac.UI.Views.ErrorHandling.ReportBugView"
+             x:DataType="viewModel:ReportBugViewModel"
+             d:DesignWidth="800"
+             d:DesignHeight="500"
+             mc:Ignorable="d">
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" RowSpacing="12">
+        <TextBlock Classes="Header" Text="Report a Bug" />
+
+        <TextBox Grid.Row="1"
+                 MinHeight="120"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 PlaceholderText="Describe what happened and how to reproduce it."
+                 Text="{Binding ReportMessage, UpdateSourceTrigger=PropertyChanged}" />
+        
+        <TextBlock Grid.Row="2" Text="Recorded errors" />
+        
+        <ListBox Grid.Row="3" ItemsSource="{Binding Exceptions}" ToolTip.Tip="Select the exceptions caught that you want to include when reporting a bug. You can hover them to see the full exception. Issues created will be public visible so ensure that no private data is available in the exception">
+            <ListBox.ZIndex></ListBox.ZIndex>
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="viewModel:ExceptionWrapper">
+                    <CheckBox Content="{Binding ExceptionMessage}" ToolTip.Tip="{Binding FullError}"
+                              IsChecked="{Binding Selected}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button Grid.Row="4"
+                HorizontalAlignment="Right"
+                Classes="Accent"
+                ToolTip.Tip="Clicking will open the new issue page on the github page. And copy markdown that can be copied into the description"
+                Command="{Binding CreateCommand}"
+                Content="Create bug report" />
+    </Grid>
+</UserControl>

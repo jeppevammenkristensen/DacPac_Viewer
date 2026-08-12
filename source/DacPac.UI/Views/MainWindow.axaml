@@ -48,6 +48,11 @@
                           IsVisible="{Binding UpdateAvailable}"
                           Command="{Binding RestartAndUpdateCommand}" />
                 <MenuItem Header="_Help">
+                    <MenuItem Header="Report a Bug"
+                              Command="{Binding LaunchReportBugCommand}" />
+                    <MenuItem Header="Trigger test error"
+                              IsVisible="{Binding IsDebugBuild}"
+                              Command="{Binding TriggerTestErrorCommand}" />
                     <MenuItem Header="About"
                               Command="{Binding ShowAboutCommand}" />
                 </MenuItem>
@@ -98,9 +103,21 @@
         </TabControl>
 
         <Border Grid.Row="2" Classes.StatusBar="{Binding DisplayInfo}"
-                Classes.StatusBarRed="{Binding DisplayInfoError}"
-                Classes.StatusBarSuccess="{Binding DisplaySuccess}">
-            <TextBlock Text="{Binding Status}" />
+                 Classes.StatusBarRed="{Binding DisplayInfoError}"
+                 Classes.StatusBarSuccess="{Binding DisplaySuccess}"
+                 IsVisible="{Binding IsStatusVisible}">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                <TextBlock Text="{Binding Status}" VerticalAlignment="Center" />
+                <Button Grid.Column="1"
+                        Command="{Binding ClearStatusCommand}"
+                        Content="Clear (errors remain available for a bug report)"
+                        ToolTip.Tip="Hide this message. Recorded errors are retained for a later bug report." />
+                <Button Grid.Column="2"
+                        Classes="Accent"
+                        IsVisible="{Binding DisplayInfoError}"
+                        Command="{Binding LaunchReportBugCommand}"
+                        Content="Report a Bug" />
+            </Grid>
         </Border>
 
         <ProgressBar Grid.Row="3" ShowProgressText="False"

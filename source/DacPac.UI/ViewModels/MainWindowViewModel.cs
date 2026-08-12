@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -16,6 +17,7 @@ using DacPac.UI.ApplicationLayer.Infrastructure;
 using DacPac.UI.Infrastructure.Messages;
 using DacPac.UI.ViewModels.LandingPage;
 using DacPac.UI.ViewModels.Docker;
+using DacPac.UI.ViewModels.ErrorHandling;
 using DacPac.UI.ViewModels.Settings;
 using JetBrains.Annotations;
 using TruePath;
@@ -57,12 +59,17 @@ public partial class MainWindowViewModel : ViewModelBase,
     private readonly IApplicationInfoService _applicationInfoService;
     private readonly ISettingsService _settingsService;
 
-    public MainWindowViewModel(IServiceLocator locator, IUpdateService updateService, IApplicationInfoService applicationInfoService, ISettingsService settingsService)
+    public MainWindowViewModel(IServiceLocator locator,
+        IUpdateService updateService,
+        IApplicationInfoService applicationInfoService,
+        ISettingsService settingsService, 
+        IErrorCollector errorCollector)
     {
         _locator = locator;
         _updateService = updateService;
         _applicationInfoService = applicationInfoService;
         _settingsService = settingsService;
+        _ = errorCollector;  
         Screens = [];
         Status = string.Empty;
         Title = "DacPac viewer";
@@ -112,7 +119,9 @@ public partial class MainWindowViewModel : ViewModelBase,
     [ObservableProperty]
     public partial IScreenPage? Screen { get; set; }
 
-    [ObservableProperty] public partial string Status { get; set; }
+    [NotifyPropertyChangedFor(nameof(IsStatusVisible))]
+    [ObservableProperty]
+    public partial string Status { get; set; }
 
     /// <summary>
     ///     The progress. Should be between 0 and 100.
@@ -168,6 +177,21 @@ public partial class MainWindowViewModel : ViewModelBase,
     public bool DisplayInfoError => StatusType == StatusType.Error;
 
     public bool DisplaySuccess => StatusType == StatusType.Success;
+
+    /// <summary>
+    /// Gets whether the status area contains a message to display.
+    /// </summary>
+    public bool IsStatusVisible => !string.IsNullOrWhiteSpace(Status);
+
+    /// <summary>
+    /// Gets whether diagnostic controls should be shown.
+    /// </summary>
+    public bool IsDebugBuild =>
+#if DEBUG
+        true;
+#else
+        false;
+#endif
 
     /// <summary>
     ///     Glyph shown on the theme toggle button, representing the theme that will be switched to.
@@ -337,6 +361,30 @@ public partial class MainWindowViewModel : ViewModelBase,
     {
         var screen = _locator.GetRequiredService<SqlServerSetupPageViewModel>();
         await Launch(screen);
+    }
+
+    [RelayCommand]
+    private async Task LaunchReportBug()
+    {
+        ClearStatus();
+        var screen = _locator.GetRequiredService<ReportBugViewModel>();
+        await Launch(screen);
+    }
+
+    /// <summary>
+    /// Hides the current status message without removing collected exceptions.
+    /// </summary>
+    [RelayCommand]
+    private void ClearStatus()
+    {
+        Status = string.Empty;
+    }
+
+    [RelayCommand]
+    private void TriggerTestError()
+    {
+        Messenger.SendException("This is a test error for verifying bug reporting.",
+            new InvalidOperationException("Test error triggered from the Help menu."));
     }
 
     partial void OnScreenChanged(IScreenPage? oldValue, IScreenPage? newValue)

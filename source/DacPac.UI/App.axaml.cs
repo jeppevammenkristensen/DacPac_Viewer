@@ -15,12 +15,14 @@ using DacPac.UI.Infrastructure.LongRunning;
 using DacPac.UI.ViewModels;
 using DacPac.UI.ViewModels.Displays;
 using DacPac.UI.ViewModels.Docker;
+using DacPac.UI.ViewModels.ErrorHandling;
 using DacPac.UI.ViewModels.GeneratedCode;
 using DacPac.UI.ViewModels.LandingPage;
 using DacPac.UI.ViewModels.Settings;
 using DacPac.UI.Views;
 using DacPac.UI.Views.Displays;
 using DacPac.UI.Views.Docker;
+using DacPac.UI.Views.ErrorHandling;
 using DacPac.UI.Views.GeneratedCode;
 using DacPac.UI.Views.LandingPage;
 using DacPac.UI.Views.Settings;
@@ -46,6 +48,8 @@ public class App : Application
         try
         {
             _host = CreateHostBuilder().Build();
+            // Resolve the collector at startup so it begins listening for error messages.
+            GlobalHost.Services.GetRequiredService<IErrorCollector>();
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
@@ -175,9 +179,10 @@ public class App : Application
             .AddViewModelAndRegisterView<MainWindowViewModel, MainWindow>(ViewModelScope.Singleton)
             .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient)
              .AddViewModelAndRegisterView<GeneratedCodePageViewModel, GeneratedCodePage>(ViewModelScope.Transient)
-             .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton)
-             .AddViewModelAndRegisterView<SqlServerSetupPageViewModel, SqlServerSetupPage>(ViewModelScope.Transient)
-             .AddViewModelAndRegisterView<InstallationViewModel, Installation>(ViewModelScope.Transient);
+              .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton)
+              .AddViewModelAndRegisterView<SqlServerSetupPageViewModel, SqlServerSetupPage>(ViewModelScope.Transient)
+              .AddViewModelAndRegisterView<InstallationViewModel, Installation>(ViewModelScope.Transient)
+              .AddViewModelAndRegisterView<ReportBugViewModel, ReportBugView>(ViewModelScope.Transient);
 
 
         collection.AddView<TableDisplayViewModel, TableDisplay>();
