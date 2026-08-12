@@ -468,7 +468,15 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             FilterTreeItem(treeItem, parents);
         }
 
-       if (string.IsNullOrWhiteSpace(SearchText))
+        EnsureParentOfRootItemsAreExpandedOnEmptySearch();
+    }
+
+    /// <summary>
+    /// Expands grouping nodes that directly contain <see cref="ISqlObjectRootTreeItem"/> when no text search is active.
+    /// </summary>
+    private void EnsureParentOfRootItemsAreExpandedOnEmptySearch()
+    {
+        if (string.IsNullOrWhiteSpace(SearchText))
         {
             foreach (var treeItem in TreeItems)
             {
@@ -498,8 +506,8 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                 sqlObjectTreeItem.Traverse(x => x.IsHidden = true);
                 return (false, false);
             }
-            
-            
+
+
             // SQL object nodes are the filter targets. Their children provide details that must remain visible.
             var (match, directMatch) = IsMatch(sqlObjectTreeItem.Source);
             isMatch = match;
