@@ -7,7 +7,7 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.Models.LandingPage;
 
-public sealed partial class TableTreeItem : ObservableObject, ISqlObjectTreeItem
+public sealed partial class TableTreeItem : ObservableObject, ISqlObjectRootTreeItem
 {
     public readonly TableWrapper _tableWrapper;
     private readonly IReadOnlyList<ITreeItem> _children;

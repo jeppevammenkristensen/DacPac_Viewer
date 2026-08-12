@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.IO.Abstractions;
 using System.Linq;
@@ -41,7 +42,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     private readonly IClipboardService _clipboard;
     private readonly IServiceLocator _locator;
     private readonly ISettingsService _settingsService;
-    private readonly TreeDisplayService _treeDisplayService;
+    private readonly TreeService _treeService;
     private readonly MainWindowViewModel _mainWindow;
     private static readonly ObjectIdentifierComparer ObjectIdentifierComparer = new();
     private HashSet<ModelTypeClass> _supportedObjectTypes = [];
@@ -61,7 +62,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         IClipboardService clipboard,
         IServiceLocator locator,
         ISettingsService settingsService,
-        TreeDisplayService treeDisplayService,
+        TreeService treeService,
         MainWindowViewModel mainWindow)
     {
         _logger = logger;
@@ -71,7 +72,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         _clipboard = clipboard;
         _locator = locator;
         _settingsService = settingsService;
-        _treeDisplayService = treeDisplayService;
+        _treeService = treeService;
         _mainWindow = mainWindow;
         SelectedSchemaFilters = [];
     }
@@ -160,7 +161,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         {
             foreach (var treeItemChild in treeItem.Children)
             {
-                if (treeItemChild.Children.OfType<ISqlObjectTreeItem>()
+                if (treeItemChild.Children.OfType<ISqlObjectRootTreeItem>()
                         .FirstOrDefault(x => comparer.Equals(x.Source.Name, simpleTreeItem.Source.Name)) is { } match)
                 {
                     // Expand the matching branch and select the target before finding its realized visual container.
@@ -412,7 +413,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         try
         {
             LoadingMessage = "Filtering";
-            await Task.Run(FilterTree);
+            FilterTree();
         }
         finally
         {
@@ -437,6 +438,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
 
     private void FilterTree()
     {
+        // Reset all and remove hidden
         foreach (var treeItem in TreeItems)
         {
             treeItem.Traverse(x =>
@@ -447,7 +449,6 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             });
         }
         
-
         if (string.IsNullOrWhiteSpace(SearchText))
         {
             if (SelectedSchemaFilters.Count == SchemaOptions.Count && SelectedFilters.Count == FilterOptions.Count)
@@ -470,39 +471,49 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                 }
             }
             
-            FilterTreeItem(treeItem);
+            ImmutableArray<ITreeItem> parents = ImmutableArray<ITreeItem>.Empty; 
+            
+            FilterTreeItem(treeItem, parents);
         }
     }
 
-    private (bool isMatch, bool isDirectMatch) FilterTreeItem(ITreeItem treeItem, bool hasSqlObjectAncestor = false)
+    private (bool isMatch, bool isDirectMatch) FilterTreeItem(ITreeItem treeItem, ImmutableArray<ITreeItem> parents,
+        bool hasSqlObjectAncestor = false)
     {
+        // A grouping node matches when any descendant matches; direct matches control which branches expand.
         bool isMatch = false;
         bool childIsDirectMatch = false;
         bool isRootMatch = false;
         
         if (treeItem is ISqlObjectTreeItem sqlObjectTreeItem)
         {
+            // SQL object nodes are the filter targets. Their children provide details that must remain visible.
             var (match, directMatch) = IsMatch(sqlObjectTreeItem.Source);
             isMatch = match;
 
             sqlObjectTreeItem.IsHidden = !isMatch;
             if (hasSqlObjectAncestor)
             {
+                // Keep descendants visible when their containing SQL object matches the active filters.
                 treeItem.IsHidden = false;
             }
             
             sqlObjectTreeItem.IsMatch = directMatch;
-            childIsDirectMatch = directMatch;
+            //childIsDirectMatch = directMatch;
             isRootMatch = true;
         }
 
+        var parentsForChild = parents.Add(treeItem);
+        
+        // Recurse before deciding a grouping node's visibility so matching descendants keep its path visible.
         foreach (var child in treeItem.Children)
         {
-            var (currentIsMatch, currentIsDirectMatch) = FilterTreeItem(child, isRootMatch || hasSqlObjectAncestor);
+            var (currentIsMatch, currentIsDirectMatch) = FilterTreeItem(child, parentsForChild,  hasSqlObjectAncestor: isRootMatch || hasSqlObjectAncestor);
 
             if (currentIsMatch)
             {
                 isMatch = true;
+                child.IsExpanded = !string.IsNullOrWhiteSpace(SearchText);
             }
 
             if (currentIsDirectMatch)
@@ -511,13 +522,33 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             }
         }
 
+        // Hide unmatched branches, except details below an SQL object, which remain visible with their parent.
         treeItem.IsHidden = !isMatch;
         if (hasSqlObjectAncestor)
         {
             treeItem.IsHidden = false;
         }
         
+        // Expand match paths and nodes that contain a direct text match; do not expand SQL object details by default.
         treeItem.IsExpanded = (isMatch && !hasSqlObjectAncestor) || childIsDirectMatch;
+        if (treeItem is ISqlObjectRootTreeItem rootTreeItem)
+        {
+            if (!childIsDirectMatch)
+            {
+                rootTreeItem.IsExpanded = false;    
+            }
+
+            // if (isRootMatch && string.IsNullOrWhiteSpace(SearchText))
+            // {
+            //     foreach (var parent in parents)
+            //     {
+            //         parent.IsExpanded = true;
+            //     }
+            //
+            //     //rootTreeItem.IsExpanded = true;
+            // }
+            
+        }
 
         return (isMatch, childIsDirectMatch);
     }
@@ -634,6 +665,14 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         foreach (var item in SelectedTreeItem)
         {
             SetExpanded(item, isExpanded: false, includeSqlObjects: true);
+        }
+    }
+
+    private void CollapseAll()
+    {
+        foreach (var treeItem in TreeItems)
+        {
+            SetExpanded(treeItem, isExpanded:false, includeSqlObjects:true);
         }
     }
 
@@ -789,7 +828,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
                 x.ObjectName.GetSchema()))
             .ToList();
 
-        var treeItems = _treeDisplayService.GetRoots(source.Select(x => x.Model)).ToList();
+        var treeItems = _treeService.GetRoots(source.Select(x => x.Model)).ToList();
         return new LoadedDacpacs(rows, schemaOptions, treeItems);
     }
 
