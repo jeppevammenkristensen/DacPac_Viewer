@@ -14,4 +14,6 @@ public interface IApplicationInfoService
     /// Gets the GitHub page for the running version's release.
     /// </summary>
     System.Uri ReleaseUri { get; }
+
+    System.Uri NewIssueLink { get; }
 }

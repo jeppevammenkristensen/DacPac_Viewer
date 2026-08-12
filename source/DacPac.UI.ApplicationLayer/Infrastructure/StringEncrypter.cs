@@ -42,7 +42,7 @@ public class StringEncrypter : IStringEncrypter
         catch (Exception ex) when (ex is CryptographicException or FormatException)
         {
             _logger.LogWarning(ex, "Failed to decrypt the saved connection string; ignoring it");
-            _messenger.SendError("Failed to decrypt the saved connection string");
+            _messenger.SendException("Failed to decrypt the saved connection string", ex);
             return null;
         }
     }

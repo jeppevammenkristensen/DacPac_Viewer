@@ -73,7 +73,7 @@ public partial class InstallationViewModel : ScreenPage
         }
         catch (Exception e)
         {
-            _messenger.SendError($"Cannot establish connection. {e.Message}");
+            _messenger.SendException($"Cannot establish connection. {e.Message}", e);
         }
 
         _settingsService.LatestConnectionString = MasterConnectionString;
@@ -125,7 +125,7 @@ public partial class InstallationViewModel : ScreenPage
         }
         catch (Exception ex)
         {
-            _messenger.SendError($"Failed to install {ex.Message}");
+            _messenger.SendException($"Failed to install {ex.Message}", ex);
         }
         finally
         {

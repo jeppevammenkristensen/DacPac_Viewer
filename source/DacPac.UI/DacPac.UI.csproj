@@ -64,4 +64,10 @@
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaXaml Update="Views\ErrorHandling\ReportBugView.axaml">
+        <DependentUpon>ReportBugView.axaml.cs</DependentUpon>
+      </AvaloniaXaml>
+    </ItemGroup>
 </Project>

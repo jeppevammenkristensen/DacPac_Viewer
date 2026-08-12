@@ -68,7 +68,7 @@ public partial class VelopackUpdateService : IUpdateService
         catch (Exception ex)
         {
             // Update failures must never disturb normal application use
-            _messenger.SendError("Failed to check or download updates");
+            _messenger.SendException("Failed to check or download updates", ex);
             LogCheckingOrDownloadingUpdatesFailed(ex);
             return null;
         }

@@ -71,14 +71,4 @@ public abstract partial class ScreenPage : ViewModelBase, IScreenPage
     {
         Messenger.SendInformation(message);
     }
-
-    /// <summary>
-    /// Submit an error message that will be displayed in the
-    /// bottom of the screen
-    /// </summary>
-    /// <param name="message"></param>
-    protected void SetErrorMessage(string message)
-    {
-        Messenger.SendError(message);
-    }
 }

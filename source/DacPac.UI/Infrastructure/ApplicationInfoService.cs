@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using Velopack;
 using Velopack.Sources;
@@ -16,6 +17,8 @@ public sealed class ApplicationInfoService : IApplicationInfoService
 
     /// <inheritdoc />
     public System.Uri ReleaseUri => new($"{RepositoryUrl}/releases/tag/v{Version}");
+
+    public Uri NewIssueLink => new($"{RepositoryUrl}/issues/new");
 
     /// <summary>
     /// Prefers Velopack package metadata and falls back to MinVer's assembly metadata for development builds.
