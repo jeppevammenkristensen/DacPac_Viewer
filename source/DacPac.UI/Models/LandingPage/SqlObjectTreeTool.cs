@@ -37,9 +37,8 @@ public static class SqlObjectTreeTool
     public static bool IsRootType(this TSqlObject source)
     {
         return SqlObjectConstants.RootModelTypes.Contains(source.ObjectType);
-        
     }
-    
+
     public static string? GetTreeIcon(this TSqlObject source)
     {
         if (source.IsType(Column.TypeClass))

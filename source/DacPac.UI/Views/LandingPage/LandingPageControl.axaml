@@ -196,7 +196,7 @@
                              <MenuItem Header="Navigate to"
                                        Command="{Binding NavigateToCommand}"
                                        CommandParameter="{Binding #ObjectTree.SelectedItem}" />
-                            
+
                         </ContextMenu>
                     </TreeView.ContextMenu>
                     <TreeView.ItemTemplate>
