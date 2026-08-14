@@ -502,3 +502,4 @@ FodyWeavers.xsd
 
 # Local Serena memory files
 /.serena/memories/
+/.serena/project.yml
