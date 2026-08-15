@@ -18,7 +18,12 @@ public sealed class ApplicationInfoService : IApplicationInfoService
     /// <inheritdoc />
     public System.Uri ReleaseUri => new($"{RepositoryUrl}/releases/tag/v{Version}");
 
-    public Uri NewIssueLink => new($"{RepositoryUrl}/issues/new");
+    /// <inheritdoc />
+    public Uri CreateNewIssueUri(string title, string body)
+    {
+        return new Uri(
+            $"{RepositoryUrl}/issues/new?title={Uri.EscapeDataString(title)}&body={Uri.EscapeDataString(body)}");
+    }
 
     /// <summary>
     /// Prefers Velopack package metadata and falls back to MinVer's assembly metadata for development builds.
