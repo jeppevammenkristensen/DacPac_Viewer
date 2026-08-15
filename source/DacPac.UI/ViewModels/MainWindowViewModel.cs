@@ -175,7 +175,7 @@ public partial class MainWindowViewModel : ViewModelBase,
 
     public bool DisplayInfo => StatusType == StatusType.Info;
     public bool DisplayInfoError => StatusType == StatusType.Error;
-
+    
     public bool DisplaySuccess => StatusType == StatusType.Success;
 
     /// <summary>

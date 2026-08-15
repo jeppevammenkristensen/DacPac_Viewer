@@ -15,5 +15,8 @@ public interface IApplicationInfoService
     /// </summary>
     System.Uri ReleaseUri { get; }
 
-    System.Uri NewIssueLink { get; }
+    /// <summary>
+    /// Creates a GitHub new-issue URI with a prefilled title and body.
+    /// </summary>
+    System.Uri CreateNewIssueUri(string title, string body);
 }
