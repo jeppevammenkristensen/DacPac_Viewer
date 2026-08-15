@@ -28,6 +28,7 @@ public partial class ReportBugViewModel : ValidatingScreenPage
         _collector = collector;
         _clipboardService = clipboardService;
         _infoService = infoService;
+        BugTitle = string.Empty;
         ReportMessage = string.Empty;
         Exceptions = [.. _collector.Errors.Select(x => new ExceptionWrapper(x))];
     }
@@ -76,18 +77,27 @@ public partial class ReportBugViewModel : ValidatingScreenPage
             }
         }
 
-        await _clipboardService.SetTextAsync(stringBuilder.ToString());
-        Process.Start(new ProcessStartInfo(_infoService.NewIssueLink.AbsoluteUri) { UseShellExecute = true });
+        var body = stringBuilder.ToString();
+        await _clipboardService.SetTextAsync(body);
+
+        var issueUri = _infoService.CreateNewIssueUri(BugTitle, body);
+        Process.Start(new ProcessStartInfo(issueUri.AbsoluteUri) {UseShellExecute = true});
     }
 
 
     public override string Title => "Report a Bug";
 
     [ObservableProperty]
+    [Required(ErrorMessage = "Enter a title before creating a bug report.")]
+    public partial string BugTitle { get; set; }
+
+    [ObservableProperty]
     [Required(ErrorMessage = "Describe the problem before creating a bug report.")]
     public partial string ReportMessage { get; set; }
 
     [ObservableProperty] public partial ObservableCollection<ExceptionWrapper> Exceptions { get; set; }
+
+    partial void OnBugTitleChanged(string value) => ValidateProperty(value, nameof(BugTitle));
 
     partial void OnReportMessageChanged(string value) => ValidateProperty(value, nameof(ReportMessage));
 }

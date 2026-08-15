@@ -110,6 +110,7 @@
                 <TextBlock Text="{Binding Status}" VerticalAlignment="Center" />
                 <Button Grid.Column="1"
                         Command="{Binding ClearStatusCommand}"
+                        IsVisible="{Binding DisplayInfoError}"
                         Content="Clear (errors remain available for a bug report)"
                         ToolTip.Tip="Hide this message. Recorded errors are retained for a later bug report." />
                 <Button Grid.Column="2"
