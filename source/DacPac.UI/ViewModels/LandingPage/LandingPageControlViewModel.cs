@@ -35,7 +35,6 @@ namespace DacPac.UI.ViewModels.LandingPage;
 public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeChangedMessage>
 {
     private readonly ILogger<LandingPageControlViewModel> _logger;
-    private readonly IFilePickerService _filePicker;
     private readonly DacPacLoader _loader;
     private readonly Builder _builder;
     private readonly IClipboardService _clipboard;
@@ -55,7 +54,6 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     /// Initializes the landing page and its application services.
     /// </summary>
     public LandingPageControlViewModel(ILogger<LandingPageControlViewModel> logger,
-        IFilePickerService filePicker,
         DacPacLoader loader,
         Builder builder,
         IClipboardService clipboard,
@@ -65,7 +63,6 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
         MainWindowViewModel mainWindow)
     {
         _logger = logger;
-        _filePicker = filePicker;
         _loader = loader;
         _builder = builder;
         _clipboard = clipboard;
@@ -81,7 +78,7 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
     /// </summary>
     [NotifyPropertyChangedFor(nameof(Title))]
     [ObservableProperty]
-    private partial string CurrentTitle { get; set; } = "(empty)";
+    public partial string CurrentTitle { get; set; } = "Loading...";
 
     /// <summary>
     /// Gets the title displayed for this page.
@@ -747,19 +744,6 @@ public partial class LandingPageControlViewModel : ScreenPage, IRecipient<ThemeC
             IsLoading = false;
             LoadingMessage = "Loading…";
         }
-    }
-
-    /// <summary>
-    /// Prompts for dacpac files and loads the selected files.
-    /// </summary>
-    [RelayCommand]
-    private async Task OpenDacpac()
-    {
-        var files = await _filePicker.PickDacpacFilesAsync();
-        if (files.Count == 0)
-            return;
-
-        await OpenDacpacFilesAsync(files.Select(AbsolutePath.Create).ToList());
     }
 
     private readonly DacQueryScopes _dacQueryScopes = DacQueryScopes.UserDefined;
