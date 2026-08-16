@@ -106,6 +106,10 @@ public class App : Application
             var mainWindowViewModel = GlobalHost.Services.GetRequiredService<MainWindowViewModel>();
             mainWindowViewModel.Status = $"An error occurred  {e.Exception.Message}";
             mainWindowViewModel.StatusType = StatusType.Error;
+            var errorCollector = GlobalHost.Services.GetRequiredService<IErrorCollector>();
+            errorCollector.Receive(e.Exception);
+
+
             e.Handled = true;
 
             // Decide whether to keep the app alive on UI exceptions; here we don't handle them
@@ -159,7 +163,8 @@ public class App : Application
         services.AddSingleton<CsharpGenerator, ProcedureToClassGenerator>();
         services.AddSingleton<CsharpGenerator, ViewToCsharpClassGenerator>();
         services.AddSingleton<TableTypeToClassGenerator>();
-        services.AddSingleton<CsharpGenerator>(serviceProvider => serviceProvider.GetRequiredService<TableTypeToClassGenerator>());
+        services.AddSingleton<CsharpGenerator>(serviceProvider =>
+            serviceProvider.GetRequiredService<TableTypeToClassGenerator>());
 
         services.AddSingleton<Builder>();
     }
@@ -177,12 +182,13 @@ public class App : Application
 
         collection
             .AddViewModelAndRegisterView<MainWindowViewModel, MainWindow>(ViewModelScope.Singleton)
+            .AddViewModelAndRegisterView<NoScreensSelectedViewModel, NoScreensSelected>(ViewModelScope.Transient)
             .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient)
-             .AddViewModelAndRegisterView<GeneratedCodePageViewModel, GeneratedCodePage>(ViewModelScope.Transient)
-              .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton)
-              .AddViewModelAndRegisterView<SqlServerSetupPageViewModel, SqlServerSetupPage>(ViewModelScope.Transient)
-              .AddViewModelAndRegisterView<InstallationViewModel, Installation>(ViewModelScope.Transient)
-              .AddViewModelAndRegisterView<ReportBugViewModel, ReportBugView>(ViewModelScope.Transient);
+            .AddViewModelAndRegisterView<GeneratedCodePageViewModel, GeneratedCodePage>(ViewModelScope.Transient)
+            .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton)
+            .AddViewModelAndRegisterView<SqlServerSetupPageViewModel, SqlServerSetupPage>(ViewModelScope.Transient)
+            .AddViewModelAndRegisterView<InstallationViewModel, Installation>(ViewModelScope.Transient)
+            .AddViewModelAndRegisterView<ReportBugViewModel, ReportBugView>(ViewModelScope.Transient);
 
 
         collection.AddView<TableDisplayViewModel, TableDisplay>();

@@ -121,7 +121,7 @@
         </Grid>
 
         <!-- Object views and details -->
-        <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*">
+        <Grid Grid.Row="1" ColumnDefinitions="*">
 
             <TabControl Grid.Column="0">
                 <TabItem Header="Treeview">
