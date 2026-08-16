@@ -16,6 +16,7 @@ public record ExceptionMessage(Exception Exception)
 public interface IErrorCollector
 {
     ImmutableArray<Exception> Errors { get; }
+    void Receive(Exception exception);
 }
 
 public sealed class ErrorCollector : ObservableRecipient, IRecipient<ExceptionMessageValueMessage>, IErrorCollector
@@ -29,6 +30,8 @@ public sealed class ErrorCollector : ObservableRecipient, IRecipient<ExceptionMe
 
     public void Receive(ExceptionMessageValueMessage message)
     {
-        Errors = Errors.Add(message.Value.Exception);
+        Receive(message.Value.Exception);
     }
+
+    public void Receive(Exception exception) => Errors = Errors.Add(exception);
 }

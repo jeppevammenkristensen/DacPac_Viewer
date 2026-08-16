@@ -20,6 +20,7 @@ using DacPac.UI.ViewModels.Docker;
 using DacPac.UI.ViewModels.ErrorHandling;
 using DacPac.UI.ViewModels.Settings;
 using JetBrains.Annotations;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TruePath;
 
 namespace DacPac.UI.ViewModels;
@@ -62,15 +63,23 @@ public partial class MainWindowViewModel : ViewModelBase,
     public MainWindowViewModel(IServiceLocator locator,
         IUpdateService updateService,
         IApplicationInfoService applicationInfoService,
-        ISettingsService settingsService, 
-        IErrorCollector errorCollector)
+        ISettingsService settingsService,
+        IErrorCollector errorCollector,
+        NoScreensSelectedViewModel noScreensSelected)
     {
         _locator = locator;
         _updateService = updateService;
         _applicationInfoService = applicationInfoService;
         _settingsService = settingsService;
-        _ = errorCollector;  
+        _ = errorCollector;
+        NoScreensSelected = noScreensSelected;
+        NoScreensSelected.SetMainWindowViewModel(this);
         Screens = [];
+        Screens.CollectionChanged += (_, _) =>
+        {
+            OnPropertyChanged(nameof(DisplayPanel));
+            OnPropertyChanged(nameof(DisplayHelp));
+        };
         Status = string.Empty;
         Title = "DacPac viewer";
     }
@@ -80,7 +89,10 @@ public partial class MainWindowViewModel : ViewModelBase,
         return true;
     }
 
-    private async Task OpenDacPac()
+    /// <summary>
+    /// Opens the DacPac picker on the landing page.
+    /// </summary>
+    public async Task OpenDacPac()
     {
         var landingPage = await EnsureLandingPage();
         await landingPage.OpenDacpacCommand.ExecuteAsync(null);
@@ -107,18 +119,33 @@ public partial class MainWindowViewModel : ViewModelBase,
     }
 
 
-    [ObservableProperty] public partial ObservableCollection<IScreenPage> Screens { get; set; }
+    /// <summary>
+    /// Gets the screens currently open in tabs.
+    /// </summary>
+    [NotifyPropertyChangedFor(nameof(DisplayPanel))]
+    [ObservableProperty]
+    public partial ObservableCollection<IScreenPage> Screens { get; private set; }
 
+    /// <summary>
+    /// Gets the view model displayed when no screens are open.
+    /// </summary>
+    public NoScreensSelectedViewModel NoScreensSelected { get; }
 
     /// <summary>
     /// Gets the entries shown in the Open submenu.
     /// </summary>
     public ObservableCollection<object> OpenDacpacMenuItems { get; } = [];
 
+    /// <summary>
+    /// Gets or sets the currently selected screen.
+    /// </summary>
     [NotifyCanExecuteChangedFor(nameof(OpenDacpacMenuItemCommand))]
     [ObservableProperty]
     public partial IScreenPage? Screen { get; set; }
 
+    /// <summary>
+    /// Gets or sets the text displayed in the status area.
+    /// </summary>
     [NotifyPropertyChangedFor(nameof(IsStatusVisible))]
     [ObservableProperty]
     public partial string Status { get; set; }
@@ -140,6 +167,9 @@ public partial class MainWindowViewModel : ViewModelBase,
     /// <summary>
     /// Gets whether Velopack is checking for or downloading an application update.
     /// </summary>
+    /// <summary>
+    /// Gets or sets whether an application update is being checked for or downloaded.
+    /// </summary>
     [NotifyPropertyChangedFor(nameof(IsProgressVisible))]
     [NotifyPropertyChangedFor(nameof(IsProgressIndeterminate))]
     [ObservableProperty]
@@ -155,27 +185,64 @@ public partial class MainWindowViewModel : ViewModelBase,
     /// </summary>
     public bool IsProgressIndeterminate => IsInstalling || IsUpdating;
 
-    [ObservableProperty] public partial bool Loaded { get; set; }
+    /// <summary>
+    /// Gets or sets whether startup initialization has completed.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool Loaded { get; set; }
 
+    /// <summary>
+    /// Gets whether one or more screen tabs are open.
+    /// </summary>
+    public bool DisplayPanel => Screens.Count > 0;
+
+    /// <summary>
+    /// Gets whether the empty-screen view should be displayed.
+    /// </summary>
+    public bool DisplayHelp => Screens.Count == 0;
+
+    /// <summary>
+    /// Gets or sets whether a downloaded update is ready to install.
+    /// </summary>
     [NotifyCanExecuteChangedFor(nameof(RestartAndUpdateCommand))]
     [ObservableProperty]
     public partial bool UpdateAvailable { get; set; }
 
-    [ObservableProperty] public partial string Title { get; set; }
+    /// <summary>
+    /// Gets or sets the main window title.
+    /// </summary>
+    [ObservableProperty]
+    public partial string Title { get; set; }
 
+    /// <summary>
+    /// Gets or sets the severity of the status message.
+    /// </summary>
     [NotifyPropertyChangedFor(nameof(DisplayInfo))]
     [NotifyPropertyChangedFor(nameof(DisplayInfoError))]
     [NotifyPropertyChangedFor(nameof(DisplaySuccess))]
     [ObservableProperty]
     public partial StatusType StatusType { get; set; }
 
+    /// <summary>
+    /// Gets or sets whether the dark theme is active.
+    /// </summary>
     [NotifyPropertyChangedFor(nameof(ThemeToggleGlyph))]
     [ObservableProperty]
     public partial bool IsDarkTheme { get; set; } = Application.Current?.ActualThemeVariant != ThemeVariant.Light;
 
+    /// <summary>
+    /// Gets whether the status message has informational severity.
+    /// </summary>
     public bool DisplayInfo => StatusType == StatusType.Info;
+
+    /// <summary>
+    /// Gets whether the status message has error severity.
+    /// </summary>
     public bool DisplayInfoError => StatusType == StatusType.Error;
-    
+
+    /// <summary>
+    /// Gets whether the status message has success severity.
+    /// </summary>
     public bool DisplaySuccess => StatusType == StatusType.Success;
 
     /// <summary>
@@ -198,8 +265,15 @@ public partial class MainWindowViewModel : ViewModelBase,
     /// </summary>
     public string ThemeToggleGlyph => IsDarkTheme ? "☀" : "🌙";
 
-    [ObservableProperty] public partial bool DockerIsAvailable { get; set; }
+    /// <summary>
+    /// Gets or sets whether Docker is available on the current machine.
+    /// </summary>
+    [ObservableProperty]
+    public partial bool DockerIsAvailable { get; set; }
 
+    /// <summary>
+    /// Updates the shared progress indicator.
+    /// </summary>
     public void Receive(ProgressDataMessage message)
     {
         CurrentProgress = message.Value;
@@ -213,12 +287,19 @@ public partial class MainWindowViewModel : ViewModelBase,
         IsInstalling = message.Value;
     }
 
+    /// <summary>
+    /// Updates the displayed status message.
+    /// </summary>
     public void Receive(StatusValueDataMessage message)
     {
         Status = message.Value.Value;
         StatusType = message.Value.StatusType;
     }
 
+    /// <summary>
+    /// Bladi bladi blah
+    /// </summary>
+    /// <param name="token"></param>
     [RelayCommand]
     private async Task OnStartup(CancellationToken token)
     {
@@ -238,7 +319,6 @@ public partial class MainWindowViewModel : ViewModelBase,
 
         DockerIsAvailable = longRunningTask.DockerIsAvailable;
         Loaded = true;
-        await LaunchPrimaryCommand.ExecuteAsync(null);
         LoadRecentDacpacFiles();
 
         // Fire-and-forget; must never block or fail startup
@@ -324,7 +404,9 @@ public partial class MainWindowViewModel : ViewModelBase,
     [RelayCommand]
     private void ShowAbout()
     {
-        var owner = (Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+        var owner =
+            (Application.Current?.ApplicationLifetime as
+                Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow;
         if (owner is null) return;
 
         _ = new Views.AboutDialog(_applicationInfoService).ShowDialog(owner);
@@ -432,6 +514,9 @@ public partial class MainWindowViewModel : ViewModelBase,
             Screen = null;
     }
 
+    /// <summary>
+    /// Opens an installation screen for the requested packages.
+    /// </summary>
     public void Receive(OpenInstallationMessage message)
     {
         message.Reply(LaunchInstallation(message.Paths));
