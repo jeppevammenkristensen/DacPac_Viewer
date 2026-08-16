@@ -120,103 +120,99 @@
                     Command="{Binding InstallCommand}" />
         </Grid>
 
-        <!-- Results split -->
+        <!-- Object views and details -->
         <Grid Grid.Row="1" ColumnDefinitions="*,Auto,*">
 
-            <Grid Grid.Column="0" RowDefinitions="*, Auto, *">
-                <DataGrid
-                    Name="ResultsGrid"
-                    ItemsSource="{Binding FilteredResults}"
-                    SelectedItem="{Binding SelectedResult}"
-                    SelectionMode="Extended"
-                    IsReadOnly="True"
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="True"
-                    ToolTip.Tip="Select results to view details. Press Ctrl+A to select all, or right-click to generate code.">
-                    <DataGrid.Styles>
-                        <Style Selector="DataGridRow" x:DataType="viewModel:SearchResultRow">
-                            <Setter Property="Background"
-                                    Value="{Binding GeneratorSupported, Converter={x:Static converters:GeneratorSupportedBrushConverter.Instance}}" />
-                        </Style>
-                    </DataGrid.Styles>
-                    <DataGrid.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Generate Code for all"
-                                      ToolTip.Tip="Generates code for all the currently filtered items"
-                                      Command="{Binding GenerateCodeCommand}"
-                                      CommandParameter="{Binding FilteredResults}">
+            <TabControl Grid.Column="0">
+                <TabItem Header="Treeview">
+                    <TreeView Name="ObjectTree"
+                              ItemsSource="{Binding TreeItems}"
+                              SelectedItems="{Binding SelectedTreeItem}"
+                              SelectionChanged="TreeView_OnSelectionChanged"
+                              SelectionMode="Multiple">
+                        <TreeView.Styles>
+                            <Style Selector="TreeViewItem" x:DataType="models:ITreeItem">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                <Setter Property="IsVisible" Value="{Binding !IsHidden}" />
+                                <!-- <Setter Property="Background" -->
+                                <!--         Value="{Binding IsMatch, Converter={x:Static converters:MatchedHighlightBrushConverter.Instance}}" /> -->
+                            </Style>
+                        </TreeView.Styles>
+                        <TreeView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Expand all"
+                                          Command="{Binding ExpandAllTreeItemsCommand}" />
+                                <MenuItem Header="Expand"
+                                          Command="{Binding ExpandSelectedCommand}" />
+                                <MenuItem Header="Collapse"
+                                          Command="{Binding CollapseSelectedCommand}" />
+                                <MenuItem Header="Copy Name"
+                                          Command="{Binding CopyTreeItemNameCommand}" />
+                                <MenuItem Header="Generate Code"
+                                          Command="{Binding GenerateTreeItemCodeCommand}" />
+                                <MenuItem Header="Navigate to"
+                                          Command="{Binding NavigateToCommand}"
+                                          CommandParameter="{Binding #ObjectTree.SelectedItem}" />
+                            </ContextMenu>
+                        </TreeView.ContextMenu>
+                        <TreeView.ItemTemplate>
+                            <TreeDataTemplate x:DataType="models:ITreeItem"
+                                              ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6">
+                                    <PathIcon Width="16"
+                                              Height="16"
+                                              ToolTip.Tip="{Binding ToolTip}"
+                                              Data="{Binding IconId, Converter={StaticResource TreeItemIconConverter}}"
+                                              IsVisible="{Binding IconId, Converter={StaticResource TreeItemHasIconConverter}}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                               Text="{Binding Name}"
+                                               ToolTip.Tip="{Binding ToolTip}"
+                                               Background="{Binding IsMatch, Converter={x:Static converters:MatchedHighlightBrushConverter.Instance}}" />
+                                </StackPanel>
+                            </TreeDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                </TabItem>
 
-                            </MenuItem>
-                            <MenuItem Header="Generate Code"
-                                      ToolTip.Tip="Generates code for the selected items that support generation"
-                                      Command="{Binding GenerateCodeCommand}"
-                                      CommandParameter="{Binding #ResultsGrid.SelectedItems}" />
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Database" Binding="{Binding Database}" />
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                        <DataGridCheckBoxColumn IsReadOnly="True"
-                                                Header="Can Generate Code"
-                                                Binding="{Binding GeneratorSupported}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-
-                <GridSplitter Grid.Row="1" Height="4" ResizeDirection="Rows"></GridSplitter>
-
-                <TreeView Name="ObjectTree"
-                           Grid.Row="2"
-                           ItemsSource="{Binding TreeItems}"
-                           SelectedItems="{Binding SelectedTreeItem}"
-                           SelectionChanged="TreeView_OnSelectionChanged"
-                           SelectionMode="Multiple">
-                    <TreeView.Styles>
-                        <Style Selector="TreeViewItem" x:DataType="models:ITreeItem">
-                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                            <Setter Property="IsVisible" Value="{Binding !IsHidden}" />
-                            <!-- <Setter Property="Background" -->
-                            <!--         Value="{Binding IsMatch, Converter={x:Static converters:MatchedHighlightBrushConverter.Instance}}" /> -->
-                            
-                        </Style>
-                    </TreeView.Styles>
-                    <TreeView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Expand all"
-                                      Command="{Binding ExpandAllTreeItemsCommand}" />
-                             <MenuItem Header="Expand"
-                                  Command="{Binding ExpandSelectedCommand}" />
-                             <MenuItem Header="Collapse"
-                                  Command="{Binding CollapseSelectedCommand}" />
-                             
-                             <MenuItem Header="Copy Name"
-                                      Command="{Binding CopyTreeItemNameCommand}" />
-                            <MenuItem Header="Generate Code"
-                                      Command="{Binding GenerateTreeItemCodeCommand}" />
-                             <MenuItem Header="Navigate to"
-                                       Command="{Binding NavigateToCommand}"
-                                       CommandParameter="{Binding #ObjectTree.SelectedItem}" />
-
-                        </ContextMenu>
-                    </TreeView.ContextMenu>
-                    <TreeView.ItemTemplate>
-                        <TreeDataTemplate x:DataType="models:ITreeItem"
-                                          ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="6">
-                                <PathIcon Width="16"
-                                          Height="16"
-                                          ToolTip.Tip="{Binding ToolTip}"
-                                          Data="{Binding IconId, Converter={StaticResource TreeItemIconConverter}}"
-                                          IsVisible="{Binding IconId, Converter={StaticResource TreeItemHasIconConverter}}" />
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}"
-                                           ToolTip.Tip="{Binding ToolTip}" Background="{Binding IsMatch,Converter={x:Static converters:MatchedHighlightBrushConverter.Instance}}" />
-                            </StackPanel>
-                        </TreeDataTemplate>
-                    </TreeView.ItemTemplate>
-                </TreeView>
-
-            </Grid>
+                <TabItem Header="List">
+                    <DataGrid Name="ResultsGrid"
+                              ItemsSource="{Binding FilteredResults}"
+                              SelectedItem="{Binding SelectedResult}"
+                              SelectionMode="Extended"
+                              IsReadOnly="True"
+                              AutoGenerateColumns="False"
+                              CanUserResizeColumns="True"
+                              ToolTip.Tip="Select results to view details. Press Ctrl+A to select all, or right-click to generate code.">
+                        <DataGrid.Styles>
+                            <Style Selector="DataGridRow" x:DataType="viewModel:SearchResultRow">
+                                <Setter Property="Background"
+                                        Value="{Binding GeneratorSupported, Converter={x:Static converters:GeneratorSupportedBrushConverter.Instance}}" />
+                            </Style>
+                        </DataGrid.Styles>
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Generate Code for all"
+                                          ToolTip.Tip="Generates code for all the currently filtered items"
+                                          Command="{Binding GenerateCodeCommand}"
+                                          CommandParameter="{Binding FilteredResults}" />
+                                <MenuItem Header="Generate Code"
+                                          ToolTip.Tip="Generates code for the selected items that support generation"
+                                          Command="{Binding GenerateCodeCommand}"
+                                          CommandParameter="{Binding #ResultsGrid.SelectedItems}" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Database" Binding="{Binding Database}" />
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+                            <DataGridCheckBoxColumn IsReadOnly="True"
+                                                    Header="Can Generate Code"
+                                                    Binding="{Binding GeneratorSupported}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+            </TabControl>
 
             <GridSplitter Grid.Column="1"
                           Width="4"
