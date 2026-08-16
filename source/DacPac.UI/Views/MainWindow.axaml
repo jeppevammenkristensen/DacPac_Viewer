@@ -29,7 +29,7 @@
                     <MenuItem Header="Open"
                               ItemsSource="{Binding OpenDacpacMenuItems}">
                         <MenuItem.DataTemplates>
-                            <DataTemplate x:DataType="vm:OpenDacpacMenuItem">
+                            <DataTemplate x:DataType="vm:OpenDacpacMenuItemData">
                                 <MenuItem Header="{Binding Title}"
                                           ToolTip.Tip="{Binding ToolTip}"
                                           Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).OpenDacpacMenuItemCommand}"

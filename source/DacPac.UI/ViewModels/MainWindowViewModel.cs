@@ -39,7 +39,7 @@ public sealed record RecentDacpacFiles(IReadOnlyList<AbsolutePath> Paths)
 /// <summary>
 /// Represents an item in the Open menu, either the file picker or a recent entry.
 /// </summary>
-public sealed record OpenDacpacMenuItem(RecentDacpacFiles? RecentFiles, string? ToolTip)
+public sealed record OpenDacpacMenuItemData(RecentDacpacFiles? RecentFiles, string? ToolTip)
 {
     /// <summary>
     /// Gets the text shown in the Open menu.
@@ -59,11 +59,13 @@ public partial class MainWindowViewModel : ViewModelBase,
     private readonly IUpdateService _updateService;
     private readonly IApplicationInfoService _applicationInfoService;
     private readonly ISettingsService _settingsService;
+    private readonly IFilePickerService _filePicker;
 
     public MainWindowViewModel(IServiceLocator locator,
         IUpdateService updateService,
         IApplicationInfoService applicationInfoService,
         ISettingsService settingsService,
+        IFilePickerService filePicker,
         IErrorCollector errorCollector,
         NoScreensSelectedViewModel noScreensSelected)
     {
@@ -71,6 +73,7 @@ public partial class MainWindowViewModel : ViewModelBase,
         _updateService = updateService;
         _applicationInfoService = applicationInfoService;
         _settingsService = settingsService;
+        _filePicker = filePicker;
         _ = errorCollector;
         NoScreensSelected = noScreensSelected;
         NoScreensSelected.SetMainWindowViewModel(this);
@@ -90,31 +93,43 @@ public partial class MainWindowViewModel : ViewModelBase,
     }
 
     /// <summary>
-    /// Opens the DacPac picker on the landing page.
+    /// Prompts for dacpac files and loads the selected files on the landing page.
     /// </summary>
-    public async Task OpenDacPac()
+    [RelayCommand(CanExecute = nameof(CanExecuteOpenDacPac))]
+    private async Task OpenDacpac()
     {
-        var landingPage = await EnsureLandingPage();
-        await landingPage.OpenDacpacCommand.ExecuteAsync(null);
+        var files = await _filePicker.PickDacpacFilesAsync();
+        if (files.Count == 0)
+            return;
+
+        var filesPaths = files.Select(AbsolutePath.Create).ToList();
+
+        var landingPage = await GetLandingPage(files);
+        await landingPage.OpenDacpacFilesAsync(filesPaths);
     }
 
-    private async Task<LandingPageControlViewModel> EnsureLandingPage()
+    private async Task<LandingPageControlViewModel> GetLandingPage(IReadOnlyList<string> filesPaths)
     {
-        var landingPageControlViewModel = Screens.OfType<LandingPageControlViewModel>().FirstOrDefault();
+        var landingPageControlViewModel = Screens
+            .OfType<LandingPageControlViewModel>()
+            .FirstOrDefault(x => x.OpenedDacpacFiles.SequenceEqual(filesPaths));
+        
         if (landingPageControlViewModel == null)
         {
             await LaunchPrimaryCommand.ExecuteAsync(null);
-            return Screens.OfType<LandingPageControlViewModel>().First();
+            var latestAdded = Screens.OfType<LandingPageControlViewModel>().Last();
+            return latestAdded;
         }
         else
         {
+            Screen = landingPageControlViewModel;
             return landingPageControlViewModel;
         }
     }
 
     private async Task LoadRecentDacpacs(RecentDacpacFiles recentFiles)
     {
-        var landingPage = await EnsureLandingPage();
+        var landingPage = await GetLandingPage(recentFiles.Paths.Select(x => x.Value).ToList());
         await landingPage.OpenDacpacFilesAsync(recentFiles.Paths);
     }
 
@@ -188,18 +203,20 @@ public partial class MainWindowViewModel : ViewModelBase,
     /// <summary>
     /// Gets or sets whether startup initialization has completed.
     /// </summary>
+    [NotifyPropertyChangedFor(nameof(DisplayPanel))]
+    [NotifyPropertyChangedFor(nameof(DisplayHelp))]
     [ObservableProperty]
     public partial bool Loaded { get; set; }
 
     /// <summary>
     /// Gets whether one or more screen tabs are open.
     /// </summary>
-    public bool DisplayPanel => Screens.Count > 0;
+    public bool DisplayPanel => Loaded && Screens.Count > 0;
 
     /// <summary>
     /// Gets whether the empty-screen view should be displayed.
     /// </summary>
-    public bool DisplayHelp => Screens.Count == 0;
+    public bool DisplayHelp => Loaded &&  Screens.Count == 0;
 
     /// <summary>
     /// Gets or sets whether a downloaded update is ready to install.
@@ -354,7 +371,7 @@ public partial class MainWindowViewModel : ViewModelBase,
     private void UpdateOpenDacpacMenuItems(IEnumerable<AbsolutePath[]> files)
     {
         OpenDacpacMenuItems.Clear();
-        OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(null, "Open one or more dac pac files"));
+        OpenDacpacMenuItems.Add(new OpenDacpacMenuItemData(null, "Open one or more dac pac files"));
 
         foreach (var indexTuple in files.Index())
         {
@@ -363,7 +380,7 @@ public partial class MainWindowViewModel : ViewModelBase,
                 OpenDacpacMenuItems.Add(new Separator());
             }
 
-            OpenDacpacMenuItems.Add(new OpenDacpacMenuItem(new RecentDacpacFiles(indexTuple.Item),
+            OpenDacpacMenuItems.Add(new OpenDacpacMenuItemData(new RecentDacpacFiles(indexTuple.Item),
                 string.Join(",", indexTuple.Item)));
         }
     }
@@ -377,12 +394,12 @@ public partial class MainWindowViewModel : ViewModelBase,
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteOpenDacPac))]
-    private async Task OpenDacpacMenuItem(OpenDacpacMenuItem menuItem)
+    private async Task OpenDacpacMenuItem(OpenDacpacMenuItemData menuItemData)
     {
-        if (menuItem.RecentFiles is null)
-            await OpenDacPac();
+        if (menuItemData.RecentFiles is null)
+            await OpenDacpacCommand.ExecuteAsync(null);
         else
-            await LoadRecentDacpacs(menuItem.RecentFiles);
+            await LoadRecentDacpacs(menuItemData.RecentFiles);
     }
 
     [RelayCommand(CanExecute = nameof(UpdateAvailable))]

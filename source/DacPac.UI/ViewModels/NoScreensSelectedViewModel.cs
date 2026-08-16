@@ -74,7 +74,7 @@ public partial class NoScreensSelectedViewModel : ObservableObject
         [RelayCommand(CanExecute = nameof(CanExecuteRun))]
         private async Task RunIt()
         {
-            await _root.OpenDacpacMenuItemCommand.ExecuteAsync(new OpenDacpacMenuItem(Path, null));
+            await _root.OpenDacpacMenuItemCommand.ExecuteAsync(new OpenDacpacMenuItemData(Path, null));
         }
         
         /// <summary>
@@ -147,8 +147,9 @@ public partial class NoScreensSelectedViewModel : ObservableObject
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteOpen))]
-    private void Open()
-    {
-        _mainWindowViewModel?.OpenDacPac();
-    }
+        private async Task Open()
+        {
+            if (_mainWindowViewModel is not null)
+                await _mainWindowViewModel.OpenDacpacCommand.ExecuteAsync(null);
+        }
 }
