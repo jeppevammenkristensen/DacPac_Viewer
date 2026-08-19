@@ -19,33 +19,12 @@ using DacPac.UI.ViewModels.LandingPage;
 using DacPac.UI.ViewModels.Docker;
 using DacPac.UI.ViewModels.ErrorHandling;
 using DacPac.UI.ViewModels.Settings;
+using DacPac.UI.ViewModels.RecentlyOpened;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TruePath;
 
 namespace DacPac.UI.ViewModels;
-
-/// <summary>
-/// Represents a group of dacpac files that was opened together.
-/// </summary>
-public sealed record RecentDacpacFiles(IReadOnlyList<AbsolutePath> Paths)
-{
-    /// <summary>
-    /// Gets the filenames displayed for this recent entry.
-    /// </summary>
-    public string Title => string.Join(", ", Paths.Select(path => path.FileName));
-}
-
-/// <summary>
-/// Represents an item in the Open menu, either the file picker or a recent entry.
-/// </summary>
-public sealed record OpenDacpacMenuItemData(RecentDacpacFiles? RecentFiles, string? ToolTip)
-{
-    /// <summary>
-    /// Gets the text shown in the Open menu.
-    /// </summary>
-    public string Title => RecentFiles?.Title ?? "Open Dacpac";
-}
 
 [UsedImplicitly]
 public partial class MainWindowViewModel : ViewModelBase,
@@ -366,6 +345,7 @@ public partial class MainWindowViewModel : ViewModelBase,
     public void Receive(StoredPathsChangedMessage message)
     {
         UpdateOpenDacpacMenuItems(message.Value);
+        NoScreensSelected.UpdateButtons(message.Value);
     }
 
     private void UpdateOpenDacpacMenuItems(IEnumerable<AbsolutePath[]> files)
@@ -452,6 +432,16 @@ public partial class MainWindowViewModel : ViewModelBase,
     private async Task LaunchSettings()
     {
         var screen = _locator.GetRequiredService<SettingsPageViewModel>();
+        await Launch(screen);
+    }
+
+    /// <summary>
+    /// Opens the page for managing remembered DacPac open operations.
+    /// </summary>
+    [RelayCommand]
+    private async Task LaunchRecentlyOpened()
+    {
+        var screen = _locator.GetRequiredService<RecentlyOpenedPageViewModel>();
         await Launch(screen);
     }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -7,34 +8,6 @@ using DacPac.UI.ApplicationLayer.Infrastructure;
 using TruePath;
 
 namespace DacPac.UI.ViewModels;
-
-public interface ICommandButton 
-{
-    /// <summary>
-    /// Gets the text displayed on the button.
-    /// </summary>
-    public string Text { get; }
-
-    /// <summary>
-    /// Gets the command executed when the button is clicked.
-    /// </summary>
-    public ICommand RunCommand { get; }
-
-    /// <summary>
-    /// Gets whether the button is displayed.
-    /// </summary>
-    public bool IsVisible { get; }
-
-    /// <summary>
-    /// Gets the button tooltip.
-    /// </summary>
-    public string? ToolTip { get; }
-
-    /// <summary>
-    /// Gets whether the button uses the accent style.
-    /// </summary>
-    public bool IsAccent { get; }
-}
 
 /// <summary>
 /// Provides actions to display when no application screens are open.
@@ -53,7 +26,8 @@ public partial class NoScreensSelectedViewModel : ObservableObject
         /// <summary>
         /// Initializes a new empty-screen action button.
         /// </summary>
-        public NoScreensSelectedButton(RecentDacpacFiles? path, MainWindowViewModel root, bool isVisible = true, string? toolTip = null,
+        public NoScreensSelectedButton(RecentDacpacFiles? path, MainWindowViewModel root, bool isVisible = true,
+            string? toolTip = null,
             bool isAccent = false)
         {
             _root = root;
@@ -68,15 +42,14 @@ public partial class NoScreensSelectedViewModel : ObservableObject
         {
             return true;
         }
-        
-        
+
 
         [RelayCommand(CanExecute = nameof(CanExecuteRun))]
         private async Task RunIt()
         {
             await _root.OpenDacpacMenuItemCommand.ExecuteAsync(new OpenDacpacMenuItemData(Path, null));
         }
-        
+
         /// <summary>
         /// Gets the text displayed on the button.
         /// </summary>
@@ -84,7 +57,7 @@ public partial class NoScreensSelectedViewModel : ObservableObject
 
         ICommand ICommandButton.RunCommand => RunItCommand;
 
-        public RecentDacpacFiles Path { get; }
+        public RecentDacpacFiles? Path { get; }
 
         /// <summary>
         /// Gets whether the button is displayed.
@@ -118,27 +91,30 @@ public partial class NoScreensSelectedViewModel : ObservableObject
     public ObservableCollection<ICommandButton> Buttons { get; } = [];
 
 
-    private void UpdateButtons()
+    /// <summary>
+    /// Updates the empty-screen actions from the supplied remembered path groups.
+    /// </summary>
+    public void UpdateButtons(IEnumerable<AbsolutePath[]> storedPaths)
     {
         if (_mainWindowViewModel is null)
             return;
-        
-        Buttons.Clear();        
-       Buttons.Add(new NoScreensSelectedButton(null, _mainWindowViewModel, toolTip: "Open a new dacpac"));
-       
-       foreach (var storedPath in _settingsService.GetStoredPaths())
-       {
-           Buttons.Add(new NoScreensSelectedButton(new RecentDacpacFiles(storedPath), _mainWindowViewModel));
-       }
+
+        Buttons.Clear();
+        Buttons.Add(new NoScreensSelectedButton(null, _mainWindowViewModel, toolTip: "Open a new dacpac"));
+
+        foreach (var storedPath in storedPaths)
+        {
+            Buttons.Add(new NoScreensSelectedButton(new RecentDacpacFiles(storedPath), _mainWindowViewModel));
+        }
     }
-    
+
     /// <summary>
     /// Sets the main window that handles empty-screen actions.
     /// </summary>
     public void SetMainWindowViewModel(MainWindowViewModel mainWindowViewModel)
     {
         _mainWindowViewModel = mainWindowViewModel;
-        UpdateButtons();
+        UpdateButtons(_settingsService.GetStoredPaths());
     }
 
     private bool CanExecuteOpen()
@@ -147,9 +123,9 @@ public partial class NoScreensSelectedViewModel : ObservableObject
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteOpen))]
-        private async Task Open()
-        {
-            if (_mainWindowViewModel is not null)
-                await _mainWindowViewModel.OpenDacpacCommand.ExecuteAsync(null);
-        }
+    private async Task Open()
+    {
+        if (_mainWindowViewModel is not null)
+            await _mainWindowViewModel.OpenDacpacCommand.ExecuteAsync(null);
+    }
 }
