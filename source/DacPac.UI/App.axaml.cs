@@ -18,6 +18,7 @@ using DacPac.UI.ViewModels.Docker;
 using DacPac.UI.ViewModels.ErrorHandling;
 using DacPac.UI.ViewModels.GeneratedCode;
 using DacPac.UI.ViewModels.LandingPage;
+using DacPac.UI.ViewModels.RecentlyOpened;
 using DacPac.UI.ViewModels.Settings;
 using DacPac.UI.Views;
 using DacPac.UI.Views.Displays;
@@ -25,6 +26,7 @@ using DacPac.UI.Views.Docker;
 using DacPac.UI.Views.ErrorHandling;
 using DacPac.UI.Views.GeneratedCode;
 using DacPac.UI.Views.LandingPage;
+using DacPac.UI.Views.RecentlyOpened;
 using DacPac.UI.Views.Settings;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -186,6 +188,7 @@ public class App : Application
             .AddViewModelAndRegisterView<LandingPageControlViewModel, LandingPageControl>(ViewModelScope.Transient)
             .AddViewModelAndRegisterView<GeneratedCodePageViewModel, GeneratedCodePage>(ViewModelScope.Transient)
             .AddViewModelAndRegisterView<SettingsPageViewModel, SettingsPage>(ViewModelScope.Singleton)
+            .AddViewModelAndRegisterView<RecentlyOpenedPageViewModel, RecentlyOpenedPage>(ViewModelScope.Transient)
             .AddViewModelAndRegisterView<SqlServerSetupPageViewModel, SqlServerSetupPage>(ViewModelScope.Transient)
             .AddViewModelAndRegisterView<InstallationViewModel, Installation>(ViewModelScope.Transient)
             .AddViewModelAndRegisterView<ReportBugViewModel, ReportBugView>(ViewModelScope.Transient);
