@@ -123,9 +123,14 @@
         <Setter Property="Background" Value="{DynamicResource SurfaceElevatedBrush}" />
         <Setter Property="CornerRadius" Value="3" />
     </Style>
-    
+
+    <!-- Text input -->
+    <Style Selector="TextBox">
+        <Setter Property="PlaceholderForeground" Value="{DynamicResource TextPlaceholderBrush}" />
+    </Style>
+
     <Style Selector="TextBox.Search">
-        <Setter Property="PlaceholderForeground" Value="{DynamicResource TextPrimaryBrush}"></Setter>
+        <Setter Property="PlaceholderForeground" Value="{DynamicResource TextPlaceholderBrush}" />
     </Style>
     <Style Selector="Button.SearchReset">
         <Setter Property="Background" Value="Transparent" />

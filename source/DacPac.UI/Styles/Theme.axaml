@@ -14,6 +14,7 @@
             <Color x:Key="TextPrimaryColor">#F2F4F8</Color>
             <Color x:Key="TextSecondaryColor">#A8B0BD</Color>
             <Color x:Key="TextMutedColor">#6B7280</Color>
+            <Color x:Key="TextPlaceholderColor">#AAB2C0</Color>
 
             <Color x:Key="AccentColor">#7C5CFF</Color>
             <Color x:Key="AccentHoverColor">#9A82FF</Color>
@@ -31,6 +32,7 @@
             <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
             <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
             <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}" />
+            <SolidColorBrush x:Key="TextPlaceholderBrush" Color="{StaticResource TextPlaceholderColor}" />
 
             <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
             <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource AccentHoverColor}" />
@@ -74,6 +76,7 @@
             <Color x:Key="TextPrimaryColor">#1A1D23</Color>
             <Color x:Key="TextSecondaryColor">#544B4B</Color>
             <Color x:Key="TextMutedColor">#8A919E</Color>
+            <Color x:Key="TextPlaceholderColor">#667085</Color>
 
             <Color x:Key="AccentColor">#6C4CE0</Color>
             <Color x:Key="AccentHoverColor">#5A3BD1</Color>
@@ -91,6 +94,7 @@
             <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
             <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
             <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}" />
+            <SolidColorBrush x:Key="TextPlaceholderBrush" Color="{StaticResource TextPlaceholderColor}" />
 
             <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}" />
             <SolidColorBrush x:Key="AccentHoverBrush" Color="{StaticResource AccentHoverColor}" />
