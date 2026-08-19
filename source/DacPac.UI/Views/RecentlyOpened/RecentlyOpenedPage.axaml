@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModel="using:DacPac.UI.ViewModels.RecentlyOpened"
+             x:Class="DacPac.UI.Views.RecentlyOpened.RecentlyOpenedPage"
+             x:DataType="viewModel:RecentlyOpenedPageViewModel"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.Unavailable">
+            <Setter Property="Foreground" Value="{DynamicResource ErrorBrush}" />
+            <Setter Property="TextDecorations" Value="Strikethrough" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="12">
+        <TextBlock Classes="Header" Text="Recently Opened" />
+        <TextBlock Grid.Row="1"
+                   Classes="Subtitle"
+                   Text="Select remembered open operations to remove them. Unavailable files are shown in red."
+                   TextWrapping="Wrap" />
+
+        <ScrollViewer Grid.Row="2">
+            <ItemsControl ItemsSource="{Binding Entries}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="viewModel:RecentDacpacEntry">
+                        <Border Margin="0,0,0,8"
+                                Padding="12"
+                                Background="{DynamicResource SurfaceElevatedBrush}"
+                                BorderBrush="{DynamicResource BorderBrushSubtle}"
+                                BorderThickness="1"
+                                CornerRadius="{StaticResource RadiusMd}">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <CheckBox IsChecked="{Binding IsSelected}"
+                                          VerticalAlignment="Top"
+                                          ToolTip.Tip="Select this remembered open operation for removal" />
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding Files}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="viewModel:RecentDacpacFile">
+                                            <TextBlock Classes.Unavailable="{Binding IsUnavailable}"
+                                                       Text="{Binding Path}"
+                                                       TextWrapping="Wrap"
+                                                       ToolTip.Tip="{Binding AvailabilityToolTip}" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="8">
+            <TextBlock VerticalAlignment="Center"
+                       IsVisible="{Binding HasNoEntries}"
+                       Classes="Subtitle"
+                       Text="No remembered DacPac files." />
+            <Button Classes="Accent"
+                    Command="{Binding RemoveSelectedCommand}"
+                    Content="Remove selected"
+                    ToolTip.Tip="Remove all selected remembered open operations" />
+        </StackPanel>
+    </Grid>
+</UserControl>

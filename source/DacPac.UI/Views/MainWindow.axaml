@@ -40,6 +40,8 @@
                     </MenuItem>
                     <MenuItem Header="Settings"
                               Command="{Binding LaunchSettingsCommand}" />
+                    <MenuItem Header="Manage Recently Opened..."
+                              Command="{Binding LaunchRecentlyOpenedCommand}" />
                     <MenuItem Header="Set up SQL Server in Docker"
                               IsVisible="{Binding DockerIsAvailable}"
                               Command="{Binding LaunchSqlServerSetupCommand}" />

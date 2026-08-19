@@ -1,28 +1,8 @@
-﻿using System.ComponentModel;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DacPac.UI.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace DacPac.UI.Infrastructure;
-
-public interface IScreenPage : INotifyPropertyChanged
-{
-    /// <summary>
-    /// Override this to perform an operation after an instance of the given
-    /// screen page had been activated
-    /// </summary>
-    /// <returns></returns>
-    Task OnActivatedAsync();
-
-    /// <summary>
-    /// Signal if the current screen can close
-    /// </summary>
-    bool CanClose { get; set; }
-
-    string Title { get; }
-
-    Task CloseAsync();
-}
 
 /// <summary>
 /// This is a screen displayed in the <see cref="MainWindow"/>
