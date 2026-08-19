@@ -12,11 +12,17 @@ namespace DacPac.UI.Converters;
 /// </summary>
 public sealed class TreeItemIconConverter : IValueConverter
 {
+    /// <summary>
+    /// Resolves an icon identifier to its vector resource.
+    /// </summary>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return TryGetIcon(value, out var icon) ? icon : null;
     }
 
+    /// <summary>
+    /// Returns a no-op result because reverse conversion is unsupported.
+    /// </summary>
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return BindingOperations.DoNothing;

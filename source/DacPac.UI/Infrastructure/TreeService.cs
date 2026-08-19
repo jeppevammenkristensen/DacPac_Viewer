@@ -6,8 +6,14 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.Infrastructure;
 
+/// <summary>
+/// Builds landing-page tree roots from loaded DacPac models.
+/// </summary>
 public class TreeService
 {
+    /// <summary>
+    /// Groups root SQL objects into schema tree items.
+    /// </summary>
     public IEnumerable<ITreeItem> GetRoots(IEnumerable<TSqlModel> models)
     {
         var sqlObjects = models.SelectMany(x => x.GetObjects(DacQueryScopes.UserDefined, SqlObjectConstants.RootModelTypes)).ToList();

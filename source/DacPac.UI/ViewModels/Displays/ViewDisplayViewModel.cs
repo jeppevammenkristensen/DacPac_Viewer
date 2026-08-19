@@ -7,6 +7,9 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.ViewModels.Displays;
 
+/// <summary>
+/// Provides display data for a database view.
+/// </summary>
 public partial class ViewDisplayViewModel : DisplayViewModel
 {
     private static readonly ViewSelectStatementAnalyzer SelectStatementAnalyzer = new();

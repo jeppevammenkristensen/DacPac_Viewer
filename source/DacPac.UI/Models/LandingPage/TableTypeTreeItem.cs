@@ -50,15 +50,23 @@ public sealed partial class TableTypeTreeItem : ObservableObject, ISqlObjectRoot
         return procedureItem;
     }
 
+    /// <summary>Gets the table-type name.</summary>
     public string Name => _source.Name.Parts.Last();
+    /// <summary>Gets the underlying DacPac object.</summary>
     public TSqlObject Source => _source;
+    /// <summary>Gets the table-type icon identifier.</summary>
     public string IconId => TreeIconIds.Table;
+    /// <summary>Gets the table-type tooltip.</summary>
     public string ToolTip => $"Table type: {Name}";
+    /// <summary>Gets the child tree items.</summary>
     public IEnumerable<ITreeItem> Children => _children;
 
+    /// <summary>Gets or sets whether the item is expanded.</summary>
     [ObservableProperty] public partial bool IsExpanded { get; set; }
 
+    /// <summary>Gets or sets whether the item is hidden.</summary>
     [ObservableProperty] public partial bool IsHidden { get; set; }
 
+    /// <summary>Gets or sets whether the item matches the active search.</summary>
     [ObservableProperty] public partial bool IsMatch { get; set; }
 }

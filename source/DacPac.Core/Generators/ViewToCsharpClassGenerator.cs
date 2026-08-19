@@ -4,13 +4,22 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core.Generators;
 
+/// <summary>
+/// Generates C# models for DacPac views.
+/// </summary>
 public class ViewToCsharpClassGenerator : CsharpGenerator
 {
+    /// <summary>
+    /// Gets the generated type name for a view.
+    /// </summary>
     public override string TypeName(TSqlObject sqlObject)
     {
         return sqlObject.GenerateTypeName("View");
     }
 
+    /// <summary>
+    /// Gets the DacPac object types supported by this generator.
+    /// </summary>
     public override ModelTypeClass[] SupportedObjectTypes => [View.TypeClass];
 
     protected override void DoBuild(TSqlObject sqlObject, StringBuilder sb)
@@ -92,6 +101,9 @@ public class ViewToCsharpClassGenerator : CsharpGenerator
         return sb;
     }
 
+    /// <summary>
+    /// Determines whether the object is a named view that can be generated.
+    /// </summary>
     public override bool IsValid(TSqlObject tSqlObject)
     {
         return tSqlObject.ObjectType == View.TypeClass && tSqlObject.Name.HasName;

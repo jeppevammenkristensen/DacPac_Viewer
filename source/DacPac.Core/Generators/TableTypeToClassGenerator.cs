@@ -4,13 +4,22 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.Core.Generators;
 
+/// <summary>
+/// Generates C# models and data-table conversions for table types.
+/// </summary>
 public class TableTypeToClassGenerator : CsharpGenerator
 {
+    /// <summary>
+    /// Gets the generated type name for a table type.
+    /// </summary>
     public override string TypeName(TSqlObject sqlObject)
     {
         return sqlObject.GenerateTypeName("TableType");
     }
 
+    /// <summary>
+    /// Gets the DacPac object types supported by this generator.
+    /// </summary>
     public override ModelTypeClass[] SupportedObjectTypes => [TableType.TypeClass];
 
     protected override void DoBuild(TSqlObject sqlObject, StringBuilder sb)
@@ -105,6 +114,9 @@ public class TableTypeToClassGenerator : CsharpGenerator
         return sb;
     }
 
+    /// <summary>
+    /// Determines whether the object is a table type that can be generated.
+    /// </summary>
     public override bool IsValid(TSqlObject tSqlObject)
     {
         return tSqlObject.ObjectType == TableType.TypeClass;

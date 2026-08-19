@@ -4,8 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DacPac.UI.ApplicationLayer;
 
+/// <summary>
+/// Registers application-layer services with dependency injection.
+/// </summary>
 public static class SetupExtensions
 {
+    /// <summary>
+    /// Adds the application-layer service implementations to the collection.
+    /// </summary>
     public static void SetupApplicationLayerService(this IServiceCollection services)
     {
         services.AddSingleton<IFileLocations, FileLocations>();

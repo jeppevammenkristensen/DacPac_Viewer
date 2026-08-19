@@ -2,6 +2,9 @@ using System.Text;
 
 namespace DacPac.Core.Generators;
 
+/// <summary>
+/// Builds XML documentation comments in generated C# source.
+/// </summary>
 public class SummaryBuilder
 {
     private readonly StringBuilder _stringBuilder;
@@ -20,12 +23,18 @@ public class SummaryBuilder
         _stringBuilder.AppendLine("/// </summary>");
     }
 
+    /// <summary>
+    /// Appends documentation for a parameter.
+    /// </summary>
     public SummaryBuilder WithParameter(string parameter, string text)
     {
         _stringBuilder.AppendLine($"///<param name=\"{parameter}\">{text}</param>");
         return this;
     }
     
+    /// <summary>
+    /// Appends remarks documentation.
+    /// </summary>
     public SummaryBuilder WithRemarks(string remarks)
     {
         
@@ -39,6 +48,9 @@ public class SummaryBuilder
             return this;
     }
 
+    /// <summary>
+    /// Gets the builder receiving generated documentation.
+    /// </summary>
     public StringBuilder Builder()
     {
         return _stringBuilder;

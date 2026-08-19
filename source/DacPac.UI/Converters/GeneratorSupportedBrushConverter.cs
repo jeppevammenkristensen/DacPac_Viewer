@@ -12,8 +12,14 @@ namespace DacPac.UI.Converters;
 /// </summary>
 public sealed class GeneratorSupportedBrushConverter : IValueConverter
 {
+    /// <summary>
+    /// Gets the shared converter instance.
+    /// </summary>
     public static GeneratorSupportedBrushConverter Instance { get; } = new();
 
+    /// <summary>
+    /// Resolves the supported-generator brush when the value is <see langword="true"/>.
+    /// </summary>
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is not true)
@@ -25,6 +31,9 @@ public sealed class GeneratorSupportedBrushConverter : IValueConverter
             : AvaloniaProperty.UnsetValue;
     }
 
+    /// <summary>
+    /// Returns a no-op result because reverse conversion is unsupported.
+    /// </summary>
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return BindingOperations.DoNothing;

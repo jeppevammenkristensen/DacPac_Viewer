@@ -1,5 +1,8 @@
 ﻿namespace DacPac.Core;
 
+/// <summary>
+/// Represents a Docker container returned by the <c>docker ps</c> JSON output.
+/// </summary>
 public record Containers(
     string Command,
     string CreatedAt,
