@@ -5,13 +5,21 @@ using DacPac.Core;
 
 namespace DacPac.UI.Infrastructure.LongRunning;
 
-// NOTE: This is a dummy task to demonstrate a long-running operation that reports progress and status.
+/// <summary>
+/// Checks Docker availability during application startup.
+/// </summary>
 public class StartupTask(IMessenger messenger, IDockerService service) : BaseProgressReportingTask(messenger)
 {
     private readonly IDockerService _service = service;
 
+    /// <summary>
+    /// Gets whether Docker was available when startup completed.
+    /// </summary>
     public bool DockerIsAvailable {get; private set; }
     
+    /// <summary>
+    /// Tests Docker availability and reports startup status.
+    /// </summary>
     public override async Task ExecuteTask(CancellationToken? token)
     {
         ReportStatus("Starting engines...");

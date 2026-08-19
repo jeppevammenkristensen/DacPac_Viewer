@@ -5,6 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace DacPac.Core;
 
+/// <summary>
+/// Executes Docker CLI commands used by the application.
+/// </summary>
 public class DockerService : IDockerService
 {
     private readonly ILogger<DockerService> _logger;
@@ -14,6 +17,9 @@ public class DockerService : IDockerService
         _logger = logger;
     }
     
+    /// <summary>
+    /// Determines whether the Docker daemon is available.
+    /// </summary>
     public async Task<bool> PingDocker()
     {
         try
@@ -34,6 +40,9 @@ public class DockerService : IDockerService
         }
     }
     
+    /// <summary>
+    /// Enumerates all containers reported by Docker.
+    /// </summary>
     public async IAsyncEnumerable<Containers> ListContainers()
     {
         var readAsync = await SimpleExecRunner.Init("docker").AddArgument("ps")

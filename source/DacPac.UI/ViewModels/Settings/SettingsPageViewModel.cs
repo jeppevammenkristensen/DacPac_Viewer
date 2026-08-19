@@ -6,16 +6,28 @@ using DacPac.UI.Infrastructure;
 
 namespace DacPac.UI.ViewModels.Settings;
 
+/// <summary>
+/// Provides settings-page state and commands.
+/// </summary>
 public partial class SettingsPageViewModel(
     ISettingsService settingsService,
     IFileLocations fileLocations,
     IFolderLauncher folderLauncher) : ScreenPage
 {
+    /// <summary>
+    /// Gets the page title.
+    /// </summary>
     public override string Title => "Settings";
 
+    /// <summary>
+    /// Gets or sets whether beta updates are enabled.
+    /// </summary>
     [ObservableProperty] public partial bool EnableBetaUpdates { get; set; } = settingsService.EnableBetaUpdates;
 
 
+    /// <summary>
+    /// Gets or sets whether connection strings are persisted.
+    /// </summary>
     [ObservableProperty]
     public partial bool PersistConnectionStrings { get; set; } = settingsService.StoreConnectionStrings;
 

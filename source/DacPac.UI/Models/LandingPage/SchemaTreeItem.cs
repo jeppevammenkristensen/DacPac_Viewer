@@ -19,19 +19,26 @@ public sealed partial class SchemaTreeItem : ObservableObject, ITreeItem
         _children = GetChildren(children).ToList();
     }
 
+    /// <summary>Gets the schema name.</summary>
     public string Name => Identifier.Parts.Last();
+    /// <summary>Gets the schema icon identifier.</summary>
     public string IconId => TreeIconIds.Schema;
+    /// <summary>Gets the schema tooltip.</summary>
     public string ToolTip => $"Schema: {Name}";
 
+    /// <summary>Gets the child tree items.</summary>
     public IEnumerable<ITreeItem> Children => _children;
 
     [ObservableProperty]
+    /// <summary>Gets or sets whether the item is expanded.</summary>
     public partial bool IsExpanded { get; set; }
 
     [ObservableProperty]
+    /// <summary>Gets or sets whether the item is hidden.</summary>
     public partial bool IsHidden { get; set; }
 
     [ObservableProperty]
+    /// <summary>Gets or sets whether the item matches the active search.</summary>
     public partial bool IsMatch { get; set; }
 
     private static IEnumerable<ITreeItem> GetChildren(IEnumerable<TSqlObject> children)

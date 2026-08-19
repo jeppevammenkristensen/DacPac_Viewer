@@ -6,6 +6,9 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.ViewModels.Displays;
 
+/// <summary>
+/// Provides display data for a stored procedure.
+/// </summary>
 public partial class ProcedureDisplayViewModel : DisplayViewModel
 {
     [ObservableProperty] public partial ObservableCollection<ParameterWrapper> Parameters { get; set; }
