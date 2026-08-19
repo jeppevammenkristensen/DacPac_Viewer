@@ -13,6 +13,9 @@ namespace DacPac.UI.Converters;
 /// </summary>
 public sealed class ContainsConverter : IMultiValueConverter
 {
+    /// <summary>
+    /// Determines whether the first value is contained by the second value's collection.
+    /// </summary>
     public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         if (values.Count < 2 || values[0] is not { } item || values[1] is not IEnumerable collection)

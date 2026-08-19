@@ -5,6 +5,9 @@ using TruePath;
 
 namespace DacPac.UI.ApplicationLayer.Infrastructure;
 
+/// <summary>
+/// Persists settings data as JSON at a configured file path.
+/// </summary>
 public class JsonSettingsWrapper<TData>
 {
     private readonly AbsolutePath _filePath;
@@ -20,6 +23,9 @@ public class JsonSettingsWrapper<TData>
         _createEmpty = createEmpty;
     }
     
+    /// <summary>
+    /// Loads persisted settings, or creates an empty value when they cannot be read.
+    /// </summary>
     public TData Load()
     {
         try
@@ -33,6 +39,9 @@ public class JsonSettingsWrapper<TData>
             return _createEmpty();
         }
     }
+    /// <summary>
+    /// Saves the supplied settings value as JSON.
+    /// </summary>
     public void Save(TData data)
     {
         try

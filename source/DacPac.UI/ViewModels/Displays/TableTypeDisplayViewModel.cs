@@ -6,6 +6,9 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.ViewModels.Displays;
 
+/// <summary>
+/// Provides display data for a user-defined table type.
+/// </summary>
 public partial class TableTypeDisplayViewModel : DisplayViewModel
 {
     [ObservableProperty] public partial ObservableCollection<TableTypeColumnDisplay> Columns { get; set; }

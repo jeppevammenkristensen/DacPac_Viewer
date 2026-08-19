@@ -6,8 +6,14 @@ using Microsoft.SqlServer.Dac.Model;
 
 namespace DacPac.UI.ViewModels.Displays;
 
+/// <summary>
+/// Provides display data for a database table.
+/// </summary>
 public partial class TableDisplayViewModel : DisplayViewModel
 {
+    /// <summary>
+    /// Gets or sets the table columns shown by the display.
+    /// </summary>
     [ObservableProperty] public partial ObservableCollection<ColumnWrapper> Columns { get; set; }
 
     public TableDisplayViewModel(TSqlObject model) : base(model)

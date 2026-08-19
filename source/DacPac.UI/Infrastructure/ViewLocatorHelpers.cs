@@ -29,6 +29,9 @@ public static class ViewLocatorHelpers
         return collection.AddView<TViewModel, TView>();
     }
 
+    /// <summary>
+    /// Registers a view factory for a view-model type.
+    /// </summary>
     public static IServiceCollection AddView<TViewModel, TView>(this IServiceCollection collection)
         where TViewModel : ObservableObject where TView : Control, new()
     {

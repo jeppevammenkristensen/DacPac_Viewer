@@ -20,17 +20,25 @@ public sealed partial class ProcedureTreeItem : ObservableObject, ISqlObjectRoot
         _children = this.GetReferencedAndReferencing(x => x.ObjectType != DataType.TypeClass).ToList();
     }
 
+    /// <summary>Gets the procedure name.</summary>
     public string Name => _source.Name.Parts.Last();
+    /// <summary>Gets the underlying DacPac object.</summary>
     public TSqlObject Source => _source;
+    /// <summary>Gets the procedure icon identifier.</summary>
     public string IconId => TreeIconIds.Procedure;
+    /// <summary>Gets the procedure tooltip.</summary>
     public string ToolTip => $"Procedure: {Name}";
+    /// <summary>Gets the child tree items.</summary>
     public IEnumerable<ITreeItem> Children => _children;
     [ObservableProperty]
+    /// <summary>Gets or sets whether the item is expanded.</summary>
     public partial bool IsExpanded { get; set; }
 
     [ObservableProperty]
+    /// <summary>Gets or sets whether the item is hidden.</summary>
     public partial bool IsHidden { get; set; }
 
     [ObservableProperty]
+    /// <summary>Gets or sets whether the item matches the active search.</summary>
     public partial bool IsMatch { get; set; }
 }

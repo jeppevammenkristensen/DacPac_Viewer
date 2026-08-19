@@ -34,17 +34,26 @@ using Microsoft.Extensions.Logging;
 
 namespace DacPac.UI;
 
+/// <summary>
+/// Configures application startup, dependency injection, and global error handling.
+/// </summary>
 public class App : Application
 {
     private IHost? _host;
 
     internal IHost GlobalHost => _host ?? throw new InvalidOperationException("Host has not been initialized");
 
+    /// <summary>
+    /// Loads the application XAML resources.
+    /// </summary>
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
+    /// <summary>
+    /// Builds and starts the application host after Avalonia initialization completes.
+    /// </summary>
     public override async void OnFrameworkInitializationCompleted()
     {
         try

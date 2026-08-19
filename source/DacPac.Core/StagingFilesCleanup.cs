@@ -9,8 +9,14 @@ public interface IStagingFilesCleanup
     void CleanupStagingFiles();
 }
 
+/// <summary>
+/// Removes expired temporary DacPac staging directories.
+/// </summary>
 public partial class StagingFilesCleanup(ILogger<StagingFilesCleanup> logger, IFileLocations fileLocations, IFileSystem fileSystem, TimeProvider timeProvider) : IStagingFilesCleanup
 {
+    /// <summary>
+    /// Deletes staging directories that have not been modified within the retention period.
+    /// </summary>
     public void CleanupStagingFiles()
     {
         if (!fileLocations.TempSaveLocation.DirectoryExists(fileSystem))
