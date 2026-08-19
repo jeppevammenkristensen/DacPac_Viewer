@@ -36,12 +36,14 @@
 
                                           CommandParameter="{Binding}" />
                             </DataTemplate>
+                            <DataTemplate x:DataType="vm:ManageRecentlyOpenedMenuItemData">
+                                <MenuItem Header="{Binding Title}"
+                                          Command="{Binding #Main.((vm:MainWindowViewModel)DataContext).LaunchRecentlyOpenedCommand}" />
+                            </DataTemplate>
                         </MenuItem.DataTemplates>
                     </MenuItem>
                     <MenuItem Header="Settings"
                               Command="{Binding LaunchSettingsCommand}" />
-                    <MenuItem Header="Manage Recently Opened..."
-                              Command="{Binding LaunchRecentlyOpenedCommand}" />
                     <MenuItem Header="Set up SQL Server in Docker"
                               IsVisible="{Binding DockerIsAvailable}"
                               Command="{Binding LaunchSqlServerSetupCommand}" />

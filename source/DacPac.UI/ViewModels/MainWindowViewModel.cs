@@ -21,7 +21,6 @@ using DacPac.UI.ViewModels.ErrorHandling;
 using DacPac.UI.ViewModels.Settings;
 using DacPac.UI.ViewModels.RecentlyOpened;
 using JetBrains.Annotations;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TruePath;
 
 namespace DacPac.UI.ViewModels;
@@ -92,7 +91,7 @@ public partial class MainWindowViewModel : ViewModelBase,
         var landingPageControlViewModel = Screens
             .OfType<LandingPageControlViewModel>()
             .FirstOrDefault(x => x.OpenedDacpacFiles.SequenceEqual(filesPaths));
-        
+
         if (landingPageControlViewModel == null)
         {
             await LaunchPrimaryCommand.ExecuteAsync(null);
@@ -195,7 +194,7 @@ public partial class MainWindowViewModel : ViewModelBase,
     /// <summary>
     /// Gets whether the empty-screen view should be displayed.
     /// </summary>
-    public bool DisplayHelp => Loaded &&  Screens.Count == 0;
+    public bool DisplayHelp => Loaded && Screens.Count == 0;
 
     /// <summary>
     /// Gets or sets whether a downloaded update is ready to install.
@@ -348,7 +347,7 @@ public partial class MainWindowViewModel : ViewModelBase,
         NoScreensSelected.UpdateButtons(message.Value);
     }
 
-    private void UpdateOpenDacpacMenuItems(IEnumerable<AbsolutePath[]> files)
+    private void UpdateOpenDacpacMenuItems(IReadOnlyList<AbsolutePath[]> files)
     {
         OpenDacpacMenuItems.Clear();
         OpenDacpacMenuItems.Add(new OpenDacpacMenuItemData(null, "Open one or more dac pac files"));
@@ -362,6 +361,12 @@ public partial class MainWindowViewModel : ViewModelBase,
 
             OpenDacpacMenuItems.Add(new OpenDacpacMenuItemData(new RecentDacpacFiles(indexTuple.Item),
                 string.Join(",", indexTuple.Item)));
+        }
+
+        if (files.Count > 0)
+        {
+            OpenDacpacMenuItems.Add(new Separator());
+            OpenDacpacMenuItems.Add(new ManageRecentlyOpenedMenuItemData());    
         }
     }
 
